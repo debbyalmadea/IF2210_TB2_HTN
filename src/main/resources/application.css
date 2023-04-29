@@ -1,0 +1,120 @@
+.root {
+    -fx-font-family: "Inter";
+    -fx-background-color: #F1F5F9;
+    -fx-orange: #F97316;
+    -fx-orange-soft: #fed7aa;
+    -fx-grey: #F1F5F9;
+}
+
+.button {
+    -fx-background-color: -fx-orange;
+    -fx-background-radius: 8px;
+    -fx-text-fill: #FFF;
+    -fx-font-size: 16px;
+}
+
+.button:hover {
+    -fx-background-color: #ED974F;
+    -fx-background-radius: 10px;
+}
+
+.btn-secondary {
+    -fx-background-color: -fx-orange-soft;
+    -fx-text-fill: -fx-orange;
+}
+
+.btn-secondary:hover {
+    -fx-background-color: #fdba74;
+}
+
+.btn-red {
+    -fx-background-color: #FECACA;
+    -fx-text-fill: #EF4444;
+}
+
+.btn-red:hover {
+    -fx-background-color: #fca5a5;
+}
+
+.btn-blue {
+    -fx-background-color: #DBEAFE;
+    -fx-text-fill: #3B82F6;
+}
+
+.btn-blue:hover {
+    -fx-background-color: #93c5fd;
+}
+
+.card {
+    -fx-background-color: white;
+    -fx-width: 180px;
+    -fx-padding: 10px 10px;
+}
+
+.form {
+    -fx-background-color: white;
+    -fx-width: 450px;
+    -fx-max-width: 450px;
+    -fx-max-height: 0px;
+    -fx-padding: 40px 32px;
+    -fx-background-radius: 8px;
+}
+
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-background-color: #FFF;
+}
+
+.tab-header-area .tab{
+    -fx-padding:4 10 5 10;
+    -fx-background-insets: 0;
+}
+
+.tab {
+    -fx-background-color: white;
+    -fx-pref-width: 160;
+    -fx-border-width: 0 1 0 0;
+    -fx-border-color: #f1f5f9;
+}
+
+.tab .tab-label {
+    -fx-alignment: CENTER;
+    -fx-text-fill: #94a3b8;
+}
+
+.tab-pane .tab:selected
+{
+    -fx-background-color: white;
+    -fx-border-width: 0;
+}
+
+.tab:selected .tab-label {
+    -fx-text-fill: -fx-orange;
+    -fx-font-weight: bold;
+}
+
+.tab:selected .focus-indicator
+{
+    -fx-border-radius: 0px;
+    -fx-border-width: 0px 0px 2px 0px;
+    -fx-border-color: -fx-orange;
+}
+
+.menu-bar {
+    -fx-background-color: white;
+}
+
+.menu-bar > .container > .menu-button > .label {
+    -fx-font-weight: bold;
+}
+
+.menu-bar > .container > .menu-button:hover,
+.menu-bar > .container > .menu-button:focused,
+.menu-bar > .container > .menu-button:showing {
+    -fx-background-color: -fx-grey;
+}
+
+.menu-bar > .container > .menu-button:hover > .label,
+.menu-bar > .container > .menu-button:focused > .label,
+.menu-bar > .container > .menu-button:showing > .label {
+    -fx-text-fill: black;
+}
