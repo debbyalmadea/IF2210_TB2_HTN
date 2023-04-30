@@ -1,0 +1,22 @@
+.card {
+    -fx-background-color: white;
+    -fx-width: 180px;
+    -fx-padding: 10px 10px;
+    -fx-background-radius: 8px;
+}
+
+.body .label {
+    -fx-text-fill: #A2A5B5;
+    -fx-font-size: 10px;
+    -fx-font-weight: none;
+}
+
+.title {
+    -fx-text-fill: black;
+    -fx-font-size: 12px;
+}
+
+.subtitle {
+    -fx-text-fill: -fx-orange;
+    -fx-font-size: 12px;
+}
