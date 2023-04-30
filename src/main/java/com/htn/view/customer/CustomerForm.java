@@ -1,5 +1,7 @@
-package com.htn.view;
+package com.htn.view.customer;
 
+import com.htn.view.View;
+import com.htn.view.ViewFactory;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
