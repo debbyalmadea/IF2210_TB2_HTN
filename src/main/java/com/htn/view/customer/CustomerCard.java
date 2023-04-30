@@ -1,11 +1,12 @@
-package com.htn.view;
+package com.htn.view.customer;
 
+import com.htn.view.CardBuilder;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-class CustomerCard {
+public class CustomerCard {
     private CustomerView parent;
     public Pane getCard() {
         Button upgradeButton = new Button("Upgrade");
