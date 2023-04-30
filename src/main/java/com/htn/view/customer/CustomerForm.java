@@ -1,5 +1,6 @@
 package com.htn.view.customer;
 
+import com.htn.view.FieldBuilder;
 import com.htn.view.View;
 import com.htn.view.ViewFactory;
 import javafx.beans.property.SimpleStringProperty;

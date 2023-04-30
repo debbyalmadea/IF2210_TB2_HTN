@@ -3,7 +3,6 @@ package com.htn.view;
 import com.htn.view.customer.CustomerView;
 import com.htn.view.main.MainView;
 import javafx.scene.control.Tab;
-import jdk.tools.jmod.Main;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
