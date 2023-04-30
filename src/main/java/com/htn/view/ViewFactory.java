@@ -1,5 +1,6 @@
 package com.htn.view;
 
+import com.htn.view.bill.BillView;
 import com.htn.view.customer.CustomerView;
 import com.htn.view.main.MainView;
 import javafx.scene.control.Tab;
@@ -15,6 +16,10 @@ public class ViewFactory {
             return view;
         } else if (request.equalsIgnoreCase("main")) {
             View view = new MainView(parent);
+            parent.textProperty().bindBidirectional(view.getTitle());
+            return view;
+        } else if (request.equalsIgnoreCase("bill")) {
+            View view = new BillView(parent);
             parent.textProperty().bindBidirectional(view.getTitle());
             return view;
         }
