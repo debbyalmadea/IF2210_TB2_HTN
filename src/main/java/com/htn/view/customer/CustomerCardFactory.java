@@ -1,5 +1,6 @@
-package com.htn.view;
+package com.htn.view.customer;
 
+import com.htn.view.customer.MemberCard;
 import javafx.scene.layout.Pane;
 import org.jetbrains.annotations.NotNull;
 

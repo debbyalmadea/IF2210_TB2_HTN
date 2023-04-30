@@ -12,12 +12,17 @@ public class AppMenu extends MenuBar {
 
         Menu subMenu = new Menu("New tab");
         MenuItem customerMenu = new MenuItem("Customer");
+        MenuItem mainMenu = new MenuItem("Main");
+
         customerMenu.setOnAction(e -> {
             addTab(customerMenu.getText());
         });
+        mainMenu.setOnAction(e->{
+            addTab(mainMenu.getText());
+        });
 
+        subMenu.getItems().add(mainMenu);
         subMenu.getItems().add(customerMenu);
-
         SeparatorMenuItem separator = new SeparatorMenuItem();
         MenuItem setting = new MenuItem("Settings...");
 

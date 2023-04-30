@@ -30,7 +30,7 @@ public class AppWindow extends Application {
         BorderPane root = new BorderPane();
 
         Tab tab1 = new Tab();
-        View view = ViewFactory.get("customer", tab1);
+        View view = ViewFactory.get("main", tab1);
         if (view != null) {
             tab1.setContent(view.getView());
         }
