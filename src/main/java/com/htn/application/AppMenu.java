@@ -14,6 +14,7 @@ public class AppMenu extends MenuBar {
         MenuItem customerMenu = new MenuItem("Customer");
         MenuItem mainMenu = new MenuItem("Main");
         MenuItem billMenu = new MenuItem("Bill");
+        MenuItem productMenu = new MenuItem("Product");
 
         customerMenu.setOnAction(e -> {
             addTab(customerMenu.getText());
@@ -24,10 +25,12 @@ public class AppMenu extends MenuBar {
         billMenu.setOnAction(e->{
             addTab(billMenu.getText());
         });
+        productMenu.setOnAction(e -> addTab(productMenu.getText()));
 
         subMenu.getItems().add(mainMenu);
         subMenu.getItems().add(customerMenu);
         subMenu.getItems().add(billMenu);
+        subMenu.getItems().add(productMenu);
 
         SeparatorMenuItem separator = new SeparatorMenuItem();
         MenuItem setting = new MenuItem("Settings...");
