@@ -1,23 +1,35 @@
 package com.htn.application;
 
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.SeparatorMenuItem;
+import com.htn.view.ViewFactory;
+import javafx.scene.control.*;
 
 public class AppMenu extends MenuBar {
-    public AppMenu() {
+    private TabPane tabPane;
+    public AppMenu(TabPane tabPane) {
+        this.tabPane = tabPane;
         final Menu menu = new Menu("Menu");
         this.getMenus().addAll(menu);
 
         Menu subMenu = new Menu("New tab");
-        MenuItem menuItem11 = new MenuItem("Halaman bill");
-        subMenu.getItems().add(menuItem11);
+        MenuItem customerMenu = new MenuItem("Customer");
+        customerMenu.setOnAction(e -> {
+            addTab(customerMenu.getText());
+        });
+
+        subMenu.getItems().add(customerMenu);
+
         SeparatorMenuItem separator = new SeparatorMenuItem();
         MenuItem setting = new MenuItem("Settings...");
 
         menu.getItems().add(subMenu);
         menu.getItems().add(separator);
         menu.getItems().add(setting);
+    }
+    // TODO! TEMPORARY FUNCTION, WILL BE REPLACED LATER!
+    private void addTab(String request) {
+        Tab tab = new Tab();
+        tab.setContent(ViewFactory.get(request, tab).getView());
+        tabPane.getTabs().add(tab);
+        tabPane.getSelectionModel().select(tab);
     }
 }

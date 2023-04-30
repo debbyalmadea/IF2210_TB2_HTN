@@ -1,25 +1,39 @@
 package com.htn.application;
 
+import com.htn.view.View;
+import com.htn.view.ViewFactory;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import lombok.Getter;
 
 public class AppWindow extends Application {
-    private AppMenu appMenu;
-    private TabPane tabPane;
+    @Getter private AppMenu appMenu;
+    @Getter private TabPane tabPane;
     @Override
     public void start(Stage stage) throws Exception {
+        // load font
+        Font.loadFont(getClass().getResource("/font/Inter-Bold.ttf").toExternalForm(), 14);
+        Font.loadFont(getClass().getResource("/font/Inter-Regular.ttf").toExternalForm(), 14);
+        Font.loadFont(getClass().getResource("/font/Inter-Medium.ttf").toExternalForm(), 14);
+
+
         stage.setTitle("HTN development");
-        appMenu = new AppMenu();
         tabPane = new TabPane();
+        appMenu = new AppMenu(tabPane);
 
         BorderPane root = new BorderPane();
 
-        Tab tab1 = new Tab("Planes", new Label("Show all planes available"));
+        Tab tab1 = new Tab();
+        View view = ViewFactory.get("customer", tab1);
+        if (view != null) {
+            tab1.setContent(view.getView());
+        }
         Tab tab2 = new Tab("Cars"  , new Label("Show all cars available"));
         Tab tab3 = new Tab("Boats" , new Label("Show all boats available"));
 

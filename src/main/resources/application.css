@@ -11,11 +11,27 @@
     -fx-background-radius: 8px;
     -fx-text-fill: #FFF;
     -fx-font-size: 16px;
+    -fx-padding: 6px;
+    -fx-alignment:center;
 }
 
 .button:hover {
     -fx-background-color: #ED974F;
     -fx-background-radius: 10px;
+}
+
+.btn {
+    -fx-background-color: -fx-orange;
+    -fx-background-radius: 8px;
+    -fx-text-fill: #FFF;
+    -fx-font-size: 16px;
+    -fx-padding: 6px;
+    -fx-alignment:center;
+}
+
+.btn-small {
+    -fx-font-size: 12px;
+    -fx-background-radius: 4px;
 }
 
 .btn-secondary {
@@ -43,12 +59,6 @@
 
 .btn-blue:hover {
     -fx-background-color: #93c5fd;
-}
-
-.card {
-    -fx-background-color: white;
-    -fx-width: 180px;
-    -fx-padding: 10px 10px;
 }
 
 .form {
@@ -117,4 +127,10 @@
 .menu-bar > .container > .menu-button:focused > .label,
 .menu-bar > .container > .menu-button:showing > .label {
     -fx-text-fill: black;
+}
+
+.body {
+    -fx-text-fill: #A2A5B5;
+    -fx-font-size: 10px;
+    -fx-font-weight: none;
 }
