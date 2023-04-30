@@ -22,8 +22,9 @@ public class CustomerView implements View {
         view.fitToWidthProperty().set(true);
         this.parent = parent;
         init();
-        content.getStylesheets().add("customer.css");
+        view.getStylesheets().add("customer.css");
         view.setContent(content);
+        content.setStyle("-fx-background-color: #F1F5F9;");
     }
     public void init() {
         content = new VBox();

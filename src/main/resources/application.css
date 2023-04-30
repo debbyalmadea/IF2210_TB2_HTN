@@ -63,8 +63,8 @@
 
 .form {
     -fx-background-color: white;
-    -fx-width: 450px;
-    -fx-max-width: 450px;
+    -fx-width: 600px;
+    -fx-max-width: 600px;
     -fx-max-height: 0px;
     -fx-padding: 40px 32px;
     -fx-background-radius: 8px;
