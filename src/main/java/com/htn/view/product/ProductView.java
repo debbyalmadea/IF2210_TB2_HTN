@@ -35,6 +35,7 @@ public class ProductView implements View {
     public void init(){
         // TextField to search products
         TextField search = new TextField();
+        search.getStyleClass().add("search");
         search.setPromptText("Search product...");
 
         // Search button

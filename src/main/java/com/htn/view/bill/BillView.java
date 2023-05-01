@@ -30,12 +30,14 @@ public class BillView implements View {
         view.fitToWidthProperty().set(true);
         this.parent = parent;
         init();
-        content.getStylesheets().add("customer.css");
+        content.setStyle("-fx-background-color: #F1F5F9;");
+        view.getStylesheets().add("customer.css");
         view.setContent(content);
     }
     public void init() {
         // Create a TextField for the search query
         TextField searchField = new TextField();
+        searchField.getStyleClass().addAll("search");
         searchField.setPromptText("Search");
 
         // Create a Button for performing the search
