@@ -5,6 +5,13 @@
     -fx-border-radius: 8px;
 }
 
+.search {
+    -fx-background-color: white;
+    -fx-border-color: white;
+    -fx-padding: 10px;
+    -fx-background-radius: 8px;
+}
+
 .label {
     -fx-font-size: 16px;
     -fx-text-fill: #646983;
