@@ -1,8 +1,8 @@
 package com.htn.view.customer;
 
-import com.htn.model.customer.Customer;
-import com.htn.model.customer.Member;
-import com.htn.model.customer.VIPMember;
+import com.htn.data.customer.Customer;
+import com.htn.data.customer.Member;
+import com.htn.data.customer.VIPMember;
 import com.htn.view.View;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;

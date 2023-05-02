@@ -1,6 +1,6 @@
 package com.htn.view.customer;
 
-import com.htn.model.customer.Rewardable;
+import com.htn.data.customer.Rewardable;
 import com.htn.view.CardBuilder;
 import javafx.scene.Node;
 import javafx.scene.control.Button;

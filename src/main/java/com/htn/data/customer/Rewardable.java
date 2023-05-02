@@ -1,4 +1,4 @@
-package com.htn.model.customer;
+package com.htn.data.customer;
 
 public interface Rewardable {
     public Integer getPoint();

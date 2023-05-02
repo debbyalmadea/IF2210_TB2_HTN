@@ -1,4 +1,4 @@
-package com.htn.model.customer;
+package com.htn.data.customer;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;

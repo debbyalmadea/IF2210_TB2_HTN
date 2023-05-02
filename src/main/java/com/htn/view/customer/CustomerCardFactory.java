@@ -1,7 +1,7 @@
 package com.htn.view.customer;
 
-import com.htn.model.customer.Customer;
-import com.htn.model.customer.Rewardable;
+import com.htn.data.customer.Customer;
+import com.htn.data.customer.Rewardable;
 import javafx.scene.layout.Pane;
 import org.jetbrains.annotations.NotNull;
 
