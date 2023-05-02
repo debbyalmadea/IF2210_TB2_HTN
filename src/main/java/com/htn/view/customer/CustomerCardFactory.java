@@ -1,22 +1,19 @@
 package com.htn.view.customer;
 
-import com.htn.view.customer.MemberCard;
+import com.htn.model.customer.Customer;
+import com.htn.model.customer.Rewardable;
 import javafx.scene.layout.Pane;
 import org.jetbrains.annotations.NotNull;
 
 public class CustomerCardFactory {
-    public static Pane getCard(@NotNull String request, CustomerView parent) {
-        // TODO! request ganti jadi Customer, cek melalui instanceof
-        if (request.equalsIgnoreCase("customer")) {
-            return new CustomerCard(parent).getCard();
-        }
-        if (request.equalsIgnoreCase("member")) {
-            return new MemberCard("member", parent).getCard();
-        }
-        if (request.equalsIgnoreCase("vip")) {
-            return new MemberCard("vip", parent).getCard();
+    public static <T extends Customer> Pane getCard(@NotNull T customer, CustomerView parent) {
+        if (customer instanceof Rewardable) {
+            if (!((Rewardable) customer).isActivated())  {
+                return new DeactivatedCard((Rewardable) customer, parent).getCard();
+            }
+            return new MemberCard((Rewardable) customer, parent).getCard();
         }
 
-        return new Pane();
+        return new CustomerCard(parent).getCard();
     }
 }

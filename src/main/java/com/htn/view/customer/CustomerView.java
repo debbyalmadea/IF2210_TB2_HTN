@@ -1,5 +1,8 @@
 package com.htn.view.customer;
 
+import com.htn.model.customer.Customer;
+import com.htn.model.customer.Member;
+import com.htn.model.customer.VIPMember;
 import com.htn.view.View;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -10,6 +13,10 @@ import javafx.scene.control.Tab;
 import javafx.scene.layout.*;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class CustomerView implements View {
@@ -32,22 +39,42 @@ public class CustomerView implements View {
         content.setPadding(new Insets(32, 40, 32, 40));
         content.setSpacing(20);
 
+        // TESTING ONLY
+        List<Customer> testCustomer = new ArrayList<>();
+        testCustomer.add(new Customer());
+        testCustomer.add(new Customer());
+        testCustomer.add(new Customer());
+
+        List<Member> testMember = new ArrayList<>();
+        testMember.add(new Member("Akane", "25372534123", 20));
+        testMember.add(new Member("Kana", "25372534123", 20));
+        testMember.add(new Member("Aqua", "25372534123", 20));
+
+        List<VIPMember> testVIP = new ArrayList<>();
+        testVIP.add(new VIPMember("Jisoo", "62746573464", 103));
+        testVIP.add(new VIPMember("Lisa", "62746573464", 103));
+        testVIP.add(new VIPMember("Jennie", "62746573464", 103));
+        testVIP.add(new VIPMember("Rose", "62746573464", 103));
+        testVIP.get(0).setActivated(false);
+        testVIP.get(1).setActivated(false);
+
         Label VIPLabel = new Label("VIP");
         Label memberLabel = new Label("Member");
         Label customerLabel = new Label("Customer");
 
         content.getChildren().addAll(
-                VIPLabel, getListView("vip"),
-                memberLabel, getListView("member"),
-                customerLabel, getListView("customer"));
+                VIPLabel, getListView(testVIP.stream().filter(VIPMember::isActivated).collect(Collectors.toCollection(ArrayList::new))),
+                memberLabel, getListView(testMember),
+                new Label("Deactivated Member"), getListView(testVIP.stream().filter(member -> !member.isActivated()).collect(Collectors.toCollection(ArrayList::new))),
+                customerLabel, getListView(testCustomer));
     }
-    private @NotNull Pane getListView(String request) {
+    private @NotNull <T extends Customer> Pane getListView(@NotNull List<T> customerList) {
         FlowPane listView = new FlowPane();
         listView.setMaxWidth(Double.MAX_VALUE);
         listView.setHgap(20);
         listView.setVgap(20);
-        for (int i = 0; i < 10; i++) {
-            listView.getChildren().add(CustomerCardFactory.getCard(request, this));
+        for (T customer : customerList) {
+            listView.getChildren().add(CustomerCardFactory.getCard(customer, this));
         }
 
         return listView;

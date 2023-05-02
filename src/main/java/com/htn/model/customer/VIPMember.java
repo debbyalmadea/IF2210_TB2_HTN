@@ -1,4 +1,4 @@
-package com.htn.data.customer;
+package com.htn.model.customer;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -7,9 +7,9 @@ import lombok.experimental.FieldDefaults;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @EqualsAndHashCode(callSuper = true)
-public class Member extends Customer {
+public class VIPMember extends Customer implements Rewardable {
     @NonNull String name;
     @NonNull String phoneNumber;
-    @NonNull int point;
+    @NonNull Integer point;
     boolean activated = true;
 }

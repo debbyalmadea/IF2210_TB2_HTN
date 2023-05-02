@@ -2,7 +2,7 @@
     -fx-font-family: "Inter";
     -fx-background-color: #F1F5F9;
     -fx-orange: #F97316;
-    -fx-orange-soft: #fed7aa;
+    -fx-orange-soft: #FFEDD5;
     -fx-grey: #F1F5F9;
 }
 
@@ -11,7 +11,7 @@
     -fx-background-radius: 8px;
     -fx-text-fill: #FFF;
     -fx-font-size: 16px;
-    -fx-padding: 6px;
+    -fx-padding: 6px 40px;
     -fx-alignment:center;
 }
 
@@ -29,9 +29,18 @@
     -fx-alignment:center;
 }
 
+.btn:hover {
+    -fx-background-color: #ED974F;
+    -fx-background-radius: 10px;
+}
+
 .btn-small {
     -fx-font-size: 12px;
     -fx-background-radius: 4px;
+}
+
+.btn-small:hover {
+    -fx-background-radius: 6px;
 }
 
 .btn-secondary {
@@ -59,6 +68,15 @@
 
 .btn-blue:hover {
     -fx-background-color: #93c5fd;
+}
+
+.btn-green {
+    -fx-background-color: #E2FBE8;
+    -fx-text-fill: #5EC269;
+}
+
+.btn-green:hover {
+    -fx-background-color: #A0ECB1;
 }
 
 .form {

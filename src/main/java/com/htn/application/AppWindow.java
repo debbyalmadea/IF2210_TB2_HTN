@@ -4,7 +4,6 @@ import com.htn.view.View;
 import com.htn.view.ViewFactory;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;

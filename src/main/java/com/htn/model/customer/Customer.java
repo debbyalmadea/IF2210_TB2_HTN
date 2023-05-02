@@ -1,4 +1,4 @@
-package com.htn.data.customer;
+package com.htn.model.customer;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -10,5 +10,5 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 public class Customer {
     static int numOfCustomer;
-    final int id = ++numOfCustomer;
+    final Integer id = ++numOfCustomer;
 }
