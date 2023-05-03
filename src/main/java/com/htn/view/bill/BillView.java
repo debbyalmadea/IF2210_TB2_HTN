@@ -129,12 +129,12 @@ public class BillView implements View {
         init();
     }
     public void create() {
-        title.set("New Member");
-        parent.setContent(new CustomerForm(parent).getView());
+        title.set("New Bill");
+        parent.setContent(new BillForm(parent).getView());
     }
     public void edit() {
-        title.set("Edit Member");
-        parent.setContent(new CustomerForm(parent).getView());
+        title.set("Edit Bill");
+        parent.setContent(new BillForm(parent).getView());
     }
     public void seeBill() {
         Image image = new Image(getClass().getResource("/asset.jpg").toExternalForm());
