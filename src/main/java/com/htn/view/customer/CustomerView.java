@@ -1,5 +1,6 @@
-package com.htn.view;
+package com.htn.view.customer;
 
+import com.htn.view.View;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;
@@ -22,8 +23,9 @@ public class CustomerView implements View {
         view.fitToWidthProperty().set(true);
         this.parent = parent;
         init();
-        content.getStylesheets().add("customer.css");
+        view.getStylesheets().add("customer.css");
         view.setContent(content);
+        content.setStyle("-fx-background-color: #F1F5F9;");
     }
     public void init() {
         content = new VBox();

@@ -1,5 +1,6 @@
-package com.htn.view;
+package com.htn.view.customer;
 
+import com.htn.view.CardBuilder;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;

@@ -30,22 +30,18 @@ public class AppWindow extends Application {
         BorderPane root = new BorderPane();
 
         Tab tab1 = new Tab();
-        View view = ViewFactory.get("customer", tab1);
+        View view = ViewFactory.get("main", tab1);
         if (view != null) {
             tab1.setContent(view.getView());
         }
-        Tab tab2 = new Tab("Cars"  , new Label("Show all cars available"));
-        Tab tab3 = new Tab("Boats" , new Label("Show all boats available"));
 
         tabPane.getTabs().add(tab1);
-        tabPane.getTabs().add(tab2);
-        tabPane.getTabs().add(tab3);
 
         root.setCenter(tabPane);
         root.setTop(appMenu);
 
         Scene scene = new Scene(root, 800, 500);
-        scene.getStylesheets().add("application.css");
+        scene.getStylesheets().addAll("application.css", "field.css");
         stage.setMaximized(true);
         stage.setScene(scene);
         stage.show();
