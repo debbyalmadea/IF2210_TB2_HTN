@@ -3,14 +3,9 @@ package com.htn.view.customer;
 import com.htn.controller.CustomerController;
 import com.htn.data.customer.Customer;
 import com.htn.data.customer.Member;
-import com.htn.data.customer.VIPMember;
-import com.htn.datastore.CustomerDataStore;
-import com.htn.datastore.MemberDataStore;
-import com.htn.datastore.VIPMemberDataStore;
 import com.htn.view.View;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.collections.ListChangeListener;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -19,9 +14,7 @@ import javafx.scene.layout.*;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 public class CustomerView implements View {

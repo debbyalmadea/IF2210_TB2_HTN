@@ -1,4 +1,4 @@
-package com.htn.datastore;
+package com.htn.datastore.customer;
 
 import com.google.gson.reflect.TypeToken;
 import com.htn.data.customer.Customer;

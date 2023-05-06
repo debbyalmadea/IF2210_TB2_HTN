@@ -1,4 +1,4 @@
-package com.htn.datastore;
+package com.htn.datastore.customer;
 
 import com.htn.data.customer.Customer;
 import com.htn.datastore.utils.IDataWriter;

@@ -5,12 +5,5 @@
     "point": 20,
     "activated": true,
     "id": 1
-  },
-  {
-    "name": "Akane",
-    "phoneNumber": "25372534123",
-    "point": 20,
-    "activated": true,
-    "id": 5
   }
 ]

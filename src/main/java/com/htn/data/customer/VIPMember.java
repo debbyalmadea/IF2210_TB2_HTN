@@ -5,7 +5,7 @@ import lombok.*;
 import java.io.Serializable;
 
 public class VIPMember extends Member implements Serializable {
-    @Getter private final double discount = 0.1;
+    @Getter private final static double discount = 0.1;
     public VIPMember(String name, String phoneNumber, Integer point) {
         super(name, phoneNumber, point);
     }
