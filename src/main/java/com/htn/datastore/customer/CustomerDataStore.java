@@ -46,9 +46,11 @@ public class CustomerDataStore {
             System.out.println(e.getMessage());
         }
     }
-    public void create() {
-        customers.add(new Customer());
+    public Customer create() {
+        Customer baru = new Customer();
+        customers.add(baru);
         write();
+        return baru;
     }
     private void seed() {
         int i;

@@ -56,6 +56,14 @@ public class CustomerController {
                 .orElse(null);
     }
 
+    public static Member getAll(Integer id) {
+        return getAllMembers().stream()
+                .filter(member -> member.getId().equals(id))
+                .findFirst()
+                .orElse(null);
+    }
+
+
     public static ArrayList<String> getAllMemberName() {
         ArrayList<String> arr = new ArrayList<String>();
         getAllMembers().forEach(e-> {
@@ -146,5 +154,9 @@ public class CustomerController {
         getMemberDataStore(member).updateBuilder()
                 .member(member)
                 .activated(true).build();
+    }
+
+    public static Customer create() {
+        return CustomerDataStore.getInstance().create();
     }
 }

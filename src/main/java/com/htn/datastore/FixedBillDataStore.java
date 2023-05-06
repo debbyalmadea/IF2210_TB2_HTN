@@ -4,6 +4,8 @@ import com.google.gson.reflect.TypeToken;
 import com.htn.data.bill.FixedBill;
 import com.htn.data.item.Item;
 import com.htn.datastore.utils.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
@@ -15,7 +17,7 @@ import java.util.Date;
 
 public class FixedBillDataStore {
     @Getter
-    private ArrayList<FixedBill> fixedBills;
+    private ObservableList<FixedBill> fixedBills;
     private static FixedBillDataStore instance = null;
     @Getter @Setter
     private String file = "fixed_bill.json";
@@ -34,9 +36,9 @@ public class FixedBillDataStore {
         try {
             IFileReader JSONreader = new JSONUtil(type);
             Object result = JSONreader.readFile(file);
-            fixedBills = (ArrayList<FixedBill>) result;
+            fixedBills = FXCollections.observableList((ArrayList<FixedBill>) result);
         } catch (IOException e) {
-            fixedBills = new ArrayList<>();
+            fixedBills = FXCollections.observableList( new ArrayList<FixedBill>());
         }
     }
 
@@ -50,8 +52,8 @@ public class FixedBillDataStore {
         }
     }
 
-    public void addNew(@NotNull int id, @NotNull String name, @NotNull double price, @NotNull Date date, @NotNull ArrayList<Item> items) {
-        fixedBills.add(new FixedBill(id, name, price, date, items));
+    public void addNew(@NotNull int id, @NotNull String name, @NotNull double pricePaid, double priceProfit, String breakdown, @NotNull Date date, @NotNull ArrayList<Item> items) {
+        fixedBills.add(new FixedBill(String.valueOf(id), name, pricePaid, priceProfit, breakdown, date, items));
         write();
     }
 

@@ -1,27 +1,20 @@
 package com.htn.view.bill;
-
 import com.htn.controller.BillController;
-import com.htn.data.item.Item;
+import com.htn.controller.CustomerController;
 import com.htn.data.bill.Bill;
 import com.htn.data.bill.FixedBill;
+import com.htn.data.customer.Customer;
 import com.htn.view.View;
-import com.htn.view.customer.CustomerCardFactory;
-import com.htn.view.customer.CustomerForm;
-import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class BillView implements View {
     @Getter
@@ -30,7 +23,6 @@ public class BillView implements View {
     private VBox content;
     @Getter private final Tab parent;
 
-    static private BillController billController = new BillController();
 
     public BillView(Tab parent) {
         view = new ScrollPane();
@@ -41,9 +33,14 @@ public class BillView implements View {
         content.setStyle("-fx-background-color: #F1F5F9;");
         view.getStylesheets().add("customer.css");
         view.setContent(content);
+        BillController.bindBillData(this);
+        BillController.bindFixedBillData(this);
+        CustomerController.bindMemberData(this);
+        CustomerController.bindVIPMemberData(this);
     }
     public void init() {
         content.getChildren().clear();
+        content.setPrefHeight(Double.MAX_VALUE);
         // Create a TextField for the search query
         TextField searchField = new TextField();
         searchField.getStyleClass().addAll("search");
@@ -89,7 +86,7 @@ public class BillView implements View {
         searchBox.setSpacing(10);
         searchBox.getChildren().addAll(searchField, searchButton);
 
-        content = new VBox();
+
         content.setPadding(new Insets(32, 40, 32, 40));
         content.setSpacing(20);
 
@@ -118,7 +115,7 @@ public class BillView implements View {
         fixedBillBox.getChildren().addAll(FixedBillLabel, printButton);
         fixedBillBox.setAlignment(Pos.CENTER_LEFT);
         fixedBillBox.setSpacing(10);
-        System.out.println(BillController.getAll());
+        System.out.println(BillController.getAllBill());
         content.getChildren().addAll(
                 searchBox, BillLabel, getListView("bill"),
                 fixedBillBox, getListView("fixedbill"));
@@ -134,11 +131,15 @@ public class BillView implements View {
         listView.setVgap(20);
         System.out.println(request);
         if (request.equalsIgnoreCase("bill")) {
-            ArrayList<Bill> bills = BillController.getAll();
+            List<Bill> bills = BillController.getAllBill();
             bills.forEach(bill-> {
-                listView.getChildren().add(BillCardFactory.getCard(request,  this,bill));
+                listView.getChildren().add(BillCardFactory.getCard(  this,bill));
             });
         } else {
+            List<FixedBill> fixedBills = BillController.getAllFixedBill();
+            fixedBills.forEach(e-> {
+                listView.getChildren().add(BillCardFactory.getCard(  this,e));
+            });
 //            for (int i = 0; i < 10; i++) {
 //                listView.getChildren().add(BillCardFactory.getCard(request,  this));
 //            }
@@ -152,7 +153,7 @@ public class BillView implements View {
 
     public void delete(Object bill) {
         if (bill instanceof Bill) {
-            BillController.delete(((Bill) bill).getId());
+            BillController.deleteBill((Bill) bill);
         }
         init();
     }

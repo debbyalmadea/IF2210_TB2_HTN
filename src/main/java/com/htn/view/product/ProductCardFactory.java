@@ -6,9 +6,9 @@ import javafx.scene.layout.Pane;
 import org.jetbrains.annotations.NotNull;
 
 public class ProductCardFactory {
-    public static Pane getCard(@NotNull Item item, ProductView parent){
+    public static Pane getCard(@NotNull Item item, View parent){
         if(item instanceof Item){
-            return new ProductCard(item, parent).getCard();
+            return new ProductCard(parent, item).getCard();
         }
         return new Pane();
 

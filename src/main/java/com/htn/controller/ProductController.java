@@ -58,9 +58,23 @@ public class ProductController {
     }
 
     public static void editProduct(Item item, String name, String description, Double sellingPrice,
-            Double purchasingPrice, String category, String image) {
+            Double purchasingPrice, String category, String image, Integer stock) {
         ProductDataStore.getInstance().editProduct(item, name, description, sellingPrice, purchasingPrice, category,
-                image);
+                image, stock);
+    }
+
+    public static void sellProduct(Item item, Integer quantity) {
+        ProductDataStore.getInstance().editProduct(item, null, null, null, null, null,null, item.getStock()-quantity);
+    }
+
+    public static List<Item> getListItem(ArrayList<String> itemIds) {
+        List<Item> baru = new ArrayList<>();
+        ProductController.getAllProducts().forEach(e->{
+            if (itemIds.contains(e.getId())) {
+                baru.add(e);
+            }
+        });
+        return baru;
     }
 
 }

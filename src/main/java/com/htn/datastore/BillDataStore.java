@@ -54,7 +54,7 @@ public class BillDataStore {
     }
 
     public void addNew(String id, String name, String customerId, double price, Date date, ArrayList<String> itemIds) {
-        bills.add(new Bill(id, name, customerId, price, date, itemIds));
+        bills.add(new Bill(id, price, customerId, date, itemIds));
         write();
     }
 
@@ -69,9 +69,6 @@ public class BillDataStore {
     }
 
     public void update(@NonNull Bill bill, String name, Double price, Date date, ArrayList<String> itemIds) {
-        if (name != null) {
-            bill.setName(name);
-        }
         if (price != null) {
             bill.setPrice(price);
         }

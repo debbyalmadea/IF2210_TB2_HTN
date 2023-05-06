@@ -72,7 +72,7 @@ public class ProductDataStore {
     }
 
     public void editProduct(@NotNull Item item, String name, String description, Double sellingPrice,
-            Double purchasingPrice, String category, String image) {
+            Double purchasingPrice, String category, String image, Integer stock) {
         if (name != null)
             item.setName(name);
         if (description != null)
@@ -85,6 +85,9 @@ public class ProductDataStore {
             item.setPurchasingPrice(purchasingPrice);
         if (category != null)
             item.setCategory(category);
+        if (stock != null) {
+            item.setStock(stock);
+        }
         write();
     }
 

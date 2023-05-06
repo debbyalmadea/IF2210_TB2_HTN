@@ -1,6 +1,5 @@
 package com.htn.application;
 
-import com.htn.controller.BillController;
 import com.htn.view.View;
 import com.htn.view.ViewFactory;
 import javafx.application.Application;
@@ -47,7 +46,6 @@ public class AppWindow extends Application {
         stage.setMaximized(true);
         stage.setScene(scene);
         stage.show();
-        BillController.init();
     }
 
     public static void main(String[] args) {launch(args);}

@@ -1,24 +1,20 @@
 package com.htn.view.bill;
 
-import com.htn.controller.BillController;
-import com.htn.controller.CustomerController;
-import com.htn.controller.ItemController;
+import com.htn.controller.*;
 import com.htn.data.bill.Bill;
+import com.htn.data.bill.FixedBill;
 import com.htn.data.customer.Customer;
 import com.htn.data.item.Item;
 import com.htn.view.View;
 import com.htn.view.product.ProductCardFactory;
-import com.htn.view.product.ProductForm;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.stage.Stage;
 import lombok.Getter;
 import org.controlsfx.control.SearchableComboBox;
-import org.controlsfx.control.textfield.TextFields;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.Timestamp;
@@ -39,7 +35,7 @@ public class BillProductView implements View {
 
     private String pelanggan = null;
     private Double price = null;
-    private ItemController itemController = new ItemController();
+    private Double profit = null;
 
     public BillProductView(Tab parent){
         quantity = new HashMap<String, Integer>();
@@ -126,8 +122,8 @@ public class BillProductView implements View {
                 return;
             }
             Customer customer;
-            System.out.println("satu");
             if (pelanggan == null) {
+                // TODO VALIDATE THIS
                 customer = new Customer();
             } else {
                 customer = CustomerController.getMemberByName(pelanggan);
@@ -135,16 +131,34 @@ public class BillProductView implements View {
                     return;
                 }
             }
-            System.out.println("2");
             System.out.println(customer.getId());
             ArrayList<String> itemIds = new ArrayList<>(quantity.keySet());
-            BillController.create(new Bill(new Date().toLocaleString(), price, String.valueOf(customer.getId()), new Date(),itemIds));
-            System.out.println("3");
-            System.out.println(BillController.getAll().toString());
+            BillController.addNewBill((new Bill(new Date().toLocaleString(), price, String.valueOf(customer.getId()), new Date(),itemIds)));
+            System.out.println(BillController.getAllBill().toString());
         });
 
         checkoutButton.setOnAction(e->{
-
+            if (quantity.isEmpty()) {
+                return;
+            }
+            String name;
+            Customer customer;
+            if (pelanggan == null) {
+                customer =  CustomerController.create();
+                name = String.valueOf(customer.getId());
+            } else {
+                customer = CustomerController.getMemberByName(pelanggan);
+                if(customer == null) {
+                    return;
+                }
+                name = CustomerController.getMemberByName(pelanggan).getName();
+            }
+            ArrayList<String> itemIds = new ArrayList<>(quantity.keySet());
+            ArrayList<Item> items = (ArrayList<Item>) ProductController.getListItem(itemIds);
+            items.forEach(item->{
+                ProductController.sellProduct(item, quantity.get(item.getId()));
+            });
+            BillController.addNewFixedBill(new FixedBill(String.valueOf(new Timestamp(new Date().getTime())), String.valueOf(customer.getId()), price, profit,"hsdifakldf", new Date(), items));
         });
 
         // Add the components to the footer HBox
@@ -171,18 +185,21 @@ public class BillProductView implements View {
         VBox summary = new VBox();
         summary.setSpacing(20);
         Double subtotal = 0.0;
+        Double buyPrice = 0.0;
 
         for (Map.Entry<String, Integer> entry : quantity.entrySet()) {
             String itemId = entry.getKey();
-            Item item = itemController.getId(itemId);
+            Item item = ProductController.getProductWithId(itemId);
             int qty = entry.getValue();
-            subtotal += item.getPurchasingPrice() * qty;
+            subtotal += item.getSellingPrice() * qty;
+            buyPrice += item.getPurchasingPrice() * qty;
         }
         // TODO GANTI JD LEGIT
         Double diskon = subtotal * 0.10;
         Double pajak = subtotal * 0.07;
         Double total = subtotal - diskon + pajak;
         price = total;
+        profit = total - buyPrice;
         summary.getChildren().addAll(new Label("Cost Breakdown"), new Label("  Subtotal: " + String.format("%.2f", subtotal)), new Label("  Diskon: " + String.format("%.2f", diskon)), new Label("  Pajak: " + String.format("%.2f", pajak)), new Label("  Total: " + String.format("%.2f", total)));
         return summary;
     }
@@ -191,9 +208,9 @@ public class BillProductView implements View {
         listView.setMaxWidth(Double.MAX_VALUE);
         listView.setHgap(20);
         listView.setVgap(20);
-        List<Item> items = itemController.getAll();
+        List<Item> items = ProductController.getAllProducts();
         items.forEach(e-> {
-            listView.getChildren().add(ProductCardFactory.getCard(request, this, e));
+            listView.getChildren().add(ProductCardFactory.getCard(e, this));
         });
         return listView;
     }
@@ -202,7 +219,7 @@ public class BillProductView implements View {
         ListView<HBox> listView = new ListView<>();
         for (Map.Entry<String, Integer> entry : quantity.entrySet()) {
             String itemId = entry.getKey();
-            Item item = itemController.getId(itemId);
+            Item item = ProductController.getProductWithId(itemId);
             int qty = entry.getValue();
 
 
@@ -254,10 +271,6 @@ public class BillProductView implements View {
         return listView;
     }
 
-    public void edit(){
-        title.set("Edit product");
-        parent.setContent(new ProductForm(parent, new Stage()).getView());
-    }
     public void add(Item product){
         if (this.quantity.containsKey(product.getId())) {
             Integer quantity = this.quantity.get(product.getId());
@@ -275,7 +288,5 @@ public class BillProductView implements View {
     public void delete(String id){
         title.set("Delete product");
     }
-
-
 
 }

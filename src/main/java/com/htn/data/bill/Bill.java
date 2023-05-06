@@ -5,6 +5,7 @@ import com.htn.data.customer.Member;
 import com.htn.data.item.Item;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.Date;
 
 @Getter
 @AllArgsConstructor
+@Setter
 public class Bill implements Serializable {
     private final String id;
     private double price;

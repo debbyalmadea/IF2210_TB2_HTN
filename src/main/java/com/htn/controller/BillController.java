@@ -1,61 +1,50 @@
 package com.htn.controller;
 
 import com.htn.data.bill.Bill;
+import com.htn.data.bill.FixedBill;
 import com.htn.data.item.Item;
+import com.htn.datastore.BillDataStore;
+import com.htn.datastore.FixedBillDataStore;
+import com.htn.datastore.ProductDataStore;
+import com.htn.view.View;
+import javafx.collections.ListChangeListener;
 
-import java.sql.Array;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Optional;
+import java.util.List;
 
 public class BillController {
 
-    static private ArrayList<Bill> bills;
-
-    public static void init() {
-        bills = new ArrayList<>();
-        ArrayList<String> items = new ArrayList<>();
-        items.add("2");
-        items.add("3");
-        bills.add(new Bill("1", 32423.42, String.valueOf(2), new Date(), items));
-        bills.add(new Bill("2", 324234.324, String.valueOf(3), new Date(), items));
+    public static void bindFixedBillData(View view) {
+        FixedBillDataStore productData = FixedBillDataStore.getInstance();
+        productData.getFixedBills().addListener((ListChangeListener<FixedBill>) c -> view.init());
     }
 
-    public static void create(Bill bill) {
-        bills.add(bill);
+    public static void bindBillData(View view) {
+        BillDataStore productData = BillDataStore.getInstance();
+        productData.getBills().addListener((ListChangeListener<Bill>) c -> view.init());
     }
 
-    public static ArrayList<Bill> getAll() {
-        return bills;
+    public static List<FixedBill> getAllFixedBill() {
+        return FixedBillDataStore.getInstance().getFixedBills();
     }
 
-    public static Bill getId(String id) {
-        Optional<Bill> elem = bills.stream().filter(e -> {
-            return id.equalsIgnoreCase(String.valueOf(e.getId()));
-        }).findFirst();
-
-        if (elem.isPresent()) {
-            return elem.get();
-        } else {
-            return null;
-        }
+    public static List<Bill> getAllBill() {
+        return BillDataStore.getInstance().getBills();
     }
 
-    public static void delete(String id) {
-        Bill billDelete = BillController.getId(id);
-        System.out.println(id);
-        System.out.println(billDelete);
-        if (billDelete != null) {
-            System.out.println("ok IN");
-            System.out.println(bills.remove(billDelete));
-        }
+    public static void deleteBill(Bill bill) {
+        BillDataStore.getInstance().remove(bill);
     }
 
-    public static void update(String id, Bill bill) {
-        Bill billUpdate = BillController.getId(id);
-        if (billUpdate != null) {
-            bills.remove(billUpdate);
-            bills.add(bill);
-        }
+
+    public static void addNewBill(Bill bill) {
+        BillDataStore.getInstance().addNew(bill);
     }
+    public static void addNewFixedBill(FixedBill bill) {
+        FixedBillDataStore.getInstance().addNew(bill);
+    }
+    public static void deleteProduct(Item item) {
+        ProductDataStore.getInstance().delete(item);
+    }
+
+
 }

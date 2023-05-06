@@ -105,7 +105,7 @@ public class ProductForm implements View {
             ProductController.addNewProduct(newItem);
         } else {
             ProductController.editProduct(itemToChange, newItem.getName(), newItem.getDescription(),
-                    newItem.getSellingPrice(), newItem.getPurchasingPrice(), newItem.getCategory(), newItem.getImage());
+                    newItem.getSellingPrice(), newItem.getPurchasingPrice(), newItem.getCategory(), newItem.getImage(), newItem.getStock());
         }
 
         parent.setContent(ViewFactory.get("product", parent).getView());

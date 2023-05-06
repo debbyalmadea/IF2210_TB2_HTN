@@ -1,5 +1,6 @@
 package com.htn.view.bill;
 
+import com.htn.data.bill.FixedBill;
 import com.htn.view.CardBuilder;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -13,10 +14,11 @@ import org.jetbrains.annotations.NotNull;
 @AllArgsConstructor
 public class FixedBillCard {
     private BillView parent;
+    private FixedBill fixedBill;
     public Pane getCard() {
         return CardBuilder.builder()
-                .title("Kim Jisoo")
-                .subtitle("Rp 200k")
+                .title(fixedBill.getName())
+                .subtitle(String.valueOf(fixedBill.getPricePaid()))
                 .body(this.body())
                 .footer(this.footer())
                 .build().getCard();
@@ -24,8 +26,8 @@ public class FixedBillCard {
     private @NotNull Node body() {
         VBox bodyContainer = new VBox();
         bodyContainer.getChildren().addAll(
-                new Label("Bill Id: 2345"),
-                new Label("Tanggal: 08/21/2003")
+                new Label("Bill Id: " + fixedBill.getId()),
+                new Label("Tanggal: " + fixedBill.getDate())
         );
 
         return bodyContainer;
