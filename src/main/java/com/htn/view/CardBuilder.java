@@ -9,6 +9,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import lombok.Builder;
+import lombok.Singular;
+
+import java.util.ArrayList;
+import java.util.List;
+
 @Builder
 public class CardBuilder {
     private String imageURI;
@@ -20,14 +25,19 @@ public class CardBuilder {
     private Node body = new Pane();
     @Builder.Default
     private Node footer = new Pane();
-    @Builder.Default
-    private String styleSheets = "card.css";
+    @Singular
+    private List<String> styleSheets;
+
     public VBox getCard() {
         VBox card = new VBox();
-        card.getStylesheets().addAll("card.css", this.styleSheets);
+        this.styleSheets = new ArrayList<>();
+        this.styleSheets.add("card.css");
+
+        card.getStylesheets().addAll(this.styleSheets);
         card.getStyleClass().setAll("card");
         card.setPrefWidth(200);
         card.setSpacing(10);
+
         if (imageURI != null) {
             ImageView imageView = new ImageView();
             Image image;
@@ -40,16 +50,18 @@ public class CardBuilder {
             card.getChildren().add(imageView);
         }
 
+        body.getStyleClass().add("body");
+        card.getChildren().addAll(this.header(), body, footer);
+        return card;
+    }
+    private Node header() {
         Label titleLabel = new Label(title);
         Label subtitleLabel = new Label(subtitle);
         titleLabel.getStyleClass().add("title");
         subtitleLabel.getStyleClass().add("subtitle");
-        body.getStyleClass().add("body");
         VBox header = new VBox();
         header.getChildren().addAll(titleLabel, subtitleLabel);
         header.setPadding(new Insets(0, 0, 10, 0));
-
-        card.getChildren().addAll(header, body, footer);
-        return card;
+        return header;
     }
 }

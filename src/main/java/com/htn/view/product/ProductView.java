@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
@@ -68,6 +69,10 @@ public class ProductView implements View {
 
 
         Button AddProductButton = new Button("Add Product");
+        AddProductButton.setOnAction(e ->{
+            this.add();
+        });
+
         Label AllProductLabel = new Label("All Products");
         HBox ProductBox = new HBox();
         ProductBox.getChildren().addAll(AllProductLabel, AddProductButton);
@@ -91,13 +96,17 @@ public class ProductView implements View {
     }
 
     public void edit(){
-//        title.set("Edit product");
-        // TODO : ProductForm
+        title.set("Edit product");
+        parent.setContent(new ProductForm(parent, new Stage()).getView());
     }
+    public void add(){
+        title.set("Add product");
+        parent.setContent(new ProductForm(parent, new Stage()).getView());
+    }
+
 
     public void delete(){
 //        title.set("Delete product");
-        // TODO : productform
     }
 
 

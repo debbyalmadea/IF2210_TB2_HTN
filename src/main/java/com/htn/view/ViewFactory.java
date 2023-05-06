@@ -28,6 +28,14 @@ public class ViewFactory {
             parent.textProperty().bindBidirectional(view.getTitle());
             return view;
         }
+
+
+        if(request.equalsIgnoreCase("settings...")){
+            View view = new SettingsView(parent);
+            parent.textProperty().bindBidirectional(view.getTitle());
+            return view;
+        }
+
         return null;
     }
 }

@@ -34,7 +34,9 @@ public class AppMenu extends MenuBar {
 
         SeparatorMenuItem separator = new SeparatorMenuItem();
         MenuItem setting = new MenuItem("Settings...");
-
+        setting.setOnAction(e -> {
+            addTab((setting.getText()));
+        });
         menu.getItems().add(subMenu);
         menu.getItems().add(separator);
         menu.getItems().add(setting);

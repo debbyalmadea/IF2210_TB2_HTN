@@ -9,6 +9,24 @@
     -fx-text-fill: white;
 }
 
+.button {
+    -fx-background-color: #E2B53E;
+    -fx-text-fill: #FDF9C9;
+}
+
+.button:hover {
+    -fx-background-color: #E9A23B;
+}
+
+.btn-secondary {
+    -fx-background-color: #FDF9C9;
+    -fx-text-fill: #E2B53E;
+}
+
+.btn-secondary:hover {
+    -fx-background-color: #F9E796;
+}
+
 .btn-blue {
     -fx-background-color: #E2B53E;
     -fx-text-fill: #FDF9C9;

@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Jisoo",
+    "phoneNumber": "62746573464",
+    "point": 103,
+    "activated": true,
+    "id": 2
+  },
+  {
+    "name": "Akane",
+    "phoneNumber": "25372534123",
+    "point": 20,
+    "activated": true,
+    "id": 5
+  }
+]

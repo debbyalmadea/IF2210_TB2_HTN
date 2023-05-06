@@ -12,6 +12,12 @@ import java.io.Serializable;
 public class Member extends Customer implements Serializable {
     @NonNull String name;
     @NonNull String phoneNumber;
-    @NonNull int point;
+    @NonNull Integer point;
     boolean activated = true;
+    public Member(Integer id, @NonNull String name, @NonNull String phoneNumber, @NonNull Integer point) {
+        super(id);
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.point = point;
+    }
 }

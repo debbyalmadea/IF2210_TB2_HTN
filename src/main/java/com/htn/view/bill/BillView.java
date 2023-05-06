@@ -87,15 +87,12 @@ public class BillView implements View {
         Button printButton = new Button("Print All Fixed Bill");
         printButton.setOnAction(e -> {
             // Show the print dialog here
-            Image image = new Image(getClass().getResource("/asset.jpg").toExternalForm());
+//            Image image = new Image(getClass().getResource("/asset.jpg").toExternalForm());
             ObservableList<Item> items = FXCollections.observableArrayList(
-                    new Item("Item 1", "description 1", 10.0, image),
-                    new Item("Item 2", "description 2", 20.0, image),
-                    new Item("Item 1", "description 1", 10.0, image),
-                    new Item("Item 2", "description 2", 20.0, image),
-                    new Item("Item 1", "description 1", 10.0, image),
-                    new Item("Item 2", "description 2", 20.0, image),
-                    new Item("Item 3", "description 3", 30.0, image)
+                    new Item("Item 2", "description 2", "/asset.jpg", "/asset.jpg", 12.0, 13, 50, "cat2"),
+                    new Item("Item 1", "description 1", "/asset.jpg", "/asset.jpg", 9.0, 100, 50, "cat"),
+                    new Item("Item 2", "description 2", "/asset.jpg", "/asset.jpg", 12.0, 130, 50, "c at"),
+                    new Item("Item 3", "description 3", "/asset.jpg", "/asset.jpg", 45.0, 120,  312, "cat")
             );
             Dialog dialog = getDialog(items, "All Items Sold", "Details for bill");
 
@@ -129,19 +126,19 @@ public class BillView implements View {
         init();
     }
     public void create() {
-        title.set("New Bill");
-        parent.setContent(new BillForm(parent).getView());
+        title.set("New Member");
+//        parent.setContent(new CustomerForm(parent).getView());
     }
     public void edit() {
-        title.set("Edit Bill");
-        parent.setContent(new BillForm(parent).getView());
+        title.set("Edit Member");
+//        parent.setContent(new CustomerForm(parent).getView());
     }
     public void seeBill() {
         Image image = new Image(getClass().getResource("/asset.jpg").toExternalForm());
         ObservableList<Item> items = FXCollections.observableArrayList(
-                new Item("Item 1", "description 1", 10.0, image),
-                new Item("Item 2", "description 2", 20.0, image),
-                new Item("Item 3", "description 3", 30.0, image)
+                new Item("id1", "Item 1", "description 1", "/asset.jpg", 40.0, 9.0, 100, "cat"),
+                new Item("id2", "Item 2", "description 2", "description", 30.0, 12.0, 130, "cat"),
+                new Item("id3", "Item 3", "description 3", "/asset.jpg", 30.0, 45.0, 120,  "category")
         );
         Dialog dialog = getDialog(items, "Bill", "Details for bill");
 
@@ -150,9 +147,9 @@ public class BillView implements View {
     public void printBill() {
         Image image = new Image(getClass().getResource("/asset.jpg").toExternalForm());
         ObservableList<Item> items = FXCollections.observableArrayList(
-                new Item("Item 1", "description 1", 10.0, image),
-                new Item("Item 2", "description 2", 20.0, image),
-                new Item("Item 3", "description 3", 30.0, image)
+                new Item("id1", "Item 1", "description 1", "/asset.jpg", 10.0, 9.0, 100, "category"),
+                new Item("id2", "Item 2", "description 2", "/asset.jpg", 20.0, 12.0, 130, "category"),
+                new Item("id3", "Item 3", "description 3", "/asset.jpg", 30.0, 45.0, 120,  "category")
         );
         Dialog dialog = getDialog(items, "Printing Bill", "Printing Items.. Please wait 10s");
 
@@ -188,6 +185,6 @@ public class BillView implements View {
     }
 
     public void delete() {
-        parent.setContent(new CustomerForm(parent).getView());
+//        parent.setContent(new CustomerForm(parent).getView());
     }
 }
