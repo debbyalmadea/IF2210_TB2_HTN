@@ -20,7 +20,6 @@ public class BillCard {
                 .subtitle("Rp 200k")
                 .body(this.body())
                 .footer(this.footer())
-                .styleSheets("card.css")
                 .build().getCard();
     }
     private @NotNull Node body() {

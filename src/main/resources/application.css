@@ -152,3 +152,9 @@
     -fx-font-size: 10px;
     -fx-font-weight: none;
 }
+
+.body .label {
+    -fx-text-fill: #A2A5B5;
+    -fx-font-size: 10px;
+    -fx-font-weight: none;
+}
