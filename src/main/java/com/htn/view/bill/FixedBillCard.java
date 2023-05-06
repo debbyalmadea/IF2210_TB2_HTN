@@ -19,7 +19,6 @@ public class FixedBillCard {
                 .subtitle("Rp 200k")
                 .body(this.body())
                 .footer(this.footer())
-                .styleSheets("vip-card.css")
                 .build().getCard();
     }
     private @NotNull Node body() {
@@ -34,7 +33,7 @@ public class FixedBillCard {
     private @NotNull Node footer() {
         HBox buttonContainer = new HBox();
         Button printButton = new Button("Cetak");
-        printButton.getStyleClass().setAll("btn", "btn-red", "btn-small");
+        printButton.getStyleClass().setAll("btn", "btn-secondary", "btn-small");
         printButton.setPrefWidth(105);
         printButton.setOnAction(e -> {
             parent.printBill();
@@ -42,7 +41,7 @@ public class FixedBillCard {
 
 
         Button seeButton = new Button("Lihat");
-        seeButton.getStyleClass().setAll("btn", "btn-blue", "btn-small");
+        seeButton.getStyleClass().setAll("btn", "btn-small");
         seeButton.setPrefWidth(105);
         seeButton.setOnAction(e -> {
             parent.seeBill();

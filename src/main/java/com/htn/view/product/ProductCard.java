@@ -26,7 +26,6 @@ public class ProductCard {
                 .subtitle("Rp. " + String.valueOf(product.getSellingPrice()))
                 .body(this.information())
                 .footer(this.footer())
-                .styleSheets("card.css")
                 .build().getCard();
     }
 

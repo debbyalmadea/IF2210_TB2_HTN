@@ -22,7 +22,6 @@ public class BillCard {
                 .subtitle(String.valueOf(bill.getPrice()))
                 .body(this.body())
                 .footer(this.footer())
-                .styleSheets("card.css")
                 .build().getCard();
     }
     private @NotNull Node body() {

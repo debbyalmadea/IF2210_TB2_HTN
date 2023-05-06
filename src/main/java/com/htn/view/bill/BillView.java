@@ -89,6 +89,7 @@ public class BillView implements View {
         searchBox.setSpacing(10);
         searchBox.getChildren().addAll(searchField, searchButton);
 
+        content = new VBox();
         content.setPadding(new Insets(32, 40, 32, 40));
         content.setSpacing(20);
 
@@ -153,7 +154,6 @@ public class BillView implements View {
         }
         update();
     }
-
     public void seeBill() {
 //        Image image = new Image(getClass().getResource("/asset.jpg").toExternalForm());
 //        ObservableList<Item> items = FXCollections.observableArrayList(

@@ -1,17 +1,18 @@
 package com.htn.data.customer;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.experimental.FieldDefaults;
+
+import lombok.Getter;
 
 import java.io.Serializable;
 
-@Data
-@FieldDefaults(level = AccessLevel.PRIVATE)
-@NoArgsConstructor
 // SEMUA HARUS IMPLEMEN SERIALIZABLE KALO MAU DIPRINT
 public class Customer implements Serializable {
-    static int numOfCustomer;
-    final int id = ++numOfCustomer;
+    private static int numOfCustomer;
+    @Getter private final Integer id;
+    public Customer() {
+        this.id = ++numOfCustomer;
+    }
+    public Customer(Integer id) {
+        this.id = id;
+    }
 }

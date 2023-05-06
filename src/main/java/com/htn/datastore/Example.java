@@ -2,7 +2,6 @@ package com.htn.datastore;
 
 import com.google.gson.reflect.TypeToken;
 import com.htn.data.bill.FixedBill;
-import com.htn.data.customer.Customer;
 import com.htn.data.item.Item;
 import com.htn.datastore.utils.*;
 
@@ -40,8 +39,8 @@ public class Example {
 //
 //    IFileReader JSONreader = new JSONUtil(type);
 //    IDataWriter JSONwriter = new JSONUtil(type);
-//        JSONwriter.writeData("hifromJSON", temp);
-//    result = JSONreader.readFile("hifromJSON");
+//        JSONwriter.writeData("customer.json", temp);
+//    result = JSONreader.readFile("customer.json");
 //    resultCast =(ArrayList<FixedBill>) result;
 //        System.out.println(resultCast.get(0).toGSONString());
 //
