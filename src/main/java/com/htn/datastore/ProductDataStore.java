@@ -44,22 +44,6 @@ public class ProductDataStore {
         products = FXCollections.observableList((ArrayList<Item>) result);
     }
 
-    // public ArrayList<Item> getProductWithCategory(String category) {
-    // return products.stream().filter(product -> product.getCategory() == category)
-    // .collect(Collectors.toCollection(ArrayList::new));
-    // }
-    //
-    // public ArrayList<Item> getProductWithSellingPrice(double price) {
-    // return products.stream().filter(product -> product.getSellingPrice() ==
-    // price)
-    // .collect(Collectors.toCollection(ArrayList::new));
-    // }
-    //
-    // public ArrayList<Item> getProductWithName(String name) {
-    // return products.stream().filter(product -> product.getName() == name)
-    // .collect(Collectors.toCollection(ArrayList::new));
-    // }
-
     public void write() {
         Type type = new TypeToken<ObservableList<Item>>() {
         }.getType();
@@ -67,10 +51,8 @@ public class ProductDataStore {
         writer.writeData(file, products);
     }
 
-    public void addNewProduct(String id, String name, String description, String image, double sellingPrice,
-            double purchasingPrice,
-            int stock, String category) {
-        products.add(new Item(id, name, description, image, sellingPrice, purchasingPrice, stock, category));
+    public void addNewProduct(Item item) {
+        products.add(item);
         write();
     }
 
@@ -95,22 +77,5 @@ public class ProductDataStore {
             item.setCategory(category);
         write();
     }
-    // private void populate(){
-    // // List<com.htn.data.customer.Member> testMember = new ArrayList<>();
-    // // testMember.add(new Member("Akane", "25372534123", 20));
-    // // testMember.add(new Member("Kana", "25372534123", 20));
-    // // testMember.add(new Member("Aqua", "25372534123", 20));
-    // // Type type = new TypeToken<ArrayList<Member>>() {}.getType();
-    // // IDataWriter writer = new JSONUtil(type);
-    // // writer.writeData(file, testMember);
-    // this.addNewProduct("10000", "Horse", "cute horse", "/sample_product.png",
-    // 40.0, 15.0,
-    // 12, "animal");
-
-    // }
-    // public static void main(String[]args){
-    // ProductDataStore store = new ProductDataStore();
-    // store.populate();
-    // }
 
 }

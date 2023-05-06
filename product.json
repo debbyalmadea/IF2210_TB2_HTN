@@ -1,52 +1,52 @@
 [
   {
-    "id": "1",
-    "name": "Fried chicken",
-    "description": "delicious",
+    "id": "1234",
+    "name": "Spinach",
+    "description": "oke mantap",
     "image": "/sample_product.png",
-    "sellingPrice": 25.0,
-    "purchasingPrice": 20.0,
+    "sellingPrice": 21.0,
+    "purchasingPrice": 12.0,
+    "stock": 100,
+    "category": "Vegetables"
+  },
+  {
+    "id": "1235",
+    "name": "Beer",
+    "description": "so fresh like in heaven",
+    "image": "/sample_product.png",
+    "sellingPrice": 12.0,
+    "purchasingPrice": 5.0,
     "stock": 20,
+    "category": "Beverage"
+  },
+  {
+    "id": "1236",
+    "name": "Sprite",
+    "description": "Nice",
+    "image": "/sample_product.png",
+    "sellingPrice": 19.0,
+    "purchasingPrice": 13.0,
+    "stock": 500,
+    "category": "Beverage"
+  },
+  {
+    "id": "1237",
+    "name": "Ice cream",
+    "description": "Amazing food",
+    "image": "/sample_product.png",
+    "sellingPrice": 10.0,
+    "purchasingPrice": 5.0,
+    "stock": 23,
     "category": "food"
   },
   {
-    "id": "2",
-    "name": "Sadiku",
-    "description": "dizzy",
+    "id": "1683379548526",
+    "name": "Donut",
+    "description": "delicious!",
     "image": "/sample_product.png",
-    "sellingPrice": 28.0,
-    "purchasingPrice": 15.0,
-    "stock": 15,
-    "category": "book"
-  },
-  {
-    "id": "10000",
-    "name": "Horse",
-    "description": "cute horse",
-    "image": "/sample_product.png",
-    "sellingPrice": 40.0,
-    "purchasingPrice": 15.0,
-    "stock": 12,
-    "category": "animal"
-  },
-  {
-    "id": "10000",
-    "name": "Horse",
-    "description": "cute horse",
-    "image": "/sample_product.png",
-    "sellingPrice": 40.0,
-    "purchasingPrice": 15.0,
-    "stock": 12,
-    "category": "animal"
-  },
-  {
-    "id": "10000",
-    "name": "Horse",
-    "description": "cute horse",
-    "image": "/sample_product.png",
-    "sellingPrice": 40.0,
-    "purchasingPrice": 15.0,
-    "stock": 12,
-    "category": "animal"
+    "sellingPrice": 6.0,
+    "purchasingPrice": 3.0,
+    "stock": 900,
+    "category": "Snack"
   }
 ]
