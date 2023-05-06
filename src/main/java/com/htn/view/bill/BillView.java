@@ -130,11 +130,11 @@ public class BillView implements View {
     }
     public void create() {
         title.set("New Member");
-        parent.setContent(new CustomerForm(parent).getView());
+//        parent.setContent(new CustomerForm(parent).getView());
     }
     public void edit() {
         title.set("Edit Member");
-        parent.setContent(new CustomerForm(parent).getView());
+//        parent.setContent(new CustomerForm(parent).getView());
     }
     public void seeBill() {
         Image image = new Image(getClass().getResource("/asset.jpg").toExternalForm());
@@ -188,6 +188,6 @@ public class BillView implements View {
     }
 
     public void delete() {
-        parent.setContent(new CustomerForm(parent).getView());
+//        parent.setContent(new CustomerForm(parent).getView());
     }
 }

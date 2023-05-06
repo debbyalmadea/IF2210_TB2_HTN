@@ -22,7 +22,6 @@ public class ProductCard {
                 .subtitle("Rp 25.000,00")
                 .body(this.information())
                 .footer(this.footer())
-                .styleSheets("card.css")
                 .build().getCard();
     }
 
