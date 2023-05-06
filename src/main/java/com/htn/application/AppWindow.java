@@ -34,6 +34,7 @@ public class AppWindow extends Application {
         View view = ViewFactory.get("main", tab1);
         if (view != null) {
             tab1.setContent(view.getView());
+            tab1.setClosable(false);
         }
 
         tabPane.getTabs().add(tab1);

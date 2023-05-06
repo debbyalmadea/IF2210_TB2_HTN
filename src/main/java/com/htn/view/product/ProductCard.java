@@ -18,29 +18,28 @@ import org.jetbrains.annotations.NotNull;
 @AllArgsConstructor
 public class ProductCard {
     private View parent;
-    private Item product;
+    private Item item;
     public Pane getCard(){
         return CardBuilder.builder()
-                .imageURI(product.getImage())
-                .title(product.getName())
-                .subtitle("Rp. " + String.valueOf(product.getSellingPrice()))
+                .imageURI(item.getImage())
+                .title(item.getName())
+                .subtitle(Double.toString(item.getSellingPrice()))
                 .body(this.information())
                 .footer(this.footer())
                 .build().getCard();
     }
 
-    private @NotNull Node information(){
+    private @NotNull Node information() {
         VBox bodyContainer = new VBox();
 
         bodyContainer.getChildren().addAll(
-                new Label("Harga beli: " + String.valueOf(product.getPurchasingPrice())),
-                new Label("Stock: " + String.valueOf(product.getStock())),
-                new Label("Category: " + product.getCategory())
-        );
+                new Label("Purchasing price: " + Double.toString(item.getPurchasingPrice())),
+                new Label("Stock: " + Integer.toString(item.getStock())),
+                new Label("Category: " + item.getCategory()));
         return bodyContainer;
     }
 
-    private @NotNull HBox footer(){
+    private @NotNull HBox footer() {
         HBox buttonContainer = new HBox();
         if (parent instanceof ProductView) {
             Button deleteButton = new Button("Delete");
@@ -51,8 +50,8 @@ public class ProductCard {
             editButton.getStyleClass().setAll("btn", "btn-blue", "btn-small");
             editButton.setPrefWidth(105);
 
-            deleteButton.setOnAction(e -> ((ProductView)parent).delete());
-            editButton.setOnAction(e -> ((ProductView)parent).edit());
+            deleteButton.setOnAction(e -> ((ProductView)parent).delete(item));
+            editButton.setOnAction(e -> ((ProductView)parent).edit(item));
 
             buttonContainer.setSpacing(10);
             buttonContainer.getChildren().addAll(deleteButton, editButton);
@@ -60,7 +59,7 @@ public class ProductCard {
             Button tambahButton = new Button("Tambah");
             tambahButton.getStyleClass().setAll("btn", "btn-blue", "btn-small");
             tambahButton.setPrefWidth(210);
-            tambahButton.setOnAction(e -> ((BillProductView)parent).add(product));
+            tambahButton.setOnAction(e -> ((BillProductView)parent).add(item));
             buttonContainer.setSpacing(10);
             buttonContainer.getChildren().addAll(tambahButton);
         }

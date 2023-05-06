@@ -3,6 +3,7 @@ package com.htn.controller;
 import com.htn.data.customer.Customer;
 import com.htn.data.customer.Member;
 import com.htn.data.customer.VIPMember;
+import com.htn.datastore.customer.AMemberDataStore;
 import com.htn.datastore.customer.CustomerDataStore;
 import com.htn.datastore.customer.MemberDataStore;
 import com.htn.datastore.customer.VIPMemberDataStore;
@@ -17,6 +18,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class CustomerController {
+    private static AMemberDataStore getMemberDataStore(Member member) {
+        if (member instanceof VIPMember) {
+            return VIPMemberDataStore.getInstance();
+        } else {
+            return MemberDataStore.getInstance();
+        }
+    }
     public static void bindCustomerData(View view) {
         CustomerDataStore customerData = CustomerDataStore.getInstance();
         customerData.getCustomers().addListener((ListChangeListener<Customer>) c -> view.init());
@@ -113,13 +121,12 @@ public class CustomerController {
         }
     }
     public static void update(@NotNull Member member, String name, String phoneNumber, String status) {
-        if (member instanceof VIPMember) {
-            VIPMemberDataStore.getInstance().updateBuilder().vipMember((VIPMember) member).name(name).phoneNumber(phoneNumber).build();
-            if (status.equalsIgnoreCase("member")) toMember((VIPMember) member);
-        } else {
-            MemberDataStore.getInstance().updateBuilder().member(member).name(name).phoneNumber(phoneNumber).build();
-            if (status.equalsIgnoreCase("VIP")) toVIPMember(member);
-        }
+        getMemberDataStore(member).updateBuilder().member(member).name(name).phoneNumber(phoneNumber).build();
+        if (member instanceof VIPMember && status.equalsIgnoreCase("member")) toMember((VIPMember) member);
+        else if (!(member instanceof VIPMember) && status.equalsIgnoreCase("VIP")) toVIPMember(member);
+    }
+    public static void update(@NotNull Member member, Integer point) {
+        getMemberDataStore(member).updateBuilder().member(member).point(point).build();
     }
     private static void toVIPMember(@NotNull Member member) {
         MemberDataStore.getInstance().delete(member);
@@ -130,25 +137,14 @@ public class CustomerController {
         MemberDataStore.getInstance().create(vipMember);
     }
     public static void deactivate(@NotNull Member member) {
-        if (member instanceof VIPMember) {
-            VIPMemberDataStore.getInstance().updateBuilder()
-                    .vipMember((VIPMember) member)
-                    .activated(false).build();
-        } else {
-            MemberDataStore.getInstance().updateBuilder()
-                    .member(member)
-                    .activated(false).build();
-        }
+        getMemberDataStore(member).updateBuilder()
+                .member(member)
+                .activated(false).build();
+        getAllVIPMembers().forEach(System.out::println);
     }
     public static void activate(@NotNull Member member) {
-        if (member instanceof VIPMember) {
-            VIPMemberDataStore.getInstance().updateBuilder()
-                    .vipMember((VIPMember) member)
-                    .activated(true).build();
-        } else {
-            MemberDataStore.getInstance().updateBuilder()
-                    .member(member)
-                    .activated(true).build();
-        }
+        getMemberDataStore(member).updateBuilder()
+                .member(member)
+                .activated(true).build();
     }
 }
