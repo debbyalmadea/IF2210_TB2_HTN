@@ -41,7 +41,7 @@ public class FixedBillDataStore {
         JSONwriter.writeData(filename, bills);
     }
 
-    public void addNew(@NotNull Customer customer, double price, ArrayList<Item> items) {
+    public void addNew(@NotNull Customer customer, @NotNull double price, @NotNull ArrayList<Item> items) {
         bills.add(new FixedBill(customer, price, items));
         write();
     }
