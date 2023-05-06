@@ -1,6 +1,10 @@
 package com.htn.view.bill;
 
+import com.htn.controller.BillController;
+import com.htn.controller.CustomerController;
 import com.htn.controller.ItemController;
+import com.htn.data.bill.Bill;
+import com.htn.data.customer.Customer;
 import com.htn.data.item.Item;
 import com.htn.view.View;
 import com.htn.view.product.ProductCardFactory;
@@ -17,6 +21,7 @@ import org.controlsfx.control.SearchableComboBox;
 import org.controlsfx.control.textfield.TextFields;
 import org.jetbrains.annotations.NotNull;
 
+import java.sql.Timestamp;
 import java.util.*;
 
 public class BillProductView implements View {
@@ -31,6 +36,9 @@ public class BillProductView implements View {
     private final Tab parent;
 
     private final Map<String, Integer> quantity;
+
+    private String pelanggan = null;
+    private Double price = null;
     private ItemController itemController = new ItemController();
 
     public BillProductView(Tab parent){
@@ -45,13 +53,17 @@ public class BillProductView implements View {
     }
 
     public void init(){
+
         content.getChildren().clear();
         HBox container = new HBox();
 
         VBox boxLeft = new VBox();
         VBox boxRight = new VBox();
-        boxLeft.setPrefWidth(1200);
+        boxLeft.setPrefWidth(1100);
         boxRight.setPrefWidth(500);
+        boxRight.setPadding(new Insets(20,20,20,20));
+        boxRight.setSpacing(20);
+
         boxRight.setStyle("-fx-background-color: #FFFFFF;");
         // TextField to search products
         TextField search = new TextField();
@@ -100,16 +112,43 @@ public class BillProductView implements View {
         Label titleLabel = new Label("Bill");
 
         SearchableComboBox<String> comboBox = new SearchableComboBox<String>();
-        comboBox.getItems().addAll("Pelanggan 1", "Pelanggan 2", "Pelanggan 3");
+        comboBox.getItems().addAll(CustomerController.getAllMemberName());
+        comboBox.setValue(pelanggan);
+        comboBox.setOnAction(e->{
+            pelanggan = comboBox.getValue();
+            System.out.println(comboBox.getValue());
+        });
 
-
-
-        Label totalLabel = new Label("Total: $50.00"); // Set the initial price
         Button simpanButton = new Button("Simpan");
         Button checkoutButton = new Button("Checkout");
+        simpanButton.setOnAction(e-> {
+            if (quantity.isEmpty()) {
+                return;
+            }
+            Customer customer;
+            System.out.println("satu");
+            if (pelanggan == null) {
+                customer = new Customer();
+            } else {
+                customer = CustomerController.getMemberByName(pelanggan);
+                if(customer == null) {
+                    return;
+                }
+            }
+            System.out.println("2");
+            System.out.println(customer.getId());
+            ArrayList<String> itemIds = new ArrayList<>(quantity.keySet());
+            BillController.create(new Bill(new Date().toLocaleString(), price, String.valueOf(customer.getId()), new Date(),itemIds));
+            System.out.println("3");
+            System.out.println(BillController.getAll().toString());
+        });
+
+        checkoutButton.setOnAction(e->{
+
+        });
 
         // Add the components to the footer HBox
-        footer.getChildren().addAll(totalLabel, simpanButton, checkoutButton);
+        footer.getChildren().addAll(simpanButton, checkoutButton);
 
         // Set the spacing and alignment for the footer HBox
         footer.setSpacing(10);
@@ -117,7 +156,7 @@ public class BillProductView implements View {
 
         // Set the vertical grow priority of the footer to ALWAYS
         VBox.setVgrow(footer, Priority.ALWAYS);
-        summary.getChildren().addAll(new Label("dskjlfasdf"),footer);
+        summary.getChildren().addAll(getSummary(),footer);
 
         // Add the components to the boxRight VBox
         boxRight.getChildren().addAll(titleLabel, comboBox, createBillListView(), summary);
@@ -126,6 +165,26 @@ public class BillProductView implements View {
 
         content.getChildren().addAll(container);
 
+    }
+
+    private VBox getSummary() {
+        VBox summary = new VBox();
+        summary.setSpacing(20);
+        Double subtotal = 0.0;
+
+        for (Map.Entry<String, Integer> entry : quantity.entrySet()) {
+            String itemId = entry.getKey();
+            Item item = itemController.getId(itemId);
+            int qty = entry.getValue();
+            subtotal += item.getPurchasingPrice() * qty;
+        }
+        // TODO GANTI JD LEGIT
+        Double diskon = subtotal * 0.10;
+        Double pajak = subtotal * 0.07;
+        Double total = subtotal - diskon + pajak;
+        price = total;
+        summary.getChildren().addAll(new Label("Cost Breakdown"), new Label("  Subtotal: " + String.format("%.2f", subtotal)), new Label("  Diskon: " + String.format("%.2f", diskon)), new Label("  Pajak: " + String.format("%.2f", pajak)), new Label("  Total: " + String.format("%.2f", total)));
+        return summary;
     }
     private @NotNull Pane getListView(String request) {
         FlowPane listView = new FlowPane();

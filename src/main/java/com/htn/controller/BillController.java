@@ -10,25 +10,26 @@ import java.util.Optional;
 
 public class BillController {
 
-    private ArrayList<Bill> bills;
+    static private ArrayList<Bill> bills;
 
-    public BillController() {
+    public static void init() {
         bills = new ArrayList<>();
         ArrayList<String> items = new ArrayList<>();
         items.add("2");
-        bills.add(new Bill("1", "Ananta", "1232", 324324,new Date(), items));
-        bills.add(new Bill("2", "Ananta Sasha", "1232.123", 3242,new Date(), items));
+        items.add("3");
+        bills.add(new Bill("1", 32423.42, String.valueOf(2), new Date(), items));
+        bills.add(new Bill("2", 324234.324, String.valueOf(3), new Date(), items));
     }
 
-    public void create(Bill bill) {
+    public static void create(Bill bill) {
         bills.add(bill);
     }
 
-    public ArrayList<Bill> getAll() {
+    public static ArrayList<Bill> getAll() {
         return bills;
     }
 
-    public Bill getId(String id) {
+    public static Bill getId(String id) {
         Optional<Bill> elem = bills.stream().filter(e -> {
             return id.equalsIgnoreCase(String.valueOf(e.getId()));
         }).findFirst();
@@ -40,8 +41,8 @@ public class BillController {
         }
     }
 
-    public void delete(String id) {
-        Bill billDelete = this.getId(id);
+    public static void delete(String id) {
+        Bill billDelete = BillController.getId(id);
         System.out.println(id);
         System.out.println(billDelete);
         if (billDelete != null) {
@@ -50,8 +51,8 @@ public class BillController {
         }
     }
 
-    public void update(String id, Bill bill) {
-        Bill billUpdate = this.getId(id);
+    public static void update(String id, Bill bill) {
+        Bill billUpdate = BillController.getId(id);
         if (billUpdate != null) {
             bills.remove(billUpdate);
             bills.add(bill);

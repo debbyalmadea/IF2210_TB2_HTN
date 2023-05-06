@@ -118,10 +118,14 @@ public class BillView implements View {
         fixedBillBox.getChildren().addAll(FixedBillLabel, printButton);
         fixedBillBox.setAlignment(Pos.CENTER_LEFT);
         fixedBillBox.setSpacing(10);
-
+        System.out.println(BillController.getAll());
         content.getChildren().addAll(
                 searchBox, BillLabel, getListView("bill"),
                 fixedBillBox, getListView("fixedbill"));
+        content.getChildren().forEach(e-> {
+            System.out.println(e);
+        });
+        System.out.println("MAYBE2");
     }
     private @NotNull Pane getListView(String request) {
         FlowPane listView = new FlowPane();
@@ -130,7 +134,7 @@ public class BillView implements View {
         listView.setVgap(20);
         System.out.println(request);
         if (request.equalsIgnoreCase("bill")) {
-            ArrayList<Bill> bills = billController.getAll();
+            ArrayList<Bill> bills = BillController.getAll();
             bills.forEach(bill-> {
                 listView.getChildren().add(BillCardFactory.getCard(request,  this,bill));
             });
@@ -147,12 +151,10 @@ public class BillView implements View {
     }
 
     public void delete(Object bill) {
-        System.out.println("Called");
         if (bill instanceof Bill) {
-            System.out.println("Called2");
-            billController.delete(((Bill) bill).getId());
+            BillController.delete(((Bill) bill).getId());
         }
-        update();
+        init();
     }
     public void seeBill() {
 //        Image image = new Image(getClass().getResource("/asset.jpg").toExternalForm());

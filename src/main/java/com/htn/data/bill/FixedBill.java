@@ -11,7 +11,9 @@ import java.util.Date;
 public class FixedBill implements Serializable {
     private final int id;
     private String name;
-    private double price;
+    private double pricePaid;
+    private double priceProfit;
+    private String breakdown;
     private Date date;
     private ArrayList<Item> items;
 }

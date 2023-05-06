@@ -10,8 +10,10 @@ import com.htn.view.View;
 import javafx.collections.ListChangeListener;
 import org.jetbrains.annotations.NotNull;
 
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class CustomerController {
@@ -45,6 +47,31 @@ public class CustomerController {
                 .findFirst()
                 .orElse(null);
     }
+
+    public static ArrayList<String> getAllMemberName() {
+        ArrayList<String> arr = new ArrayList<String>();
+        getAllMembers().forEach(e-> {
+            arr.add(e.getName());
+        });
+        getAllVIPMembers().forEach(e-> {
+            arr.add(e.getName());
+        });
+        return arr;
+    }
+
+    public static Member getMemberByName(String name) {
+        Member member = null;
+        Optional<Member> memberReg = getAllMembers().stream().filter(e->e.getName().equalsIgnoreCase(name)).findFirst();
+        Optional<VIPMember> memberVIP = getAllVIPMembers().stream().filter(e->e.getName().equalsIgnoreCase(name)).findFirst();
+        if (memberReg.isPresent()) {
+            member = memberReg.get();
+        }
+        if (memberVIP.isPresent()) {
+            member = memberVIP.get();
+        }
+        return member;
+    }
+
     public static List<Member> getActiveMembers() {
         return MemberDataStore.getInstance().getMembers().stream()
                 .filter(Member::isActivated)
