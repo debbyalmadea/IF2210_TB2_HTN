@@ -17,70 +17,100 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-
 public class ProductDataStore {
     @Getter
     private ObservableList<Item> products;
     private static ProductDataStore instance = null;
-    @Getter @Setter
+    @Getter
+    @Setter
     private String file = "product.json";
 
-    private ProductDataStore(){
+    private ProductDataStore() {
         read();
     }
+
     public static ProductDataStore getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new ProductDataStore();
         }
         return instance;
     }
-    public void read(){
-        Type type = new TypeToken<ArrayList<Item>>() {}.getType();
-        // Step 2, instantiate Util library. Done!
+
+    public void read() {
+        Type type = new TypeToken<ObservableList<Item>>() {
+        }.getType();
         IFileReader reader = new JSONUtil(type);
         Object result = reader.readFile(file);
         products = FXCollections.observableList((ArrayList<Item>) result);
     }
-    public ArrayList<Item>getProductWithCategory(String category){
-        return products.stream().filter(product -> product.getCategory() == category).collect(Collectors.toCollection(ArrayList:: new));
-    }
-    public ArrayList<Item>getProductWithSellingPrice(double price){
-        return products.stream().filter(product -> product.getSellingPrice() == price).collect(Collectors.toCollection(ArrayList::new));
-    }
-    public ArrayList<Item>getProductWithName(String name){
-        return products.stream().filter(product -> product.getName() == name).collect(Collectors.toCollection(ArrayList :: new));
-    }
+
+//    public ArrayList<Item> getProductWithCategory(String category) {
+//        return products.stream().filter(product -> product.getCategory() == category)
+//                .collect(Collectors.toCollection(ArrayList::new));
+//    }
+//
+//    public ArrayList<Item> getProductWithSellingPrice(double price) {
+//        return products.stream().filter(product -> product.getSellingPrice() == price)
+//                .collect(Collectors.toCollection(ArrayList::new));
+//    }
+//
+//    public ArrayList<Item> getProductWithName(String name) {
+//        return products.stream().filter(product -> product.getName() == name)
+//                .collect(Collectors.toCollection(ArrayList::new));
+//    }
 
     public void write() {
-        Type type = new TypeToken<ObservableList<Item>>(){}.getType();
+        Type type = new TypeToken<ObservableList<Item>>() {
+        }.getType();
         IDataWriter writer = new JSONUtil(type);
         writer.writeData(file, products);
     }
 
-    public void addNewProduct(String name, String description, Image image, double sellingPrice, double purchasingPrice, int stock, String category){
-        products.add(new Item(name, description, image, sellingPrice, purchasingPrice, stock, category));
+    public void addNewProduct(String id, String name, String description, String image, double sellingPrice, double purchasingPrice,
+            int stock, String category) {
+        products.add(new Item(id, name, description, image, sellingPrice, purchasingPrice, stock, category));
         write();
     }
-    public void delete(Item item){
+
+    public void delete(Item item) {
         products.remove(item);
         write();
     }
-    public void editProduct(@NotNull Item item, String name, String description, Double sellingPrice, Double purchasingPrice, String category, Image image){
-        if(name != null) item.setName(name);
-        if(description != null) item.setDescription(description);
-        if(image != null) item.setImage(image);
-        if(sellingPrice != null) item.setSellingPrice(sellingPrice);
-        if(purchasingPrice != null)item.setPurchasingPrice(purchasingPrice);
-        if(category != null) item.setCategory(category);
+
+    public void editProduct(@NotNull Item item, String name, String description, Double sellingPrice,
+            Double purchasingPrice, String category, String image) {
+        if (name != null)
+            item.setName(name);
+        if (description != null)
+            item.setDescription(description);
+        if (image != null)
+            item.setImage(image);
+        if (sellingPrice != null)
+            item.setSellingPrice(sellingPrice);
+        if (purchasingPrice != null)
+            item.setPurchasingPrice(purchasingPrice);
+        if (category != null)
+            item.setCategory(category);
         write();
     }
+    private void populate(){
+//        List<com.htn.data.customer.Member> testMember = new ArrayList<>();
+//        testMember.add(new Member("Akane", "25372534123", 20));
+//        testMember.add(new Member("Kana", "25372534123", 20));
+//        testMember.add(new Member("Aqua", "25372534123", 20));
+//        Type type = new TypeToken<ArrayList<Member>>() {}.getType();
+//        IDataWriter writer = new JSONUtil(type);
+//        writer.writeData(file, testMember);
+        this.addNewProduct("10000", "Horse", "cute horse", "/sample_product.png", 40.0, 15.0,
+        12, "animal");
 
-    // testing
+
+
+    }
+    public static void main(String[]args){
+        ProductDataStore store = new ProductDataStore();
+        store.populate();
+    }
+
+
 }
-
-
-
-
-
-
-

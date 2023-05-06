@@ -12,12 +12,12 @@ import java.io.Serializable;
 @Setter
 @AllArgsConstructor
 public class Item implements Serializable {
-    static int numOfItem;
-    final int id = ++numOfItem;
+    // static int numOfItem;
+    // final int id = ++numOfItem;
+    final String id;
     @NotNull String name;
     @NotNull String description;
-//    @NotNull double price;
-    @NotNull Image image;
+    @NotNull String image;
 
     @NotNull double sellingPrice;
     @NotNull double purchasingPrice;

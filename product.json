@@ -1,0 +1,52 @@
+[
+  {
+    "id": "1",
+    "name": "Fried chicken",
+    "description": "delicious",
+    "image": "/sample_product.png",
+    "sellingPrice": 25.0,
+    "purchasingPrice": 20.0,
+    "stock": 20,
+    "category": "food"
+  },
+  {
+    "id": "2",
+    "name": "Sadiku",
+    "description": "dizzy",
+    "image": "/sample_product.png",
+    "sellingPrice": 28.0,
+    "purchasingPrice": 15.0,
+    "stock": 15,
+    "category": "book"
+  },
+  {
+    "id": "10000",
+    "name": "Horse",
+    "description": "cute horse",
+    "image": "/sample_product.png",
+    "sellingPrice": 40.0,
+    "purchasingPrice": 15.0,
+    "stock": 12,
+    "category": "animal"
+  },
+  {
+    "id": "10000",
+    "name": "Horse",
+    "description": "cute horse",
+    "image": "/sample_product.png",
+    "sellingPrice": 40.0,
+    "purchasingPrice": 15.0,
+    "stock": 12,
+    "category": "animal"
+  },
+  {
+    "id": "10000",
+    "name": "Horse",
+    "description": "cute horse",
+    "image": "/sample_product.png",
+    "sellingPrice": 40.0,
+    "purchasingPrice": 15.0,
+    "stock": 12,
+    "category": "animal"
+  }
+]
