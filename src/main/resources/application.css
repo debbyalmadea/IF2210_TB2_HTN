@@ -158,3 +158,9 @@
     -fx-font-size: 10px;
     -fx-font-weight: none;
 }
+
+.title {
+    -fx-text-fill: #F97316;
+    -fx-font-size: 40px;
+    -fx-font-weight: bold;
+}

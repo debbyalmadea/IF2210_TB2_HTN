@@ -18,28 +18,17 @@ public class XMLUtil implements IDataWriter, IFileReader {
     }
 
     @Override
-    public Boolean writeData(String dir, Object data) {
+    public void writeData(String dir, Object data) throws IOException {
         String xmlString = xstream.toXML(data);
-        try {
-            FileWriter writer = new FileWriter(dir);
-            writer.write(xmlString);
-            writer.close();
-            return true;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
+        FileWriter writer = new FileWriter(dir);
+        writer.write(xmlString);
+        writer.close();
     }
 
     @Override
-    public Object readFile(String dir) {
-        try {
+    public Object readFile(String dir) throws IOException {
             BufferedReader br = new BufferedReader(new FileReader(dir));
             return xstream.fromXML(br);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 }
 

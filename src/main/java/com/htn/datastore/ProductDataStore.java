@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -40,37 +41,28 @@ public class ProductDataStore {
         Type type = new TypeToken<ObservableList<Item>>() {
         }.getType();
         IFileReader reader = new JSONUtil(type);
-        Object result = reader.readFile(file);
-        products = FXCollections.observableList((ArrayList<Item>) result);
+        Object result = null;
+        try {
+            result = reader.readFile(file);
+            products = FXCollections.observableList((ArrayList<Item>) result);
+        } catch (IOException e) {
+            products = FXCollections.observableList(new ArrayList<>());
+        }
     }
-
-    // public ArrayList<Item> getProductWithCategory(String category) {
-    // return products.stream().filter(product -> product.getCategory() == category)
-    // .collect(Collectors.toCollection(ArrayList::new));
-    // }
-    //
-    // public ArrayList<Item> getProductWithSellingPrice(double price) {
-    // return products.stream().filter(product -> product.getSellingPrice() ==
-    // price)
-    // .collect(Collectors.toCollection(ArrayList::new));
-    // }
-    //
-    // public ArrayList<Item> getProductWithName(String name) {
-    // return products.stream().filter(product -> product.getName() == name)
-    // .collect(Collectors.toCollection(ArrayList::new));
-    // }
 
     public void write() {
         Type type = new TypeToken<ObservableList<Item>>() {
         }.getType();
         IDataWriter writer = new JSONUtil(type);
-        writer.writeData(file, products);
+        try {
+            writer.writeData(file, products);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
-    public void addNewProduct(String id, String name, String description, String image, double sellingPrice,
-            double purchasingPrice,
-            int stock, String category) {
-        products.add(new Item(id, name, description, image, sellingPrice, purchasingPrice, stock, category));
+    public void addNewProduct(Item item) {
+        products.add(item);
         write();
     }
 
@@ -95,22 +87,5 @@ public class ProductDataStore {
             item.setCategory(category);
         write();
     }
-    // private void populate(){
-    // // List<com.htn.data.customer.Member> testMember = new ArrayList<>();
-    // // testMember.add(new Member("Akane", "25372534123", 20));
-    // // testMember.add(new Member("Kana", "25372534123", 20));
-    // // testMember.add(new Member("Aqua", "25372534123", 20));
-    // // Type type = new TypeToken<ArrayList<Member>>() {}.getType();
-    // // IDataWriter writer = new JSONUtil(type);
-    // // writer.writeData(file, testMember);
-    // this.addNewProduct("10000", "Horse", "cute horse", "/sample_product.png",
-    // 40.0, 15.0,
-    // 12, "animal");
-
-    // }
-    // public static void main(String[]args){
-    // ProductDataStore store = new ProductDataStore();
-    // store.populate();
-    // }
 
 }
