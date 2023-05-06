@@ -19,7 +19,7 @@ public abstract class AMemberDataStore {
     public abstract void create(Member member);
     public abstract void create(VIPMember vipMember);
     @Builder(builderMethodName = "updateBuilder")
-    public void update(@NonNull Member member, String name, String phoneNumber, Integer point, Boolean activated) {
+    public void update(@NonNull Member member, String name, String phoneNumber, Double point, Boolean activated) {
         if (name != null) member.setName(name);
         if (phoneNumber != null) member.setPhoneNumber(phoneNumber);
         if (point != null) member.setPoint(point);

@@ -126,10 +126,6 @@ public class BillView implements View {
         content.getChildren().addAll(
                 searchBox, BillLabel, getListView("bill"),
                 fixedBillBox, getListView("fixedbill"));
-        content.getChildren().forEach(e -> {
-            System.out.println(e);
-        });
-        System.out.println("MAYBE2");
     }
 
     private @NotNull Pane getListView(String request) {
@@ -177,8 +173,8 @@ public class BillView implements View {
 
     public void seeBill(String id) {
         //
-        ArrayList<Item> items = BillController.getFixedBillWithId(id).getItems();
-        Dialog dialog = getDialog(items, "Bill", "Details for bill");
+        FixedBill bill= BillController.getFixedBillWithId(id);
+        Dialog dialog = getDialog(bill, "Bill", "Details for bill");
 
         dialog.showAndWait();
     }
@@ -196,6 +192,8 @@ public class BillView implements View {
             x += "stock: " + i.getStock() + "\n";
             x += "\n";
         }
+        FixedBill bill = BillController.getFixedBillWithId(id);
+        x += bill.getBreakdown() + "\n";
         try {
             Thread.sleep(10000);
             Document document = new Document();
@@ -215,7 +213,8 @@ public class BillView implements View {
         }
     }
 
-    private Dialog getDialog(ArrayList<Item> items, String title, String header) {
+    private Dialog getDialog(FixedBill bill, String title, String header) {
+        ArrayList<Item> items = bill.getItems();
         Dialog<Void> dialog = new Dialog<>();
         dialog.setTitle(title);
         dialog.setHeaderText(header);
@@ -225,7 +224,8 @@ public class BillView implements View {
         ObservableList<Item> observableItems = FXCollections.observableArrayList(items);
         listView.setItems(observableItems);
         listView.setCellFactory(new ItemViewCellFactory());
-        dialogContent.getChildren().add(listView);
+        Label description = new Label(bill.getBreakdown());
+        dialogContent.getChildren().addAll(listView, description);
 
         dialog.getDialogPane().setContent(dialogContent);
         dialog.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);

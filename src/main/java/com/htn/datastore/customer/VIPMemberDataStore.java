@@ -39,7 +39,7 @@ public class VIPMemberDataStore extends AMemberDataStore {
             vipMembers = FXCollections.observableList((ArrayList<VIPMember>) result);
         } catch (IOException e) {
             vipMembers = FXCollections.observableList(new ArrayList<>());
-            System.out.println("NO FILE");
+            System.out.println("NO FILE READ VIP");
         }
     }
     public void write() {
@@ -51,7 +51,7 @@ public class VIPMemberDataStore extends AMemberDataStore {
             System.out.println(e.getMessage());
         }
     }
-    public void create(@NotNull Customer customer, String name, String phoneNumber, int point) {
+    public void create(@NotNull Customer customer, String name, String phoneNumber, double point) {
         // TODO! Calculate the point ourselves (or is it in controller?)
         vipMembers.add(new VIPMember(customer.getId(), name, phoneNumber, point));
         write();
@@ -82,7 +82,7 @@ public class VIPMemberDataStore extends AMemberDataStore {
         write();
     }
     @Override
-    public void update(@NonNull Member member, String name, String phoneNumber, Integer point, Boolean activated) {
+    public void update(@NonNull Member member, String name, String phoneNumber, Double point, Boolean activated) {
         super.update(member, name, phoneNumber, point, activated);
         delete(member);
         create((VIPMember) member);
