@@ -3,14 +3,20 @@ package com.htn.data.item;
 import javafx.scene.image.Image;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 
 @Getter
 @AllArgsConstructor
 public class Item implements Serializable {
-    private final String name;
-    private final String description;
-    private final double price;
-    private final Image image;
+    final String id;
+    @NotNull String name;
+    @NotNull String description;
+    @NotNull String image;
+
+    @NotNull double sellingPrice;
+    @NotNull double purchasingPrice;
+    @NotNull int stock;
+    @NotNull String category;
 }

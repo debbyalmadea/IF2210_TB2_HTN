@@ -1,17 +1,19 @@
 package com.htn.data.bill;
-import com.htn.data.customer.Customer;
 import com.htn.data.item.Item;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
+@Getter
 @AllArgsConstructor
-public class FixedBill implements Serializable {
-    private final int id;
+public class Bill implements Serializable {
+    private final String id;
     private String name;
+    private final String customerId;
     private double price;
     private Date date;
-    private ArrayList<Item> items;
+    private ArrayList<String> itemIds;
 }

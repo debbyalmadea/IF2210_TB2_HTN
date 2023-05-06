@@ -1,5 +1,6 @@
 package com.htn.view.product;
 
+import com.htn.data.item.Item;
 import com.htn.view.View;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -89,7 +90,7 @@ public class ProductView implements View {
         listView.setHgap(20);
         listView.setVgap(20);
         for (int i = 0; i < 10; i++) {
-            listView.getChildren().add(ProductCardFactory.getCard(request, this));
+            listView.getChildren().add(ProductCardFactory.getCard(request, this, new Item(String.valueOf(i), "Barang " + String.valueOf(i),"deskripsi", "/sample_product.png", 100000, 50000, 5, "Mainan" )));
         }
 
         return listView;
