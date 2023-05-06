@@ -19,7 +19,7 @@ import java.io.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-public class JSONUtil implements IFileReader, IDataWriter {
+public class JSONUtil implements IFileReader, IDataWriter  {
     private Type type;
     private Gson gson;
 
@@ -29,28 +29,17 @@ public class JSONUtil implements IFileReader, IDataWriter {
     }
 
     @Override
-    public Boolean writeData(String dir, Object data) {
+    public void writeData(String dir, Object data) throws IOException {
         String gson_str = gson.toJson(data, type);
 
-        try {
-            FileWriter writer = new FileWriter(dir);
-            writer.write(gson_str);
-            writer.close();
-            return true;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
+        FileWriter writer = new FileWriter(dir);
+        writer.write(gson_str);
+        writer.close();
     }
 
     @Override
-    public Object readFile(String dir) {
-        try {
+    public Object readFile(String dir) throws IOException {
             BufferedReader br = new BufferedReader(new FileReader(dir));
             return gson.fromJson(br, type);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 }
