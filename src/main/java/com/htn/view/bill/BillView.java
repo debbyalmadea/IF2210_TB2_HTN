@@ -5,6 +5,7 @@ import com.htn.data.bill.Bill;
 import com.htn.data.bill.FixedBill;
 import com.htn.data.customer.Customer;
 import com.htn.view.View;
+import com.htn.view.ViewFactory;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;
@@ -156,6 +157,16 @@ public class BillView implements View {
             BillController.deleteBill((Bill) bill);
         }
         init();
+    }
+
+    public void edit(Object bill) {
+        if (bill instanceof Bill) {
+            Tab tab = new Tab();
+            tab.setText("Edit bill");
+            tab.setContent(new BillProductView(tab, (Bill) bill).getView());
+            parent.getTabPane().getTabs().add(tab);
+            parent.getTabPane().getSelectionModel().select(tab);
+        }
     }
     public void seeBill() {
 //        Image image = new Image(getClass().getResource("/asset.jpg").toExternalForm());

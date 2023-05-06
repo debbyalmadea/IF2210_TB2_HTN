@@ -45,9 +45,9 @@ public class BillCard {
         Button editButton = new Button("Edit");
         editButton.getStyleClass().setAll("btn", "btn-blue", "btn-small");
         editButton.setPrefWidth(105);
-//        editButton.setOnAction(e -> {
-//            parent.edit(String.valueOf(bill.getId()));
-//        });
+        editButton.setOnAction(e -> {
+            parent.edit(bill);
+        });
 
         buttonContainer.setSpacing(10);
         buttonContainer.getChildren().addAll(deleteButton, editButton);

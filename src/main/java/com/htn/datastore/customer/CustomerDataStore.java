@@ -5,6 +5,7 @@ import com.htn.datastore.utils.IDataWriter;
 import com.htn.datastore.utils.IFileReader;
 import com.google.gson.reflect.TypeToken;
 import com.htn.datastore.utils.OBJUtil;
+import com.htn.datastore.utils.JSONUtil;
 import com.htn.datastore.utils.XMLUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 public class CustomerDataStore {
     @Getter private ObservableList<Customer> customers;
     private static CustomerDataStore instance = null;
-    private final String file = "customer.obj";
+    private final String file = "customer.json";
     private CustomerDataStore() {
         read();
     }
@@ -28,18 +29,19 @@ public class CustomerDataStore {
     }
     public  void read() {
         Type type = new TypeToken<ArrayList<Customer>>() {}.getType();
-        IFileReader reader = new OBJUtil(type);
+        IFileReader reader = new JSONUtil(type);
         System.out.println("READ");
         try {
             Object result = reader.readFile(file);
             customers = FXCollections.observableList((ArrayList<Customer>) result);
+            Customer.setNumOfCustomer(customers.size());
         } catch (IOException e) {
             customers = FXCollections.observableList(new ArrayList<>());
         }
     }
     public void write() {
         Type type = new TypeToken<ArrayList<Customer>>() {}.getType();
-        IDataWriter writer = new OBJUtil(type);
+        IDataWriter writer = new JSONUtil(type);
         try {
             writer.writeData(file, new ArrayList<>(customers));
         } catch (IOException e) {
@@ -51,6 +53,13 @@ public class CustomerDataStore {
         customers.add(baru);
         write();
         return baru;
+    }
+
+    public void update(Customer cust, boolean purchased) {
+        customers.remove(cust);
+        cust.setPurchased(true);
+        customers.add(cust);
+        write();
     }
     private void seed() {
         int i;

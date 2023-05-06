@@ -17,10 +17,14 @@ import javafx.stage.Stage;
 import lombok.Getter;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class ProductForm implements View {
     @Getter
-    private final StackPane view;
+    private final ScrollPane view;
     @Getter
     private final StringProperty title = new SimpleStringProperty("Product Form");
     private VBox content;
@@ -29,19 +33,25 @@ public class ProductForm implements View {
     private final Stage primaryStage;
     private Item itemToChange;
 
+
     public ProductForm(Tab parent, Stage primaryStage, Item itemToChange) {
-        view = new StackPane();
+        view = new ScrollPane();
         this.parent = parent;
         this.primaryStage = primaryStage;
         this.itemToChange = itemToChange;
         init();
         view.getStylesheets().add("customer.css");
-        view.setAlignment(Pos.CENTER);
-        view.getChildren().add(content);
+        view.setContent(content);
+        view.setFitToWidth(true);
+//        view.setAlignment(Pos.CENTER);
+//        view.getChildren().add(content);
     }
 
     public void init() {
         content = new VBox();
+        content.setMaxHeight(view.getViewportBounds().getHeight());
+        content.setMaxWidth(view.getViewportBounds().getWidth());
+        content.setAlignment(Pos.CENTER);
         content.setSpacing(10);
         content.getStyleClass().add("form");
         content.setPadding(new Insets(32, 40, 32, 40));
@@ -61,9 +71,11 @@ public class ProductForm implements View {
         VBox category = FieldBuilder.builder().field(categoryField).label("Category").required(true).build();
 
         Button openButton = new Button("Add image");
-        TextField fileField = new TextField();
-        VBox productPhoto = FieldBuilder.builder().field(fileField).label("Product Image").required(true).build();
-        // productPhoto.getChildren().addAll(openButton, fileField);
+
+        VBox productPhoto = new VBox();
+        TextField fileField = new TextField("/sample_product.png");
+//        VBox productPhoto = FieldBuilder.builder().field(fileField).label("Product Image").required(true).build();
+        productPhoto.getChildren().addAll(openButton);
 
         openButton.setOnAction(e -> {
             FileChooser photoChooser = new FileChooser();
@@ -75,7 +87,9 @@ public class ProductForm implements View {
             photoChooser.getExtensionFilters().add(imageFilter);
             File selectedFile = photoChooser.showOpenDialog(primaryStage);
             if (selectedFile != null) {
-                fileField.setText(selectedFile.getAbsolutePath());
+                String fileName = moveFile(selectedFile.getAbsoluteFile().toString());
+                fileField.setText("/"+fileName);
+                System.out.println(fileName);
             }
         });
         TextArea descriptionField = new TextArea();
@@ -98,6 +112,38 @@ public class ProductForm implements View {
         content.getChildren().addAll(new Label("New Product"), productName, stock, sellingPrice, purchasingPrice,
                 category, description, openButton, productPhoto, save);
 
+        if (itemToChange != null) {
+            nameField.setText(itemToChange.getName());
+            stockField.setText(String.valueOf(itemToChange.getStock()));
+            sellingPriceField.setText(String.valueOf(itemToChange.getSellingPrice()));
+            purchasingPriceField.setText(String.valueOf(itemToChange.getPurchasingPrice()));
+            fileField.setText(itemToChange.getImage());
+            descriptionField.setText(itemToChange.getDescription());
+            categoryField.setText(itemToChange.getCategory());
+        }
+    }
+
+    String moveFile(String sourceFilePath) {
+        // Define the destination folder
+        String destinationFolder = "src/main/resources/";
+
+        // Get the file name from the source file path
+        String fileName = new File(sourceFilePath).getName();
+
+        // Create a Path object for the source file
+        Path sourcePath = Paths.get(sourceFilePath);
+
+        // Create a Path object for the destination folder
+        Path destinationPath = Paths.get(destinationFolder + fileName);
+
+        try {
+            // Move the file to the destination folder
+            Files.copy(sourcePath, destinationPath);
+            System.out.println("File moved successfully!");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return fileName;
     }
 
     public void save(Item newItem, Item itemToChange) {

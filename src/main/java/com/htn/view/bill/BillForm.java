@@ -132,15 +132,6 @@ public class BillForm implements View {
         }
     }
 
-    // private @NotNull Pane getProductList(String request) {
-    // FlowPane listView = new FlowPane();
-    // listView.setMaxWidth(Double.MAX_VALUE);
-    // listView.setHgap(20);
-    // listView.setVgap(20);
-    // for (int i = 0; i < 10; i++) {
-    // listView.getChildren().add(ProductCard(this).getCard());
-    // }
-    //
-    // return listView;
-    // }
+
+
 }

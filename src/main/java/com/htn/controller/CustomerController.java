@@ -44,7 +44,21 @@ public class CustomerController {
         return getAllCustomers().stream()
                 .filter(customer -> getMember(customer.getId()) == null)
                 .filter(customer -> getVIPMember(customer.getId()) == null)
+                .filter(customer -> customer.isPurchased())
                 .collect(Collectors.toList());
+    }
+
+    public static Customer getCustomerById(String id) {
+        Optional<Customer> cust = getAllCustomers().stream()
+                .filter(customer -> getMember(customer.getId()) == null)
+                .filter(customer -> getVIPMember(customer.getId()) == null)
+                .filter(customer -> String.valueOf(customer.getId()).equalsIgnoreCase(id))
+                .findFirst();
+        if (cust.isPresent()) {
+            return cust.get();
+        } else {
+            return null;
+        }
     }
     public static @NotNull List<Member> getAllMembers() {
         return MemberDataStore.getInstance().getMembers();
@@ -156,6 +170,9 @@ public class CustomerController {
                 .activated(true).build();
     }
 
+    public static void setPurchased(Customer cust, boolean purchased) {
+        CustomerDataStore.getInstance().update(cust, purchased);
+    }
     public static Customer create() {
         return CustomerDataStore.getInstance().create();
     }

@@ -34,6 +34,7 @@ public class ProductView implements View {
         view = new ScrollPane();
         view.fitToWidthProperty().set(true);
         this.parent = parent;
+        content = new VBox();
         init();
         content.getStylesheets().add("customer.css");
         view.setContent(content);
@@ -41,6 +42,7 @@ public class ProductView implements View {
     }
 
     public void init() {
+        content.getChildren().clear();
         // TextField to search products
         TextField search = new TextField();
         search.getStyleClass().add("search");
@@ -56,7 +58,6 @@ public class ProductView implements View {
         searchBox.setSpacing(10);
         searchBox.getChildren().addAll(search, searchButton);
 
-        content = new VBox();
         content.setPadding(new Insets(32, 40, 32, 40));
         content.setSpacing(20);
 
