@@ -47,20 +47,7 @@ public class ProductView implements View {
 
         // Search button
         Button searchButton = new Button("Search");
-        searchButton.setOnAction(e -> {
-            System.out.println(search.getText());
-            Dialog<Void> dialog = new Dialog<>();
-            dialog.setTitle("Mock Products");
-            dialog.setHeaderText("List of mock product that matched");
 
-            VBox dialogContent = new VBox();
-            ListView<String> listView = new ListView<>();
-            listView.getItems().addAll("Product 1", "Product 2", "Product 3");
-            dialogContent.getChildren().add(listView);
-
-            dialog.showAndWait();
-
-        });
         // Searching elements holder
         HBox searchBox = new HBox();
         HBox.setHgrow(search, Priority.ALWAYS); // This line sets the search field to use all available space
@@ -76,16 +63,19 @@ public class ProductView implements View {
         AddProductButton.setOnAction(e -> {
             this.add();
         });
-
         Label AllProductLabel = new Label("All Products");
         HBox ProductBox = new HBox();
         ProductBox.getChildren().addAll(AllProductLabel, AddProductButton);
         ProductBox.setAlignment(Pos.CENTER_LEFT);
         ProductBox.setSpacing(70);
-
         content.getChildren().addAll(
                 searchBox, ProductBox, getListView(ProductController.getAllProducts()));
+        searchButton.setOnAction(e -> {
+            String textToSearch = search.getText();
+            AllProductLabel.setText("Hasil pencarian: " + textToSearch);
+            content.getChildren().set(2, getListView(ProductController.getSearchedProducts(textToSearch)));
 
+        });
     }
 
     private @NotNull Pane getListView(@NotNull List<Item> products) {

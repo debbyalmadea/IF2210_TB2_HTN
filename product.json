@@ -48,5 +48,35 @@
     "purchasingPrice": 3.0,
     "stock": 900,
     "category": "Snack"
+  },
+  {
+    "id": "1683383896033",
+    "name": "Eraser",
+    "description": "to erase your past",
+    "image": "/sample_product.png",
+    "sellingPrice": 12.0,
+    "purchasingPrice": 9.0,
+    "stock": 12,
+    "category": "stationery"
+  },
+  {
+    "id": "1683383942421",
+    "name": "12.00 clock",
+    "description": "mantap",
+    "image": "/sample_product.png",
+    "sellingPrice": 17.0,
+    "purchasingPrice": 5.0,
+    "stock": 190,
+    "category": "Stationery"
+  },
+  {
+    "id": "1683384211903",
+    "name": "Spagetti bolognese",
+    "description": "Delicioso my bro. come and eat this spagetti!!!!!!!!!!",
+    "image": "/sample_product.png",
+    "sellingPrice": 89.0,
+    "purchasingPrice": 70.0,
+    "stock": 200,
+    "category": "food"
   }
 ]
