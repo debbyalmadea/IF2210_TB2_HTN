@@ -14,8 +14,7 @@ public class OBJUtil implements IDataWriter, IFileReader {
 
 
     @Override
-    public Boolean writeData(String dir, Object data) {
-        try {
+    public void writeData(String dir, Object data) throws IOException {
             // Creating a FileOutputStream to hold the serialized object
             FileOutputStream fileOut = new FileOutputStream(dir);
 
@@ -30,15 +29,10 @@ public class OBJUtil implements IDataWriter, IFileReader {
 
             // Closing the file output stream
             fileOut.close();
-            return true;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
     }
 
     @Override
-    public Object readFile(String dir) {
+    public Object readFile(String dir) throws IOException {
         try {
             // Creating a FileInputStream to read the serialized object
             FileInputStream fileIn = new FileInputStream(dir);
@@ -57,8 +51,7 @@ public class OBJUtil implements IDataWriter, IFileReader {
 
             return deserializedObj;
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-            return null;
+            throw new IOException(e.getMessage());
         }
     }
 }

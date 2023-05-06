@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,15 +31,23 @@ public class FixedBillDataStore {
 
     public void read() {
         Type type = new TypeToken<ArrayList<FixedBill>>() {}.getType();
-        IFileReader JSONreader = new JSONUtil(type);
-        Object result = JSONreader.readFile(file);
-        fixedBills = (ArrayList<FixedBill>) result;
+        try {
+            IFileReader JSONreader = new JSONUtil(type);
+            Object result = JSONreader.readFile(file);
+            fixedBills = (ArrayList<FixedBill>) result;
+        } catch (IOException e) {
+            fixedBills = new ArrayList<>();
+        }
     }
 
     public void write() {
         Type type = new TypeToken<ArrayList<FixedBill>>() {}.getType();
-        IDataWriter JSONwriter = new JSONUtil(type);
-        JSONwriter.writeData(file, fixedBills);
+        try {
+            IDataWriter JSONwriter = new JSONUtil(type);
+            JSONwriter.writeData(file, fixedBills);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void addNew(@NotNull int id, @NotNull String name, @NotNull double price, @NotNull Date date, @NotNull ArrayList<Item> items) {
