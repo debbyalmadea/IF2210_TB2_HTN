@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -40,15 +41,24 @@ public class ProductDataStore {
         Type type = new TypeToken<ObservableList<Item>>() {
         }.getType();
         IFileReader reader = new JSONUtil(type);
-        Object result = reader.readFile(file);
-        products = FXCollections.observableList((ArrayList<Item>) result);
+        Object result = null;
+        try {
+            result = reader.readFile(file);
+            products = FXCollections.observableList((ArrayList<Item>) result);
+        } catch (IOException e) {
+            products = FXCollections.observableList(new ArrayList<>());
+        }
     }
 
     public void write() {
         Type type = new TypeToken<ObservableList<Item>>() {
         }.getType();
         IDataWriter writer = new JSONUtil(type);
-        writer.writeData(file, products);
+        try {
+            writer.writeData(file, products);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void addNewProduct(Item item) {

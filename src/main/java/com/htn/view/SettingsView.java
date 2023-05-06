@@ -17,6 +17,7 @@ import javafx.stage.FileChooser;
 import javafx.scene.image.Image;
 
 import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
@@ -94,7 +95,7 @@ public class SettingsView implements View{
         }
     }
 
-    private Pane getPlugin(){
+    private @NotNull Pane getPlugin(){
         String[] plugin1 = {"Chart Plugin 1", "root/java/plugins"};
         String[] plugin2 = {"Chart Plugin 2", "root/java/plugins"};
 
