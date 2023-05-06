@@ -1,0 +1,122 @@
+[
+  {
+    "id": "2023-05-07 01:11:11.117",
+    "customerId": "1",
+    "pricePaid": 32.01,
+    "priceProfit": 15.009999999999998,
+    "breakdown": "hsdifakldf",
+    "date": "May 7, 2023, 1:11:11 AM",
+    "items": [
+      {
+        "id": "1234",
+        "name": "Spinach",
+        "description": "oke mantap",
+        "image": "/sample_product.png",
+        "sellingPrice": 21.0,
+        "purchasingPrice": 12.0,
+        "stock": 97,
+        "category": "Vegetables"
+      },
+      {
+        "id": "1235",
+        "name": "Beer",
+        "description": "so fresh like in heaven",
+        "image": "/sample_product.png",
+        "sellingPrice": 12.0,
+        "purchasingPrice": 5.0,
+        "stock": 17,
+        "category": "Beverage"
+      }
+    ]
+  },
+  {
+    "id": "2023-05-07 01:11:14.147",
+    "customerId": "2",
+    "pricePaid": 32.01,
+    "priceProfit": 15.009999999999998,
+    "breakdown": "hsdifakldf",
+    "date": "May 7, 2023, 1:11:14 AM",
+    "items": [
+      {
+        "id": "1234",
+        "name": "Spinach",
+        "description": "oke mantap",
+        "image": "/sample_product.png",
+        "sellingPrice": 21.0,
+        "purchasingPrice": 12.0,
+        "stock": 97,
+        "category": "Vegetables"
+      },
+      {
+        "id": "1235",
+        "name": "Beer",
+        "description": "so fresh like in heaven",
+        "image": "/sample_product.png",
+        "sellingPrice": 12.0,
+        "purchasingPrice": 5.0,
+        "stock": 17,
+        "category": "Beverage"
+      }
+    ]
+  },
+  {
+    "id": "2023-05-07 01:11:21.31",
+    "customerId": "4",
+    "pricePaid": 32.01,
+    "priceProfit": 15.009999999999998,
+    "breakdown": "hsdifakldf",
+    "date": "May 7, 2023, 1:11:21 AM",
+    "items": [
+      {
+        "id": "1234",
+        "name": "Spinach",
+        "description": "oke mantap",
+        "image": "/sample_product.png",
+        "sellingPrice": 21.0,
+        "purchasingPrice": 12.0,
+        "stock": 97,
+        "category": "Vegetables"
+      },
+      {
+        "id": "1235",
+        "name": "Beer",
+        "description": "so fresh like in heaven",
+        "image": "/sample_product.png",
+        "sellingPrice": 12.0,
+        "purchasingPrice": 5.0,
+        "stock": 17,
+        "category": "Beverage"
+      }
+    ]
+  },
+  {
+    "id": "2023-05-07 01:39:58.58",
+    "customerId": "1",
+    "pricePaid": 96.03,
+    "priceProfit": 21.03,
+    "breakdown": "hsdifakldf",
+    "date": "May 7, 2023, 1:39:58 AM",
+    "items": [
+      {
+        "id": "1237",
+        "name": "Ice cream",
+        "description": "Amazing food",
+        "image": "/sample_product.png",
+        "sellingPrice": 10.0,
+        "purchasingPrice": 5.0,
+        "stock": 22,
+        "category": "food"
+      },
+      {
+        "id": "1683384211903",
+        "name": "Spagetti bolognese",
+        "description": "Delicioso my bro. come and eat this spagetti!!!!!!!!!!",
+        "image": "/sample_product.png",
+        "sellingPrice": 89.0,
+        "purchasingPrice": 70.0,
+        "stock": 199,
+        "category": "food"
+      }
+    ]
+  }
+]
