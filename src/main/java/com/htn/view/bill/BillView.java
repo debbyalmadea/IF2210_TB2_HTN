@@ -89,13 +89,13 @@ public class BillView implements View {
             // Show the print dialog here
             Image image = new Image(getClass().getResource("/asset.jpg").toExternalForm());
             ObservableList<Item> items = FXCollections.observableArrayList(
-                    new Item("Item 1", "description 1", 10.0, image),
-                    new Item("Item 2", "description 2", 20.0, image),
-                    new Item("Item 1", "description 1", 10.0, image),
-                    new Item("Item 2", "description 2", 20.0, image),
-                    new Item("Item 1", "description 1", 10.0, image),
-                    new Item("Item 2", "description 2", 20.0, image),
-                    new Item("Item 3", "description 3", 30.0, image)
+                    new Item("Item 1", "description 1", image, 15.0, 10.0, 20, "category"),
+                    new Item("Item 2", "description 2", image, 20.0, 19.0, 10, "category"),
+                    new Item("Item 1", "description 1", image, 22.0, 20.0, 19, "category"),
+                    new Item("Item 2", "description 2", image, 15.0, 12.0, 13, "category"),
+                    new Item("Item 1", "description 1", image, 10.0, 9.0, 100, "category"),
+                    new Item("Item 2", "description 2", image, 20.0, 12.0, 130, "category"),
+                    new Item("Item 3", "description 3", image, 30.0, 45.0, 120,  "category")
             );
             Dialog dialog = getDialog(items, "All Items Sold", "Details for bill");
 
@@ -139,9 +139,9 @@ public class BillView implements View {
     public void seeBill() {
         Image image = new Image(getClass().getResource("/asset.jpg").toExternalForm());
         ObservableList<Item> items = FXCollections.observableArrayList(
-                new Item("Item 1", "description 1", 10.0, image),
-                new Item("Item 2", "description 2", 20.0, image),
-                new Item("Item 3", "description 3", 30.0, image)
+                new Item("Item 1", "description 1", image, 10.0, 9.0, 100, "category"),
+                new Item("Item 2", "description 2", image, 20.0, 12.0, 130, "category"),
+                new Item("Item 3", "description 3", image, 30.0, 45.0, 120,  "category")
         );
         Dialog dialog = getDialog(items, "Bill", "Details for bill");
 
@@ -150,9 +150,9 @@ public class BillView implements View {
     public void printBill() {
         Image image = new Image(getClass().getResource("/asset.jpg").toExternalForm());
         ObservableList<Item> items = FXCollections.observableArrayList(
-                new Item("Item 1", "description 1", 10.0, image),
-                new Item("Item 2", "description 2", 20.0, image),
-                new Item("Item 3", "description 3", 30.0, image)
+                new Item("Item 1", "description 1", image, 10.0, 9.0, 100, "category"),
+                new Item("Item 2", "description 2", image, 20.0, 12.0, 130, "category"),
+                new Item("Item 3", "description 3", image, 30.0, 45.0, 120,  "category")
         );
         Dialog dialog = getDialog(items, "Printing Bill", "Printing Items.. Please wait 10s");
 

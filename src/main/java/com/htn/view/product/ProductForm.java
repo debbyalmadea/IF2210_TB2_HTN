@@ -49,7 +49,7 @@ public class ProductForm implements View {
         VBox productName = FieldBuilder.builder().field(new TextField()).label("Product name").required(true).build();
         VBox stock = FieldBuilder.builder().field(new TextField()).label("Stock").required(true).build();
         VBox sellingPrice = FieldBuilder.builder().field(new TextField()).label("Selling price").required(true).build();
-        VBox purchasePrice = FieldBuilder.builder().field(new TextField()).label("Purchase price").required(true).build();
+        VBox purchasingPrice = FieldBuilder.builder().field(new TextField()).label("Purchasing price").required(true).build();
         VBox category = FieldBuilder.builder().field(new TextField()).label("Category").required(true).build();
 
         Button openButton = new Button("Add image");
@@ -76,7 +76,7 @@ public class ProductForm implements View {
         save.setOnAction(e ->{
             this.save();
         });
-        content.getChildren().addAll(new Label("New Product"), productName, stock, sellingPrice, purchasePrice, category, description, openButton, productPhoto, save);
+        content.getChildren().addAll(new Label("New Product"), productName, stock, sellingPrice, purchasingPrice, category, description, openButton, productPhoto, save);
 
 
     }
