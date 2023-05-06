@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,15 +34,23 @@ public class BillDataStore {
 
     public void read() {
         Type type = new TypeToken<ObservableList<Bill>>() {}.getType();
-        IFileReader JSONreader = new JSONUtil(type);
-        Object result = JSONreader.readFile(file);
-        bills = FXCollections.observableList((ArrayList<Bill>) result);
+        try {
+            IFileReader JSONreader = new JSONUtil(type);
+            Object result = JSONreader.readFile(file);
+            bills = FXCollections.observableList((ArrayList<Bill>) result);
+        } catch (IOException e) {
+            bills = FXCollections.observableList((new ArrayList<>()));
+        }
     }
 
     public void write() {
         Type type = new TypeToken<ObservableList<Bill>>() {}.getType();
-        IDataWriter JSONwriter = new JSONUtil(type);
-        JSONwriter.writeData(file, bills);
+        try {
+            IDataWriter JSONwriter = new JSONUtil(type);
+            JSONwriter.writeData(file, bills);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void addNew(String id, String name, String customerId, double price, Date date, ArrayList<String> itemIds) {
