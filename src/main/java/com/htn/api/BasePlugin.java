@@ -9,6 +9,7 @@ import com.htn.data.customer.Member;
 import com.htn.data.customer.VIPMember;
 import com.htn.data.settings.Settings;
 import com.htn.datastore.ProductDataStore;
+import com.htn.datastore.SettingsDataStore;
 import com.htn.datastore.customer.CustomerDataStore;
 import com.htn.datastore.customer.MemberDataStore;
 import com.htn.datastore.customer.VIPMemberDataStore;
@@ -46,7 +47,8 @@ public class BasePlugin {
     public static void loadProductDataStore(@NotNull ProductDataStoreExtension plugin) {
         plugin.onProductDataStoreChange(ProductDataStore.getInstance());
     }
-    public static void bindSettings(SettingsObserver observer) {
+    public static void bindSettings(@NotNull SettingsObserver observer) {
+        observer.update(SettingsDataStore.getInstance());
         Settings.getInstance().bind(observer);
     }
 }
