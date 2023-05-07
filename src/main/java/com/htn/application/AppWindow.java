@@ -3,6 +3,7 @@ package com.htn.application;
 import com.htn.api.view.View;
 import com.htn.data.settings.Settings;
 import com.htn.datastore.SettingsDataStore;
+import com.htn.datastore.customer.CustomerDataStore;
 import com.htn.view.SettingsView;
 import com.htn.view.ViewFactory;
 import com.htn.view.bill.BillProductView;
