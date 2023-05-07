@@ -1,6 +1,8 @@
 package com.htn.view;
 
+import com.htn.api.view.SettingsViewExtension;
 import com.htn.api.view.View;
+import com.htn.application.PluginManager;
 import com.htn.datastore.SettingsDataStore;
 import com.htn.data.settings.Settings;
 import javafx.beans.property.SimpleStringProperty;
@@ -24,12 +26,14 @@ import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.util.List;
+
 import javafx.util.Pair;
 
 public class SettingsView implements View {
     @Getter private final ScrollPane view;
     @Getter private final StringProperty title = new SimpleStringProperty("Settings");
-    private VBox content;
+    @Getter private VBox content;
     private ComboBox<String> extensionbox;
     private final SettingsDataStore settingsDataStore = SettingsDataStore.getInstance();
     public SettingsView() {
@@ -39,7 +43,6 @@ public class SettingsView implements View {
         content.getStylesheets().add("settings.css");
         view.setContent(content);
     }
-
     public void init() {
         content = new VBox();
         content.setPadding(new Insets(32, 40, 32, 40));
@@ -91,6 +94,12 @@ public class SettingsView implements View {
                 PluginHBox,
                 pluginPane
         );
+
+        List<Object> loadedPlugins = PluginManager.getPluginsWithClass(SettingsViewExtension.class);
+        loadedPlugins.forEach(plugin -> {
+            SettingsViewExtension settingsView = (SettingsViewExtension) plugin;
+            content.getChildren().addAll(new Label(plugin.getClass().getName() + " Settings"), settingsView.displaySetting());
+        });
     }
 
     private void choosePlugin() {
