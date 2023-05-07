@@ -89,11 +89,11 @@ public class SettingsView implements View, SettingsObserver {
         IOHBox.getChildren().addAll(IOtitle,extensionbox);
 
         Label pluginLabel = new Label("Plugin");
-        String imagePath = "src/main/resources/image/add-plugin.png";
-        File file = new File(imagePath);
-        String imageUrl = file.toURI().toString();
-        Image addImage = new Image(imageUrl);
-        ImageView addPluginView = new ImageView(addImage);
+        Image image = new Image(getClass().getResource("/image/add-plugin.png").toExternalForm());
+//        File file = new File(imagePath);
+//        String imageUrl = file.toURI().toString();
+//        Image addImage = new Image(imageUrl);
+        ImageView addPluginView = new ImageView(image);
         addPluginView.setFitWidth(20);
         addPluginView.setFitHeight(20);
         addPluginView.setOnMouseClicked(e ->{
@@ -160,11 +160,11 @@ public class SettingsView implements View, SettingsObserver {
 
         for(int i = 0; i < settingsDataStore.getSettings().getPlugins().size(); i++){
             final int currentIndex = i;
-            String imagePath = "src/main/resources/image/delete-plugin.png";
-            File file = new File(imagePath);
-            String imageUrl = file.toURI().toString();
-            Image trashImage = new Image(imageUrl);
-            ImageView trashImageView = new ImageView(trashImage);
+//            String imagePath = "src/main/resources/image/delete-plugin.png";
+            Image image = new Image(getClass().getResource("/image/delete-plugin.png").toExternalForm());
+//            File file = new File(imagePath);
+//            String imageUrl = file.toURI().toString();
+            ImageView trashImageView = new ImageView(image);
             trashImageView.setFitWidth(20);
             trashImageView.setFitHeight(20);
             trashImageView.setOnMouseClicked(e ->{
