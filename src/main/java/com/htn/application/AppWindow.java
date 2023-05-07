@@ -43,6 +43,7 @@ public class AppWindow extends Application {
         String path = Paths.get("").toAbsolutePath().toString();
         PluginManager.load(path + "/out/artifacts/chartplugin_jar/chartplugin.jar");
         PluginManager.load(path + "/out/artifacts/piechartplugin_jar/piechartplugin.jar");
+        PluginManager.load(path + "/out/artifacts/pluginsis2_jar/pluginsis2.jar");
 
         stage.setTitle("HTN development");
         tabPane = new TabPane();

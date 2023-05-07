@@ -45,6 +45,7 @@ public class CustomerView implements View {
         Label VIPLabel = new Label("VIP");
         Label memberLabel = new Label("Member");
         Label customerLabel = new Label("Customer");
+        CustomerController.getCustomersOnly().stream().forEach(e-> System.out.println("EACH " + e.getId() + " STATUS" + e.isPurchased()));
 
         content.getChildren().addAll(
                 VIPLabel, getListView(CustomerController.getActiveVIPMembers()),
