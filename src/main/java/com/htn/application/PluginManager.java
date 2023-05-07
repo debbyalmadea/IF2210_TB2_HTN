@@ -70,7 +70,7 @@ public class PluginManager {
             System.out.println(classNames);
             Collections.sort(classNames);
         } catch (IOException | ClassNotFoundException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 }

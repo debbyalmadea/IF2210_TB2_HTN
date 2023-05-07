@@ -18,6 +18,8 @@ import javafx.stage.Stage;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 
 public class AppWindow extends Application {
@@ -38,8 +40,9 @@ public class AppWindow extends Application {
         views.put("Product", ProductView.class);
         views.put("Settings", SettingsView.class);
 
-        PluginManager.load("/Users/almadeaputri/Documents/IF2210_TB2_HTN/out/artifacts/chartplugin_jar/chartplugin.jar");
-        PluginManager.load("/Users/almadeaputri/Documents/IF2210_TB2_HTN/out/artifacts/piechartplugin_jar/piechartplugin.jar");
+        String path = Paths.get("").toAbsolutePath().toString();
+        PluginManager.load(path + "/out/artifacts/chartplugin_jar/chartplugin.jar");
+        PluginManager.load(path + "/out/artifacts/piechartplugin_jar/piechartplugin.jar");
 
         stage.setTitle("HTN development");
         tabPane = new TabPane();
