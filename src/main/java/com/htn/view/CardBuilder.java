@@ -54,7 +54,8 @@ public class CardBuilder implements Card {
             Image image;
             // TODO : SOMETIMES FILER ERROS
             try {
-                image = new Image(getClass().getResource(imageURI).toExternalForm());
+                image = new Image(getClass().getResource(imageURI).toExternalForm(),
+                        180, 0, true, true);
             } catch (Exception e) {
                 image = new Image(getClass().getResource("/sample_product.png").toExternalForm());
             }
