@@ -14,11 +14,10 @@ import java.util.HashMap;
 public class ViewFactory {
     @Getter private final static HashMap<String, Class<? extends View>> views = new HashMap<>();
     public static @Nullable View get(@NotNull String request, Tab parent) {
-        Class<? extends View> cview = views.get(request);
+        Class<? extends View> cview = views.get(request.toLowerCase());
         if (cview == null) return null;
         try {
             Constructor<? extends View> constructor = cview.getDeclaredConstructor(Tab.class);
-            System.out.println("hm " + constructor);
             View view = (View) constructor.newInstance(parent);
             parent.textProperty().bindBidirectional(view.getTitle());
             return view;
@@ -28,7 +27,7 @@ public class ViewFactory {
                 parent.textProperty().bindBidirectional(view.getTitle());
                 return view;
             } catch (InstantiationException | IllegalAccessException ex) {
-                return null;
+                e.printStackTrace();
             }
         }
         catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
