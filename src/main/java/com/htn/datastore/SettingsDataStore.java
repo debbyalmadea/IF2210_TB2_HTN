@@ -33,11 +33,17 @@ public class SettingsDataStore implements ISettingsDataStore {
     private SettingsDataStore() {
         read();
     }
+    private SettingsDataStore(boolean bool) {
+        readWithoutPlugin();
+    }
     public static SettingsDataStore getInstance() {
         if (instance == null) {
             instance = new SettingsDataStore();
         }
         return instance;
+    }
+    public static SettingsDataStore getInstanceWithoutPlugin() {
+        return new SettingsDataStore(true);
     }
     public void read() {
         Type type = new TypeToken<Settings>() {}.getType();
@@ -46,6 +52,16 @@ public class SettingsDataStore implements ISettingsDataStore {
             Object result = reader.readFile(file + Settings.getInstance().getFileExtension());
             settings = (Settings) result;
             settings.getPlugins().forEach(plugin -> PluginManager.load(plugin.get(1)));
+        } catch (IOException e) {
+            settings = Settings.getInstance();
+        }
+    }
+    public void readWithoutPlugin() {
+        Type type = new TypeToken<Settings>() {}.getType();
+        try {
+            IFileReader reader = IOUtilFactory.getReader(Settings.getInstance().getFileExtension(), type);
+            Object result = reader.readFile(file + Settings.getInstance().getFileExtension());
+            settings = (Settings) result;
         } catch (IOException e) {
             settings = Settings.getInstance();
         }

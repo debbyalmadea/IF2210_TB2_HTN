@@ -34,7 +34,7 @@ public class CustomerDataStore implements DataStore, SettingsObserver {
     public  void read() {
         Type type = new TypeToken<ArrayList<Customer>>() {}.getType();
         try {
-            Settings setting = SettingsDataStore.getInstance().getSettings();
+            Settings setting = SettingsDataStore.getInstanceWithoutPlugin().getSettings();
             IFileReader reader = IOUtilFactory.getReader(setting.getFileExtension(), type);
             Object result = reader.readFile(setting.getPathDir() + "\\" + file + setting.getFileExtension());
             data = FXCollections.observableList((ArrayList<Customer>) result);

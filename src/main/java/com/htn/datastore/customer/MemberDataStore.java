@@ -36,7 +36,7 @@ public class MemberDataStore extends AMemberDataStore {
     public void read() {
         Type type = new TypeToken<ObservableList<com.htn.data.customer.Member>>() {}.getType();
         try {
-            Settings setting = SettingsDataStore.getInstance().getSettings();
+            Settings setting = SettingsDataStore.getInstanceWithoutPlugin().getSettings();
             IFileReader reader = IOUtilFactory.getReader(setting.getFileExtension(), type);
             Object result = reader.readFile(setting.getPathDir() + "\\" + file + setting.getFileExtension());
             data = FXCollections.observableList((ArrayList<Member>) result);

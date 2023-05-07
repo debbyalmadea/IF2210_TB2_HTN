@@ -62,14 +62,15 @@ public class PluginManager {
                         Class<?> pluginClass = classLoader.loadClass(className);
                         if (Plugin.class.isAssignableFrom(pluginClass) && Modifier.isPublic(pluginClass.getModifiers())) {
                             classes.add(pluginClass);
+                            ((Plugin)pluginClass.newInstance()).load();
                         }
-                    } catch (NoClassDefFoundError e) {
+                    } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
                 }
             }
             plugins.put(file.getName(), classes);
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

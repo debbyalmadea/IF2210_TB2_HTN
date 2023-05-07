@@ -7,6 +7,7 @@ import com.htn.api.view.View;
 import com.htn.application.PluginManager;
 import com.htn.datastore.SettingsDataStore;
 import com.htn.data.settings.Settings;
+
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;
@@ -88,7 +89,6 @@ public class SettingsView implements View, SettingsObserver {
         IOHBox.getChildren().addAll(IOtitle,extensionbox);
 
         Label pluginLabel = new Label("Plugin");
-
         String imagePath = "src/main/resources/image/add-plugin.png";
         File file = new File(imagePath);
         String imageUrl = file.toURI().toString();
