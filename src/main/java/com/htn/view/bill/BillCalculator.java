@@ -53,8 +53,8 @@ public class BillCalculator implements IBillCalculator {
         this.subTotal = subtotal;
         price = subTotal;
         profit = subTotal - buyPrice;
-        breakdown += String.format(" SubTotal: %.2f\n", subtotal);
-        summary.getChildren().addAll(new Label("  Subtotal: " + String.format("%.2f", subtotal)));
+        breakdown += String.format(" SubTotal: %.4f\n", subtotal);
+        summary.getChildren().addAll(new Label("  Subtotal: " + String.format("%.4f", subtotal)));
     }
     public VBox getSummary() {
         return summary;
@@ -69,8 +69,8 @@ public class BillCalculator implements IBillCalculator {
             double discount = member.getDiscount() * subTotal;
             price -= discount;
             profit -= discount;
-            breakdown += String.format(" Discount: %.2f\n", discount);
-            summary.getChildren().add(new Label("Discount: "+ String.format("%.2f", discount)));
+            breakdown += String.format(" Discount: %.4f\n", discount);
+            summary.getChildren().add(new Label("Discount: "+ String.format("%.4f", discount)));
         }
     }
 
@@ -81,8 +81,8 @@ public class BillCalculator implements IBillCalculator {
             usedPoints = Math.min(points, price);
             price -= usedPoints;
             profit -= usedPoints;
-            breakdown += String.format(" Points: %.2f\n", usedPoints);
-            summary.getChildren().add(new Label("Points: " + String.format("%.2f", usedPoints)));
+            breakdown += String.format(" Points: %.4f\n", usedPoints);
+            summary.getChildren().add(new Label("Points: " + String.format("%.4f", usedPoints)));
         }
     }
 

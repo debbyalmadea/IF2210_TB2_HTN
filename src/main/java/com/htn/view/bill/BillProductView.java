@@ -239,7 +239,12 @@ public class BillProductView implements View {
         Double points = 0.0;
         if (customer instanceof Member) {
             Member memb = (Member) customer;
-            points = memb.getPoint() + 0.01 * (billCalculator.getPrice() - billCalculator.getUsedPoints());
+            System.out.println("CURRENT POINT: " + memb.getPoint());
+            System.out.println("USED POINT: " + billCalculator.getUsedPoints());
+            System.out.println("PRICE:" + billCalculator.getPrice());
+            System.out.println("AWARDED: " + 0.01 * (billCalculator.getPrice() - billCalculator.getUsedPoints()));
+            points = memb.getPoint() - billCalculator.getUsedPoints() + 0.01 * (billCalculator.getPrice());
+            System.out.println("POITNS NOW:" + points);
         }
         ArrayList<String> itemIds = new ArrayList<>(quantity.keySet());
         ArrayList<Item> items = (ArrayList<Item>) ProductController.getListItem(itemIds);
@@ -249,7 +254,7 @@ public class BillProductView implements View {
             dup.setStock(quantity.get(item.getId()));
             persistentItems.add(dup);
         });
-        BillController.addNewFixedBill(new FixedBill(String.valueOf(new Timestamp(new Date().getTime())), String.valueOf(customer.getId()), this.billCalculator.getPrice(), this.billCalculator.getProfit(),this.billCalculator.getBreakDown() + String.format(" Total: %.2f", billCalculator.getPrice()), new Date(), persistentItems));
+        BillController.addNewFixedBill(new FixedBill(String.valueOf(new Timestamp(new Date().getTime())), String.valueOf(customer.getId()), this.billCalculator.getPrice(), this.billCalculator.getProfit(),this.billCalculator.getBreakDown() + String.format(" Total: %.4f", billCalculator.getPrice()), new Date(), persistentItems));
         if (bill != null) {
             BillController.deleteBill(bill);
             bill = null;

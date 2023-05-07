@@ -52,7 +52,6 @@ public class CardBuilder implements Card {
         if (imageURI != null) {
             ImageView imageView = new ImageView();
             Image image;
-            // TODO : SOMETIMES FILER ERROS
             try {
                 image = new Image(getClass().getResource(imageURI).toExternalForm(),
                         180, 0, true, true);

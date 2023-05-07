@@ -23,7 +23,7 @@ class MemberCard {
         this.parent = parent;
         card = CardBuilder.builder()
                 .title(member.getName())
-                .subtitle(member.getPoint() + " point")
+                .subtitle(String.format("%.4f", member.getPoint()) + " point")
                 .body(this.body())
                 .styleSheet(member instanceof VIPMember ? "vip-card.css" : "card.css")
                 .footer(this.footer())
