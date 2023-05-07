@@ -24,7 +24,7 @@ public class BillCard {
                 .footer(this.footer())
                 .build().getCard();
     }
-    private @NotNull Node body() {
+    private @NotNull VBox body() {
         VBox bodyContainer = new VBox();
         bodyContainer.getChildren().addAll(
                 new Label("BillId: " + String.valueOf(bill.getId())),
@@ -33,7 +33,7 @@ public class BillCard {
 
         return bodyContainer;
     }
-    private @NotNull Node footer() {
+    private @NotNull HBox footer() {
         HBox buttonContainer = new HBox();
         Button deleteButton = new Button("Hapus");
         deleteButton.getStyleClass().setAll("btn", "btn-red", "btn-small");

@@ -51,11 +51,11 @@ public class BillController {
             .findFirst().orElse(null);}
 
     public static List<Object> getSearchedBill(String  textToSearch) {
-        return (List) getAllBill().stream().filter(bill->bill.getId().equalsIgnoreCase(textToSearch) || bill.getName().equalsIgnoreCase(textToSearch)).toList();
+        return (List) getAllBill().stream().filter(bill->bill.getId().equalsIgnoreCase(textToSearch) || bill.getName().equalsIgnoreCase(textToSearch)).collect(Collectors.toList());
     }
 
     public static List<Object> getSearchedFixedBill(String  textToSearch) {
-        return (List) getAllFixedBill().stream().filter(bill->bill.getId().equalsIgnoreCase(textToSearch) || bill.getName().equalsIgnoreCase(textToSearch)).toList();
+        return (List) getAllFixedBill().stream().filter(bill->bill.getId().equalsIgnoreCase(textToSearch) || bill.getName().equalsIgnoreCase(textToSearch)).collect(Collectors.toList());
     }
 
 

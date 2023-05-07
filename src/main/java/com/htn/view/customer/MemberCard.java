@@ -29,7 +29,7 @@ class MemberCard {
                 .footer(this.footer())
                 .build().getCard();
     }
-    private @NotNull Node body() {
+    private @NotNull VBox body() {
         VBox bodyContainer = new VBox();
         bodyContainer.getChildren().addAll(
                 new Label(member.getId().toString()),
@@ -38,12 +38,12 @@ class MemberCard {
 
         return bodyContainer;
     }
-    private @NotNull Node footer() {
+    private @NotNull HBox footer() {
         if (member.isActivated()) return activatedFooter();
 
         return deactivatedFooter();
     }
-    private @NotNull Node activatedFooter() {
+    private @NotNull HBox activatedFooter() {
         HBox buttonContainer = new HBox();
         Button activeButton = new Button("Deactivate");
         activeButton.getStyleClass().setAll("btn", "btn-red", "btn-small");
@@ -64,14 +64,15 @@ class MemberCard {
 
         return buttonContainer;
     }
-    private @NotNull Node deactivatedFooter() {
+    private @NotNull HBox deactivatedFooter() {
+        HBox buttonContainer = new HBox();
         Button activateButton = new Button("Activate");
         activateButton.getStyleClass().setAll("btn", "btn-green", "btn-small");
         activateButton.setPrefWidth(210);
         activateButton.setOnAction(e -> {
             CustomerController.activate(member);
         });
-
-        return activateButton;
+        buttonContainer.getChildren().add(activateButton);
+        return buttonContainer;
     }
 }

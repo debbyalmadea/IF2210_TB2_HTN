@@ -1,10 +1,12 @@
 package com.htn.api;
 
 import com.htn.api.datastore.CustomerDataStoreExtension;
+import com.htn.api.datastore.ProductDataStoreExtension;
 import com.htn.api.view.View;
 import com.htn.data.customer.Customer;
 import com.htn.data.customer.Member;
 import com.htn.data.customer.VIPMember;
+import com.htn.datastore.ProductDataStore;
 import com.htn.datastore.customer.CustomerDataStore;
 import com.htn.datastore.customer.MemberDataStore;
 import com.htn.datastore.customer.VIPMemberDataStore;
@@ -33,5 +35,14 @@ public class BasePlugin {
         VIPMemberDataStore.getInstance().getData().addListener((ListChangeListener<VIPMember>) c -> {
             plugin.onVIPMemberDataStoreChange(VIPMemberDataStore.getInstance());
         });
+    }
+    public static void bindProductDataStore(@NotNull ProductDataStoreExtension plugin) {
+        loadProductDataStore(plugin);
+        CustomerDataStore.getInstance().getData().addListener((ListChangeListener<Customer>) c -> {
+            plugin.onProductDataStoreChange(ProductDataStore.getInstance());
+        });
+    }
+    public static void loadProductDataStore(@NotNull ProductDataStoreExtension plugin) {
+        plugin.onProductDataStoreChange(ProductDataStore.getInstance());
     }
 }

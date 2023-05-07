@@ -1,9 +1,11 @@
 package com.htn.data.item;
 
+import com.htn.api.datastore.IItem;
 import javafx.scene.image.Image;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
@@ -11,7 +13,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @AllArgsConstructor
-public class Item implements Serializable {
+public class Item implements Serializable, IItem {
     // static int numOfItem;
     // final int id = ++numOfItem;
     final String id;
@@ -25,7 +27,8 @@ public class Item implements Serializable {
     @NotNull String category;
 
 
-    public Item(Item item) {
+    @Contract(pure = true)
+    public Item(@NotNull Item item) {
         id = item.id;
         name = item.name;
         description = item.description;

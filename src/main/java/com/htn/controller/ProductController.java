@@ -7,22 +7,21 @@ import javafx.collections.ListChangeListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class ProductController {
     public static void bindProductData(View view) {
         ProductDataStore productData = ProductDataStore.getInstance();
-        productData.getProducts().addListener((ListChangeListener<Item>) c -> view.init());
+        productData.getData().addListener((ListChangeListener<Item>) c -> view.init());
     }
 
     public static List<Item> getAllProducts() {
-        return ProductDataStore.getInstance().getProducts();
+        return ProductDataStore.getInstance().getData();
     }
 
     public static List<Item> getAllProductsNonZero() {
-        return ProductDataStore.getInstance().getProducts().stream().filter(e-> {
+        return ProductDataStore.getInstance().getData().stream().filter(e-> {
             return e.getStock() > 0;
         }).collect(Collectors.toList());
     }
