@@ -1,5 +1,7 @@
 package com.htn.api.view;
 
+import javafx.scene.layout.Pane;
+
 public interface SettingsViewExtension {
-    public void init();
+    public Pane displaySetting();
 }
