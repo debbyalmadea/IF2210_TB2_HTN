@@ -30,14 +30,12 @@ public class SettingsView implements View {
     @Getter private final ScrollPane view;
     @Getter private final StringProperty title = new SimpleStringProperty("Settings");
     private VBox content;
-    @Getter private final Tab parent;
     private ComboBox<String> extensionbox;
-    private SettingsDataStore settingsDataStore = SettingsDataStore.getInstance();
+    private final SettingsDataStore settingsDataStore = SettingsDataStore.getInstance();
 
-    public SettingsView(Tab parent) {
+    public SettingsView() {
         view = new ScrollPane();
         view.fitToWidthProperty().set(true);
-        this.parent = parent;
         init();
         content.getStylesheets().add("settings.css");
         view.setContent(content);

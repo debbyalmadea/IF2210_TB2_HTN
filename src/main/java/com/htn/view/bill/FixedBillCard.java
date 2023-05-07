@@ -28,7 +28,7 @@ public class FixedBillCard {
                 .build().getCard();
     }
 
-    private @NotNull Node body() {
+    private @NotNull VBox body() {
         VBox bodyContainer = new VBox();
         bodyContainer.getChildren().addAll(
                 new Label("Bill Id: " + fixedBill.getId()),
@@ -37,7 +37,7 @@ public class FixedBillCard {
         return bodyContainer;
     }
 
-    private @NotNull Node footer() {
+    private @NotNull HBox footer() {
         HBox buttonContainer = new HBox();
         Button printButton = new Button("Cetak");
         printButton.getStyleClass().setAll("btn", "btn-secondary", "btn-small");

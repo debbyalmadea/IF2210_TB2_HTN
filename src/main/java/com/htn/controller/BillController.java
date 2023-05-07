@@ -11,26 +11,25 @@ import javafx.collections.ListChangeListener;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class BillController {
 
     public static void bindFixedBillData(View view) {
         FixedBillDataStore productData = FixedBillDataStore.getInstance();
-        productData.getFixedBills().addListener((ListChangeListener<FixedBill>) c -> view.init());
+        productData.getData().addListener((ListChangeListener<FixedBill>) c -> view.init());
     }
 
     public static void bindBillData(View view) {
         BillDataStore productData = BillDataStore.getInstance();
-        productData.getBills().addListener((ListChangeListener<Bill>) c -> view.init());
+        productData.getData().addListener((ListChangeListener<Bill>) c -> view.init());
     }
 
     public static List<FixedBill> getAllFixedBill() {
-        return FixedBillDataStore.getInstance().getFixedBills();
+        return FixedBillDataStore.getInstance().getData();
     }
 
     public static List<Bill> getAllBill() {
-        return BillDataStore.getInstance().getBills();
+        return BillDataStore.getInstance().getData();
     }
 
     public static void deleteBill(Bill bill) {
@@ -51,11 +50,11 @@ public class BillController {
             .findFirst().orElse(null);}
 
     public static List<Object> getSearchedBill(String  textToSearch) {
-        return (List) getAllBill().stream().filter(bill->bill.getId().equalsIgnoreCase(textToSearch) || bill.getName().equalsIgnoreCase(textToSearch)).toList();
+        return (List) getAllBill().stream().filter(bill->bill.getId().equalsIgnoreCase(textToSearch) || bill.getName().equalsIgnoreCase(textToSearch)).collect(Collectors.toList());
     }
 
     public static List<Object> getSearchedFixedBill(String  textToSearch) {
-        return (List) getAllFixedBill().stream().filter(bill->bill.getId().equalsIgnoreCase(textToSearch) || bill.getName().equalsIgnoreCase(textToSearch)).toList();
+        return (List) getAllFixedBill().stream().filter(bill->bill.getId().equalsIgnoreCase(textToSearch) || bill.getName().equalsIgnoreCase(textToSearch)).collect(Collectors.toList());
     }
 
 

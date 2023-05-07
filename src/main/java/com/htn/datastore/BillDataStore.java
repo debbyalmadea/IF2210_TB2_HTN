@@ -1,7 +1,9 @@
 package com.htn.datastore;
 
 import com.google.gson.reflect.TypeToken;
+import com.htn.api.datastore.DataStore;
 import com.htn.data.bill.Bill;
+import com.htn.data.settings.Settings;
 import com.htn.datastore.utils.*;
 
 import javafx.collections.FXCollections;
@@ -16,12 +18,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
 
-public class BillDataStore {
+public class BillDataStore implements DataStore<Bill> {
     @Getter
-    private ObservableList<Bill> bills;
+    private ObservableList<Bill> data;
     private static BillDataStore instance = null;
     @Getter @Setter
-    private String file = "bill.json";
+    private String file = "bill";
     private BillDataStore() {
         read();
     }
@@ -36,36 +38,36 @@ public class BillDataStore {
     public void read() {
         Type type = new TypeToken<ObservableList<Bill>>() {}.getType();
         try {
-            IFileReader JSONreader = new JSONUtil(type);
-            Object result = JSONreader.readFile(file);
-            bills = FXCollections.observableList((ArrayList<Bill>) result);
+            IFileReader reader = IOUtilFactory.getReader(Settings.getInstance().getFileExtension(), type);
+            Object result = reader.readFile(file + Settings.getInstance().getFileExtension());
+            data = FXCollections.observableList((ArrayList<Bill>) result);
         } catch (IOException e) {
-            bills = FXCollections.observableList((new ArrayList<>()));
+            data = FXCollections.observableList((new ArrayList<>()));
         }
     }
 
     public void write() {
         Type type = new TypeToken<ObservableList<Bill>>() {}.getType();
         try {
-            IDataWriter JSONwriter = new JSONUtil(type);
-            JSONwriter.writeData(file, bills);
+            IDataWriter writer = IOUtilFactory.getWriter(Settings.getInstance().getFileExtension(), type);
+            if (writer != null) writer.writeData(file + Settings.getInstance().getFileExtension(), new ArrayList<>(data));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }
 
     public void addNew(String id, String name, String customerId, double price, Date date, ArrayList<String> itemIds, Map<String, Integer> quant) {
-        bills.add(new Bill(id, price, customerId, date, itemIds, quant));
+        data.add(new Bill(id, price, customerId, date, itemIds, quant));
         write();
     }
 
     public void addNew(Bill bill) {
-        bills.add(bill);
+        data.add(bill);
         write();
     }
 
     public void remove(Bill bill) {
-        bills.remove(bill);
+        data.remove(bill);
         write();
     }
 

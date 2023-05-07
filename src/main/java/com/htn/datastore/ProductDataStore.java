@@ -1,14 +1,16 @@
 package com.htn.datastore;
 
 import com.google.gson.reflect.TypeToken;
-import com.htn.application.AppWindow;
+import com.htn.api.datastore.DataStore;
+import com.htn.api.datastore.IItem;
 import com.htn.data.item.Item;
+import com.htn.data.settings.Settings;
 import com.htn.datastore.utils.IDataWriter;
 import com.htn.datastore.utils.IFileReader;
+import com.htn.datastore.utils.IOUtilFactory;
 import com.htn.datastore.utils.JSONUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.image.Image;
 import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
@@ -16,15 +18,14 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
-public class ProductDataStore {
+public class ProductDataStore implements DataStore<Item> {
     @Getter
-    private ObservableList<Item> products;
+    private ObservableList<Item> data;
     private static ProductDataStore instance = null;
     @Getter
     @Setter
-    private String file = "product.json";
+    private String file = "product";
 
     private ProductDataStore() {
         read();
@@ -40,34 +41,33 @@ public class ProductDataStore {
     public void read() {
         Type type = new TypeToken<ObservableList<Item>>() {
         }.getType();
-        IFileReader reader = new JSONUtil(type);
-        Object result = null;
         try {
-            result = reader.readFile(file);
-            products = FXCollections.observableList((ArrayList<Item>) result);
+            IFileReader reader = IOUtilFactory.getReader(Settings.getInstance().getFileExtension(), type);
+            Object result = reader.readFile(file + Settings.getInstance().getFileExtension());
+            data = FXCollections.observableList((ArrayList<Item>) result);
         } catch (IOException e) {
-            products = FXCollections.observableList(new ArrayList<>());
+            data = FXCollections.observableList(new ArrayList<>());
         }
     }
 
     public void write() {
         Type type = new TypeToken<ObservableList<Item>>() {
         }.getType();
-        IDataWriter writer = new JSONUtil(type);
         try {
-            writer.writeData(file, products);
+            IDataWriter writer = IOUtilFactory.getWriter(Settings.getInstance().getFileExtension(), type);
+            if (writer != null) writer.writeData(file + Settings.getInstance().getFileExtension(), new ArrayList<>(data));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }
 
     public void addNewProduct(Item item) {
-        products.add(item);
+        data.add(item);
         write();
     }
 
     public void delete(Item item) {
-        products.remove(item);
+        data.remove(item);
         write();
     }
 

@@ -1,5 +1,8 @@
 package com.htn.view.product;
 
+import com.htn.api.view.Card;
+import com.htn.api.view.ProductViewExtension;
+import com.htn.application.PluginManager;
 import com.htn.data.item.Item;
 import com.htn.api.view.View;
 import com.htn.view.bill.BillProductView;
@@ -11,23 +14,33 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 
 @AllArgsConstructor
 public class ProductCard {
     private View parent;
     private Item item;
-    public Pane getCard(){
-        return CardBuilder.builder()
+    public Pane getCard() {
+        CardBuilder cardBuilder = CardBuilder.builder()
                 .imageURI(item.getImage())
                 .title(item.getName())
                 .subtitle(Double.toString(item.getSellingPrice()))
                 .body(this.information())
                 .footer(this.footer())
-                .build().getCard();
+                .build();
+        List<Object> plugins = PluginManager.getPluginsWithClass(ProductViewExtension.class);
+        plugins.forEach(plugin -> {
+            ProductViewExtension productPlugin = (ProductViewExtension) plugin;
+            productPlugin.updateCardDisplay(cardBuilder, item);
+            System.out.println("updating card display...");
+        });
+        return cardBuilder.getCard();
     }
 
-    private @NotNull Node information() {
+    private @NotNull VBox information() {
         VBox bodyContainer = new VBox();
 
         bodyContainer.getChildren().addAll(
