@@ -2,9 +2,11 @@ package com.htn.datastore.customer;
 
 import com.htn.api.datastore.DataStore;
 import com.htn.data.customer.Customer;
+import com.htn.data.settings.Settings;
 import com.htn.datastore.utils.IDataWriter;
 import com.htn.datastore.utils.IFileReader;
 import com.google.gson.reflect.TypeToken;
+import com.htn.datastore.utils.IOUtilFactory;
 import com.htn.datastore.utils.JSONUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -28,10 +30,9 @@ public class CustomerDataStore implements DataStore {
     }
     public  void read() {
         Type type = new TypeToken<ArrayList<Customer>>() {}.getType();
-        IFileReader reader = new JSONUtil(type);
-        System.out.println("READ");
         try {
-            Object result = reader.readFile(file);
+            IFileReader reader = IOUtilFactory.getReader(Settings.getInstance().getFileExtension(), type);
+            Object result = reader.readFile(file + Settings.getInstance().getFileExtension());
             data = FXCollections.observableList((ArrayList<Customer>) result);
             Customer.setNumOfCustomer(data.size());
         } catch (IOException e) {
@@ -40,9 +41,9 @@ public class CustomerDataStore implements DataStore {
     }
     public void write() {
         Type type = new TypeToken<ArrayList<Customer>>() {}.getType();
-        IDataWriter writer = new JSONUtil(type);
         try {
-            writer.writeData(file, new ArrayList<>(data));
+            IDataWriter writer = IOUtilFactory.getWriter(Settings.getInstance().getFileExtension(), type);
+            if (writer != null) writer.writeData(file + Settings.getInstance().getFileExtension(), new ArrayList<>(data));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -54,10 +55,10 @@ public class CustomerDataStore implements DataStore {
         return baru;
     }
 
-    public void update(Customer cust, boolean purchased) {
-        data.remove(cust);
-        cust.setPurchased(true);
-        data.add(cust);
+    public void update(Customer customer, boolean purchased) {
+        data.remove(customer);
+        customer.setPurchased(true);
+        data.add(customer);
         write();
     }
     private void seed() {

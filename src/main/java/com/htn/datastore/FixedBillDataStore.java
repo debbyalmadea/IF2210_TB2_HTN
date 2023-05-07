@@ -1,8 +1,10 @@
 package com.htn.datastore;
 
 import com.google.gson.reflect.TypeToken;
+import com.htn.api.datastore.DataStore;
 import com.htn.data.bill.FixedBill;
 import com.htn.data.item.Item;
+import com.htn.data.settings.Settings;
 import com.htn.datastore.utils.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,12 +17,12 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class FixedBillDataStore {
+public class FixedBillDataStore implements DataStore<FixedBill> {
     @Getter
-    private ObservableList<FixedBill> fixedBills;
+    private ObservableList<FixedBill> data;
     private static FixedBillDataStore instance = null;
     @Getter @Setter
-    private String file = "fixed_bill.json";
+    private String file = "fixed_bill";
     private FixedBillDataStore() {
         read();
     }
@@ -30,40 +32,35 @@ public class FixedBillDataStore {
         }
         return instance;
     }
-
     public void read() {
         Type type = new TypeToken<ArrayList<FixedBill>>() {}.getType();
         try {
-            IFileReader JSONreader = new JSONUtil(type);
-            Object result = JSONreader.readFile(file);
-            fixedBills = FXCollections.observableList((ArrayList<FixedBill>) result);
+            IFileReader reader = IOUtilFactory.getReader(Settings.getInstance().getFileExtension(), type);
+            Object result = reader.readFile(file + Settings.getInstance().getFileExtension());
+            data = FXCollections.observableList((ArrayList<FixedBill>) result);
         } catch (IOException e) {
-            fixedBills = FXCollections.observableList( new ArrayList<FixedBill>());
+            data = FXCollections.observableList( new ArrayList<FixedBill>());
         }
     }
-
     public void write() {
         Type type = new TypeToken<ArrayList<FixedBill>>() {}.getType();
         try {
-            IDataWriter JSONwriter = new JSONUtil(type);
-            JSONwriter.writeData(file, fixedBills);
+            IDataWriter writer = IOUtilFactory.getWriter(Settings.getInstance().getFileExtension(), type);
+            if (writer != null) writer.writeData(file + Settings.getInstance().getFileExtension(), new ArrayList<>(data));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }
-
     public void addNew(@NotNull int id, @NotNull String name, @NotNull double pricePaid, double priceProfit, String breakdown, @NotNull Date date, @NotNull ArrayList<Item> items) {
-        fixedBills.add(new FixedBill(String.valueOf(id), name, pricePaid, priceProfit, breakdown, date, items));
+        data.add(new FixedBill(String.valueOf(id), name, pricePaid, priceProfit, breakdown, date, items));
         write();
     }
-
     public void addNew(FixedBill bill) {
-        fixedBills.add(bill);
+        data.add(bill);
         write();
     }
-
     public void remove(FixedBill bill) {
-        fixedBills.remove(bill);
+        data.remove(bill);
         write();
     }
 }

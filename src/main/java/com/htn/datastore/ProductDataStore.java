@@ -4,8 +4,10 @@ import com.google.gson.reflect.TypeToken;
 import com.htn.api.datastore.DataStore;
 import com.htn.api.datastore.IItem;
 import com.htn.data.item.Item;
+import com.htn.data.settings.Settings;
 import com.htn.datastore.utils.IDataWriter;
 import com.htn.datastore.utils.IFileReader;
+import com.htn.datastore.utils.IOUtilFactory;
 import com.htn.datastore.utils.JSONUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,7 +25,7 @@ public class ProductDataStore implements DataStore<Item> {
     private static ProductDataStore instance = null;
     @Getter
     @Setter
-    private String file = "product.json";
+    private String file = "product";
 
     private ProductDataStore() {
         read();
@@ -39,10 +41,9 @@ public class ProductDataStore implements DataStore<Item> {
     public void read() {
         Type type = new TypeToken<ObservableList<Item>>() {
         }.getType();
-        IFileReader reader = new JSONUtil(type);
-        Object result = null;
         try {
-            result = reader.readFile(file);
+            IFileReader reader = IOUtilFactory.getReader(Settings.getInstance().getFileExtension(), type);
+            Object result = reader.readFile(file + Settings.getInstance().getFileExtension());
             data = FXCollections.observableList((ArrayList<Item>) result);
         } catch (IOException e) {
             data = FXCollections.observableList(new ArrayList<>());
@@ -52,9 +53,9 @@ public class ProductDataStore implements DataStore<Item> {
     public void write() {
         Type type = new TypeToken<ObservableList<Item>>() {
         }.getType();
-        IDataWriter writer = new JSONUtil(type);
         try {
-            writer.writeData(file, data);
+            IDataWriter writer = IOUtilFactory.getWriter(Settings.getInstance().getFileExtension(), type);
+            if (writer != null) writer.writeData(file + Settings.getInstance().getFileExtension(), new ArrayList<>(data));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }

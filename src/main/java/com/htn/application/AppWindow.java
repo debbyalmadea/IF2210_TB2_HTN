@@ -1,6 +1,8 @@
 package com.htn.application;
 
 import com.htn.api.view.View;
+import com.htn.data.settings.Settings;
+import com.htn.datastore.SettingsDataStore;
 import com.htn.view.SettingsView;
 import com.htn.view.ViewFactory;
 import com.htn.view.bill.BillProductView;
@@ -21,6 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.Set;
 
 public class AppWindow extends Application {
     @Getter private AppMenu appMenu;
@@ -32,6 +35,7 @@ public class AppWindow extends Application {
         Font.loadFont(getClass().getResource("/font/Inter-Regular.ttf").toExternalForm(), 14);
         Font.loadFont(getClass().getResource("/font/Inter-Medium.ttf").toExternalForm(), 14);
 
+        SettingsDataStore.getInstance();
         HashMap<String, Class<? extends View>> views = ViewFactory.getViews();
         views.put("Main", MainView.class);
         views.put("New Bill", BillProductView.class);
@@ -39,11 +43,6 @@ public class AppWindow extends Application {
         views.put("Customer", CustomerView.class);
         views.put("Product", ProductView.class);
         views.put("Settings", SettingsView.class);
-
-        String path = Paths.get("").toAbsolutePath().toString();
-        PluginManager.load(path + "/out/artifacts/chartplugin_jar/chartplugin.jar");
-        PluginManager.load(path + "/out/artifacts/piechartplugin_jar/piechartplugin.jar");
-        PluginManager.load(path + "/out/artifacts/currencyplugin_jar/currencyplugin.jar");
 
         stage.setTitle("HTN Manager");
         tabPane = new TabPane();

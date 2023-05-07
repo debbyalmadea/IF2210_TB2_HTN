@@ -16,16 +16,12 @@ import java.util.jar.JarFile;
 import java.util.stream.Collectors;
 
 public class PluginManager {
-    @Getter private static final ArrayList<Class<?>> plugins = new ArrayList<>();
-//    private static PluginManager instance = null;
-//    private PluginManager() {
-//        load();
-//    }
-//    public static PluginManager getInstance() {
-//        if (instance == null) {
-//            instance = new PluginManager();
-//        }
-//        return instance;
+    private static final ArrayList<Class<?>> plugins = new ArrayList<>();
+//    public static void removePlugin(String className) {
+//        List<Class<?>> filteredPlugin = plugins.stream()
+//                .filter(plugin -> plugin.getName().equalsIgnoreCase(className))
+//                .collect(Collectors.toList());
+//        plugins.removeAll(filteredPlugin);
 //    }
     public static List<Object> getPluginsWithClass(@NotNull Class<?> cls) {
         List<Class<?>> pluginsClass = plugins.stream().filter(cls::isAssignableFrom).collect(Collectors.toList());
@@ -66,13 +62,11 @@ public class PluginManager {
                             classNames.add(clazz.getName());
                             plugins.add(clazz);
                             Plugin plugin = (Plugin) clazz.newInstance();
+                            System.out.println("loading " + className);
                             plugin.load();
                         }
-                    } catch (NoClassDefFoundError e) {
-                    } catch (InstantiationException e) {
-                        throw new RuntimeException(e);
-                    } catch (IllegalAccessException e) {
-                        throw new RuntimeException(e);
+                    } catch (NoClassDefFoundError | InstantiationException | IllegalAccessException e) {
+                        System.out.println(e.getMessage());
                     }
                 }
             }

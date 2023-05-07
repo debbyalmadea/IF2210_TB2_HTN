@@ -4,8 +4,10 @@ import com.google.gson.reflect.TypeToken;
 import com.htn.data.customer.Customer;
 import com.htn.data.customer.Member;
 import com.htn.data.customer.VIPMember;
+import com.htn.data.settings.Settings;
 import com.htn.datastore.utils.IDataWriter;
 import com.htn.datastore.utils.IFileReader;
+import com.htn.datastore.utils.IOUtilFactory;
 import com.htn.datastore.utils.OBJUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -32,20 +34,20 @@ public class MemberDataStore extends AMemberDataStore {
     }
     public void read() {
         Type type = new TypeToken<ObservableList<com.htn.data.customer.Member>>() {}.getType();
-        IFileReader reader = new OBJUtil(type);
         try {
-            Object result = reader.readFile(file);
+            IFileReader reader = IOUtilFactory.getReader(Settings.getInstance().getFileExtension(), type);
+            Object result = reader.readFile(file + Settings.getInstance().getFileExtension());
             data = FXCollections.observableList((ArrayList<Member>) result);
+            Customer.setNumOfCustomer(data.size());
         } catch (IOException e) {
             data = FXCollections.observableList(new ArrayList<>());
-            System.out.println("NO FILE READ MEMBER");
         }
     }
     public void write() {
         Type type = new TypeToken<ObservableList<Member>>() {}.getType();
-        IDataWriter writer = new OBJUtil(type);
         try {
-            writer.writeData(file, new ArrayList<>(data));
+            IDataWriter writer = IOUtilFactory.getWriter(Settings.getInstance().getFileExtension(), type);
+            writer.writeData(file + Settings.getInstance().getFileExtension(), new ArrayList<>(data));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
