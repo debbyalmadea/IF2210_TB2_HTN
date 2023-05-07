@@ -75,6 +75,6 @@ public class CurrencyPlugin implements Plugin, ProductViewExtension, ProductData
         if (currentCurrency != null) {
             return currentCurrency.getPrefix() + String.format("%.2f", number.doubleValue());
         }
-        return  "";
+        return number.toString();
     }
 }
