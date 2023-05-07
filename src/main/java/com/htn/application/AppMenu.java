@@ -26,7 +26,7 @@ public class AppMenu extends MenuBar implements SettingsObserver {
             menu.getItems().add(viewMenu);
         });
     }
-    public void update(ISettingsDataStore settingsDataStore) {
+    public void update(ISettingsDataStore test) {
         init();
     }
     private void addTab(String request) {

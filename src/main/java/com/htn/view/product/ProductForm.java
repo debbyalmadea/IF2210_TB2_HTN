@@ -115,7 +115,7 @@ public class ProductForm implements View {
                         || sellingPriceDouble < 0 || purchasingPriceDouble < 0) {
                     throw new Exception();
                 }
-
+                System.out.println(imageString);
                 Item newItem = new Item(id, nameString, descriptionString, imageString, sellingPriceDouble,
                         purchasingPriceDouble, stockInt, categoryString);
                 this.save(newItem, itemToChange);

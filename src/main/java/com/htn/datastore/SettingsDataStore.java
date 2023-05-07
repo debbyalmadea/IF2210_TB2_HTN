@@ -2,6 +2,7 @@ package com.htn.datastore;
 
 import com.google.gson.reflect.TypeToken;
 import com.htn.api.datastore.ISettingsDataStore;
+import com.htn.api.datastore.SettingsObserver;
 import com.htn.application.AppWindow;
 import com.htn.application.PluginManager;
 import com.htn.data.settings.Settings;
@@ -23,7 +24,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-public class SettingsDataStore implements ISettingsDataStore {
+public class SettingsDataStore implements ISettingsDataStore, SettingsObserver{
     @Getter
     private Settings settings;
     private static SettingsDataStore instance = null;
@@ -32,6 +33,8 @@ public class SettingsDataStore implements ISettingsDataStore {
     private SettingsDataStore() {
         read();
     }
+
+    @Getter String dirPath = "";
     public static SettingsDataStore getInstance() {
         if (instance == null) {
             instance = new SettingsDataStore();
@@ -41,8 +44,9 @@ public class SettingsDataStore implements ISettingsDataStore {
     public void read() {
         Type type = new TypeToken<Settings>() {}.getType();
         try {
-            IFileReader reader = IOUtilFactory.getReader(Settings.getInstance().getFileExtension(), type);
-            Object result = reader.readFile(file + Settings.getInstance().getFileExtension());
+            Settings setting = SettingsDataStore.getInstance().getSettings();
+            IFileReader reader = IOUtilFactory.getReader(setting.getFileExtension(), type);
+            Object result = reader.readFile(setting.getPathDir() + "\\" + file + setting.getFileExtension());
             settings = (Settings) result;
             settings.getPlugins().forEach(plugin -> PluginManager.load(plugin.get(1)));
         } catch (IOException e) {
@@ -52,10 +56,17 @@ public class SettingsDataStore implements ISettingsDataStore {
     public void write() {
         Type type = new TypeToken<Settings>() {}.getType();
         try {
-            IDataWriter writer = IOUtilFactory.getWriter(Settings.getInstance().getFileExtension(), type);
-            if (writer != null) writer.writeData(file + Settings.getInstance().getFileExtension(), settings);
+            IDataWriter writer = IOUtilFactory.getWriter(SettingsDataStore.getInstance().getSettings().getFileExtension(), type);
+            if (writer != null) writer.writeData(SettingsDataStore.getInstance().getSettings().getPathDir() + "\\" + file + SettingsDataStore.getInstance().getSettings().getFileExtension(), settings);
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    @Override
+    public void update(ISettingsDataStore settings) {
+        this.settings = settings.getSettings();
+        write();
+        read();
     }
 }

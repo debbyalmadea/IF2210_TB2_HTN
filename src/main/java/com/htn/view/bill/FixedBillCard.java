@@ -20,10 +20,11 @@ public class FixedBillCard {
     private FixedBill fixedBill;
 
     public Pane getCard() {
-        System.out.println(String.valueOf(fixedBill.getPricePaid()));
+        String pricePaid = String.valueOf(fixedBill.getPricePaid());
+
         return CardBuilder.builder()
                 .title(fixedBill.getName())
-                .subtitle(String.valueOf(fixedBill.getPricePaid()))
+                .subtitle(pricePaid)
                 .body(this.body())
                 .footer(this.footer())
                 .build().getCard();
@@ -32,6 +33,7 @@ public class FixedBillCard {
     private @NotNull VBox body() {
         VBox bodyContainer = new VBox();
         bodyContainer.getChildren().addAll(
+                new Label("Harga: " + fixedBill.getPricePaid()),
                 new Label("Bill Id: " + fixedBill.getId()),
                 new Label("Tanggal: " + fixedBill.getDate()));
 

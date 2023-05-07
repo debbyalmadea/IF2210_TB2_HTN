@@ -5,6 +5,7 @@ import com.htn.data.customer.Customer;
 import com.htn.data.customer.Member;
 import com.htn.data.customer.VIPMember;
 import com.htn.data.settings.Settings;
+import com.htn.datastore.SettingsDataStore;
 import com.htn.datastore.utils.IDataWriter;
 import com.htn.datastore.utils.IFileReader;
 import com.htn.datastore.utils.IOUtilFactory;
@@ -35,8 +36,9 @@ public class MemberDataStore extends AMemberDataStore {
     public void read() {
         Type type = new TypeToken<ObservableList<com.htn.data.customer.Member>>() {}.getType();
         try {
-            IFileReader reader = IOUtilFactory.getReader(Settings.getInstance().getFileExtension(), type);
-            Object result = reader.readFile(file + Settings.getInstance().getFileExtension());
+            Settings setting = SettingsDataStore.getInstance().getSettings();
+            IFileReader reader = IOUtilFactory.getReader(setting.getFileExtension(), type);
+            Object result = reader.readFile(setting.getPathDir() + "\\" + file + setting.getFileExtension());
             data = FXCollections.observableList((ArrayList<Member>) result);
             Customer.setNumOfCustomer(data.size());
         } catch (IOException e) {
@@ -46,20 +48,19 @@ public class MemberDataStore extends AMemberDataStore {
     public void write() {
         Type type = new TypeToken<ObservableList<Member>>() {}.getType();
         try {
-            IDataWriter writer = IOUtilFactory.getWriter(Settings.getInstance().getFileExtension(), type);
-            writer.writeData(file + Settings.getInstance().getFileExtension(), new ArrayList<>(data));
+            Settings setting = SettingsDataStore.getInstance().getSettings();
+            IDataWriter writer = IOUtilFactory.getWriter(setting.getFileExtension(), type);
+            writer.writeData(setting.getPathDir() + "\\" + file + setting.getFileExtension(), new ArrayList<>(data));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }
     public void create(@NotNull Customer customer, String name, String phoneNumber, Double point) {
-        // TODO! Calculate the point ourselves (or is it in controller?)
         data.add(new Member(customer.getId(), name, phoneNumber, point));
         write();
     }
     public void create(@NotNull VIPMember vipmember) {
         if (!data.contains(vipmember)) {
-            // TODO! Calculate the point ourselves (or is it in controller?)
             Member member = new Member(vipmember.getId(), vipmember.getName(), vipmember.getPhoneNumber(), vipmember.getPoint());
             member.setActivated(member.isActivated());
             data.add(member);

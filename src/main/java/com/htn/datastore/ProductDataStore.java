@@ -3,6 +3,8 @@ package com.htn.datastore;
 import com.google.gson.reflect.TypeToken;
 import com.htn.api.datastore.DataStore;
 import com.htn.api.datastore.IItem;
+import com.htn.api.datastore.ISettingsDataStore;
+import com.htn.api.datastore.SettingsObserver;
 import com.htn.data.item.Item;
 import com.htn.data.settings.Settings;
 import com.htn.datastore.utils.IDataWriter;
@@ -19,7 +21,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-public class ProductDataStore implements DataStore<Item> {
+public class ProductDataStore implements DataStore<Item>, SettingsObserver {
     @Getter
     private ObservableList<Item> data;
     private static ProductDataStore instance = null;
@@ -39,11 +41,15 @@ public class ProductDataStore implements DataStore<Item> {
     }
 
     public void read() {
+        Settings.getInstance().bind(this);
         Type type = new TypeToken<ObservableList<Item>>() {
         }.getType();
+        Settings setting = SettingsDataStore.getInstance().getSettings();
+        System.out.println(setting.getFileExtension());
         try {
-            IFileReader reader = IOUtilFactory.getReader(Settings.getInstance().getFileExtension(), type);
-            Object result = reader.readFile(file + Settings.getInstance().getFileExtension());
+            IFileReader reader = IOUtilFactory.getReader(setting.getFileExtension(),type);
+            Object result = reader.readFile(setting.getPathDir()+ "\\" + file + setting.getFileExtension());
+            System.out.println(setting.getPathDir()+ "\\" + file + setting.getFileExtension());
             data = FXCollections.observableList((ArrayList<Item>) result);
         } catch (IOException e) {
             data = FXCollections.observableList(new ArrayList<>());
@@ -53,9 +59,10 @@ public class ProductDataStore implements DataStore<Item> {
     public void write() {
         Type type = new TypeToken<ObservableList<Item>>() {
         }.getType();
+        Settings setting = SettingsDataStore.getInstance().getSettings();
         try {
-            IDataWriter writer = IOUtilFactory.getWriter(Settings.getInstance().getFileExtension(), type);
-            if (writer != null) writer.writeData(file + Settings.getInstance().getFileExtension(), new ArrayList<>(data));
+            IDataWriter writer = IOUtilFactory.getWriter(setting.getFileExtension(), type);
+            if (writer != null) writer.writeData(setting.getPathDir()+"\\" + file+ setting.getFileExtension(), new ArrayList<>(data));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -93,4 +100,9 @@ public class ProductDataStore implements DataStore<Item> {
         addNewProduct(item);
     }
 
+    @Override
+    public void update(ISettingsDataStore settings) {
+        write();
+        read();
+    }
 }

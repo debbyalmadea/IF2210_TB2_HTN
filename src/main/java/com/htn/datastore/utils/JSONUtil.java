@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.htn.data.settings.Settings;
+import com.htn.datastore.SettingsDataStore;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -28,10 +30,10 @@ public class JSONUtil implements IFileReader, IDataWriter  {
         this.gson = new GsonBuilder().setPrettyPrinting().create();
     }
 
+
     @Override
     public void writeData(String dir, Object data) throws IOException {
         String gson_str = gson.toJson(data, type);
-
         FileWriter writer = new FileWriter(dir);
         writer.write(gson_str);
         writer.close();

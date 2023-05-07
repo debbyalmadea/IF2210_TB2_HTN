@@ -2,6 +2,8 @@ package com.htn.datastore;
 
 import com.google.gson.reflect.TypeToken;
 import com.htn.api.datastore.DataStore;
+import com.htn.api.datastore.ISettingsDataStore;
+import com.htn.api.datastore.SettingsObserver;
 import com.htn.data.bill.Bill;
 import com.htn.data.settings.Settings;
 import com.htn.datastore.utils.*;
@@ -18,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
 
-public class BillDataStore implements DataStore<Bill> {
+public class BillDataStore implements DataStore<Bill>, SettingsObserver {
     @Getter
     private ObservableList<Bill> data;
     private static BillDataStore instance = null;
@@ -38,8 +40,9 @@ public class BillDataStore implements DataStore<Bill> {
     public void read() {
         Type type = new TypeToken<ObservableList<Bill>>() {}.getType();
         try {
-            IFileReader reader = IOUtilFactory.getReader(Settings.getInstance().getFileExtension(), type);
-            Object result = reader.readFile(file + Settings.getInstance().getFileExtension());
+            Settings setting = SettingsDataStore.getInstance().getSettings();
+            IFileReader reader = IOUtilFactory.getReader(setting.getFileExtension(), type);
+            Object result = reader.readFile(setting.getPathDir() + "\\" + file + setting.getFileExtension());
             data = FXCollections.observableList((ArrayList<Bill>) result);
         } catch (IOException e) {
             data = FXCollections.observableList((new ArrayList<>()));
@@ -49,8 +52,9 @@ public class BillDataStore implements DataStore<Bill> {
     public void write() {
         Type type = new TypeToken<ObservableList<Bill>>() {}.getType();
         try {
-            IDataWriter writer = IOUtilFactory.getWriter(Settings.getInstance().getFileExtension(), type);
-            if (writer != null) writer.writeData(file + Settings.getInstance().getFileExtension(), new ArrayList<>(data));
+            Settings setting = SettingsDataStore.getInstance().getSettings();
+            IDataWriter writer = IOUtilFactory.getWriter(setting.getFileExtension(), type);
+            if (writer != null) writer.writeData(setting.getPathDir()+ "\\" + file + setting.getFileExtension(), new ArrayList<>(data));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -84,5 +88,11 @@ public class BillDataStore implements DataStore<Bill> {
         remove(bill);
         addNew(bill);
         write();
+    }
+
+    @Override
+    public void update(ISettingsDataStore settings) {
+        write();
+        read();
     }
 }

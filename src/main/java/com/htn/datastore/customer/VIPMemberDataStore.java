@@ -1,10 +1,13 @@
 package com.htn.datastore.customer;
 
 import com.google.gson.reflect.TypeToken;
+import com.htn.api.datastore.ISettingsDataStore;
+import com.htn.api.datastore.SettingsObserver;
 import com.htn.data.customer.Customer;
 import com.htn.data.customer.Member;
 import com.htn.data.customer.VIPMember;
 import com.htn.data.settings.Settings;
+import com.htn.datastore.SettingsDataStore;
 import com.htn.datastore.utils.IDataWriter;
 import com.htn.datastore.utils.IFileReader;
 import com.htn.datastore.utils.IOUtilFactory;
@@ -19,7 +22,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-public class VIPMemberDataStore extends AMemberDataStore {
+public class VIPMemberDataStore extends AMemberDataStore implements SettingsObserver {
     @Getter
     private ObservableList<VIPMember> data;
     private static VIPMemberDataStore instance = null;
@@ -35,8 +38,9 @@ public class VIPMemberDataStore extends AMemberDataStore {
     public  void read() {
         Type type = new TypeToken<ArrayList<VIPMember>>() {}.getType();
         try {
-            IFileReader reader = IOUtilFactory.getReader(Settings.getInstance().getFileExtension(), type);
-            Object result = reader.readFile(file + Settings.getInstance().getFileExtension());
+            Settings setting = SettingsDataStore.getInstance().getSettings();
+            IFileReader reader = IOUtilFactory.getReader(setting.getFileExtension(), type);
+            Object result = reader.readFile(setting.getPathDir() + "\\" + file + setting.getFileExtension());
             data = FXCollections.observableList((ArrayList<VIPMember>) result);
         } catch (IOException e) {
             data = FXCollections.observableList(new ArrayList<>());
@@ -46,8 +50,9 @@ public class VIPMemberDataStore extends AMemberDataStore {
     public void write() {
         Type type = new TypeToken<ArrayList<VIPMember>>() {}.getType();
         try {
-            IDataWriter writer = IOUtilFactory.getWriter(Settings.getInstance().getFileExtension(), type);
-            writer.writeData(file + Settings.getInstance().getFileExtension(), new ArrayList<>(data));
+            Settings setting = SettingsDataStore.getInstance().getSettings();
+            IDataWriter writer = IOUtilFactory.getWriter(setting.getFileExtension(), type);
+            writer.writeData(setting.getPathDir() + "\\" + file + setting.getFileExtension(), new ArrayList<>(data));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -87,5 +92,11 @@ public class VIPMemberDataStore extends AMemberDataStore {
         super.update(member, name, phoneNumber, point, activated);
         delete(member);
         create((VIPMember) member);
+    }
+
+    @Override
+    public void update(ISettingsDataStore settings) {
+        write();
+        read();
     }
 }

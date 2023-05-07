@@ -7,15 +7,13 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Tab;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.scene.control.ComboBox;
 import javafx.scene.layout.HBox;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.scene.image.Image;
 
@@ -30,18 +28,20 @@ public class SettingsView implements View {
     @Getter private final ScrollPane view;
     @Getter private final StringProperty title = new SimpleStringProperty("Settings");
     private VBox content;
+    private String path = SettingsDataStore.getInstance().getDirPath();
     private ComboBox<String> extensionbox;
     private final SettingsDataStore settingsDataStore = SettingsDataStore.getInstance();
     public SettingsView() {
         view = new ScrollPane();
         view.fitToWidthProperty().set(true);
+        content = new VBox();
         init();
         content.getStylesheets().add("settings.css");
         view.setContent(content);
     }
 
     public void init() {
-        content = new VBox();
+        content.getChildren().clear();
         content.setPadding(new Insets(32, 40, 32, 40));
         content.setSpacing(20);
 
@@ -57,6 +57,20 @@ public class SettingsView implements View {
         extensionbox.valueProperty().addListener((observable, oldValue, newValue) -> {
             settingsDataStore.getSettings().setFileExtension(newValue);
             settingsDataStore.write();
+        });
+
+        Label save = new Label("Folder Save");
+        Text text = new Text(path);
+        Button buttonSelect = new Button("Select Directory");
+        buttonSelect.setOnAction(e -> {
+            String result = chooseDirectory();
+            if (result!= null) {
+                path = result;
+                System.out.println(result);
+                SettingsDataStore.getInstance().getSettings().setPath(path);
+                settingsDataStore.write();
+            }
+            init();
         });
 
         HBox IOHBox = new HBox();
@@ -88,6 +102,9 @@ public class SettingsView implements View {
         content.getChildren().addAll(
                 IOLabel,
                 IOHBox,
+                save,
+                text,
+                buttonSelect,
                 PluginHBox,
                 pluginPane
         );
@@ -106,6 +123,18 @@ public class SettingsView implements View {
             content.getChildren().remove(3);
             content.getChildren().add(getPlugin());
         }
+    }
+
+    private String chooseDirectory() {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Select Directory");
+        File selectedDirectory = directoryChooser.showDialog(null);
+        if (selectedDirectory != null) {
+            String directoryPath = selectedDirectory.getAbsolutePath();
+            return directoryPath;
+            // do something with the selected directory path
+        }
+        return null;
     }
 
     private @NotNull Pane getPlugin(){

@@ -2,6 +2,7 @@ package com.htn.data.settings;
 
 import java.util.ArrayList;
 
+import com.htn.api.datastore.ISettingsDataStore;
 import com.htn.api.datastore.SettingsObserver;
 import com.htn.application.PluginManager;
 import com.htn.datastore.SettingsDataStore;
@@ -9,16 +10,21 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 
 
-public class Settings implements Serializable{
+@AllArgsConstructor
+public class Settings implements Serializable {
     private static Settings instance = null;
     // Attributes
     @Getter
     private String fileExtension;
+    @Getter @Setter
+    private String pathDir = "";
     private static StringProperty fileExtensionProperty = new SimpleStringProperty();
     @Getter
     private final ArrayList<ArrayList<String>> plugins;
@@ -36,9 +42,19 @@ public class Settings implements Serializable{
   
         return instance;
     }
+    public String getPathDir()
+    {
+        return pathDir;
+    }
+
+    public void setPath(String path) {
+        pathDir = path;
+        changed.set(!changed.get());
+    }
     public void setFileExtension(String fileExtension) {
         this.fileExtension = fileExtension;
         fileExtensionProperty.set(fileExtension);
+        changed.set(!changed.get());
     }
     public int getNumOfPlugins() {
         return plugins.size();

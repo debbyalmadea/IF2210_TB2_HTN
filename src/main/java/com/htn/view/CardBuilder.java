@@ -14,6 +14,7 @@ import javafx.scene.layout.VBox;
 import lombok.*;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,8 +52,12 @@ public class CardBuilder implements Card {
         if (imageURI != null) {
             ImageView imageView = new ImageView();
             Image image;
-            image = new Image(getClass().getResource(imageURI).toExternalForm(),
-                    180, 0, true, true);
+            // TODO : SOMETIMES FILER ERROS
+            try {
+                image = new Image(getClass().getResource(imageURI).toExternalForm());
+            } catch (Exception e) {
+                image = new Image(getClass().getResource("/sample_product.png").toExternalForm());
+            }
             imageView.setViewport(new Rectangle2D(0, 0, 180, 140));
             imageView.setImage(image);
             imageView.setFitWidth(180);
