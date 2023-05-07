@@ -11,7 +11,6 @@ import java.io.Serializable;
 @Getter
 public class Customer implements Serializable {
     private static int numOfCustomer;
-
     private boolean purchased = false;
     @Getter private final Integer id;
     public Customer() {

@@ -32,7 +32,6 @@ public class SettingsView implements View {
     private VBox content;
     private ComboBox<String> extensionbox;
     private final SettingsDataStore settingsDataStore = SettingsDataStore.getInstance();
-
     public SettingsView() {
         view = new ScrollPane();
         view.fitToWidthProperty().set(true);

@@ -2,8 +2,9 @@ package com.htn.data.settings;
 
 import java.util.ArrayList;
 
-import com.htn.api.Observer;
+import com.htn.api.datastore.SettingsObserver;
 import com.htn.application.PluginManager;
+import com.htn.datastore.SettingsDataStore;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -42,9 +43,9 @@ public class Settings implements Serializable{
     public int getNumOfPlugins() {
         return plugins.size();
     }
-    public void bind(Observer observer) {
+    public void bind(SettingsObserver observer) {
         changed.addListener((obs, oldVal, newVal) -> {
-            observer.update();
+            observer.update(SettingsDataStore.getInstance());
         });
     }
     public void addPlugin(String name, String path) {
