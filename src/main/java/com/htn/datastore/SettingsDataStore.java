@@ -1,6 +1,7 @@
 package com.htn.datastore;
 
 import com.google.gson.reflect.TypeToken;
+import com.htn.api.datastore.ISettingsDataStore;
 import com.htn.application.AppWindow;
 import com.htn.application.PluginManager;
 import com.htn.data.settings.Settings;
@@ -22,7 +23,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-public class SettingsDataStore {
+public class SettingsDataStore implements ISettingsDataStore {
     @Getter
     private Settings settings;
     private static SettingsDataStore instance = null;

@@ -15,9 +15,10 @@ public class ViewFactory {
     @Getter private final static HashMap<String, Class<? extends View>> views = new HashMap<>();
     public static @Nullable View get(@NotNull String request, Tab parent) {
         Class<? extends View> cview = views.get(request);
-        if (cview == null) return new CustomerView(parent);
+        if (cview == null) return null;
         try {
             Constructor<? extends View> constructor = cview.getDeclaredConstructor(Tab.class);
+            System.out.println("hm " + constructor);
             View view = (View) constructor.newInstance(parent);
             parent.textProperty().bindBidirectional(view.getTitle());
             return view;
@@ -31,7 +32,8 @@ public class ViewFactory {
             }
         }
         catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            return null;
+            e.printStackTrace();
         }
+        return null;
     }
 }

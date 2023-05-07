@@ -60,8 +60,8 @@ public class CardBuilder implements Card {
             card.getChildren().add(imageView);
         }
 
-        body.getStyleClass().add("body");
-        card.getChildren().addAll(this.header(), body, footer);
+        this.body.getStyleClass().add("body");
+        card.getChildren().addAll(this.header(), this.body, this.footer);
     }
     public void setTitle(String title) {
         titleProperty.set(title);
