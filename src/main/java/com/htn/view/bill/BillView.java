@@ -47,22 +47,20 @@ public class BillView implements View {
     private VBox content;
     @Getter
     private final Tab parent;
-
     public BillView(Tab parent) {
         view = new ScrollPane();
         view.fitToWidthProperty().set(true);
         this.parent = parent;
         content = new VBox();
         init();
-        content.setStyle("-fx-background-color: #F1F5F9;");
         view.getStylesheets().add("customer.css");
         view.setContent(content);
         BillController.bindBillData(this);
         BillController.bindFixedBillData(this);
         CustomerController.bindMemberData(this);
         CustomerController.bindVIPMemberData(this);
+        content.setStyle("-fx-background-color: #F1F5F9;");
     }
-
     public void init() {
         content.getChildren().clear();
         content.setPrefHeight(Double.MAX_VALUE);
@@ -84,7 +82,15 @@ public class BillView implements View {
         content.setSpacing(20);
 
         Button printButton = new Button("Print All Fixed Bill");
-        printButton.setOnAction(e -> {threadAllLaporan();
+        printButton.setOnAction(e -> {
+            if (BillController.getAllFixedBill().size() == 0) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Failed to print report");
+                alert.setContentText("There are no transaction to report");
+                alert.showAndWait();
+            } else {
+                threadAllLaporan();
+            }
         });
 
         Label BillLabel = new Label("Bill");
@@ -109,7 +115,7 @@ public class BillView implements View {
       });
     }
 
-    private @NotNull Pane getListView(String request) {
+    private @NotNull Pane getListView(@NotNull String request) {
         FlowPane listView = new FlowPane();
         listView.setMaxWidth(Double.MAX_VALUE);
         listView.setHgap(20);
@@ -124,7 +130,6 @@ public class BillView implements View {
             fixedBills.forEach(e -> {
                 listView.getChildren().add(BillCardFactory.getCard(this, e));
             });
-
         }
 
         return listView;
@@ -132,9 +137,9 @@ public class BillView implements View {
 
     void threadAllLaporan() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Memprint Laporan..");
+        alert.setTitle("Printing report..");
         alert.setHeaderText(null);
-        alert.setContentText("Sedang memprint laporan untuk 10 s.");
+        alert.setContentText("This will take 10 s.");
         alert.showAndWait();
         Thread thread = new Thread(() -> {
             // Call the function from the new thread
@@ -174,8 +179,7 @@ public class BillView implements View {
             ex.printStackTrace();
         }
     }
-
-    private @NotNull Pane getArrListView(List<Object> bills) {
+    private @NotNull Pane getArrListView(@NotNull List<Object> bills) {
         FlowPane listView = new FlowPane();
         if (bills.size() == 0) {
             Label noItems = new Label("No Bills");
@@ -271,7 +275,7 @@ public class BillView implements View {
         }
     }
 
-    private Dialog getDialog(FixedBill bill, String title, String header) {
+    private @NotNull Dialog getDialog(@NotNull FixedBill bill, String title, String header) {
         ArrayList<Item> items = bill.getItems();
         Dialog<Void> dialog = new Dialog<>();
         dialog.setTitle(title);

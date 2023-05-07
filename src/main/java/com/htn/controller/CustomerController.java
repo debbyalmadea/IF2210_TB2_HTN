@@ -10,6 +10,8 @@ import com.htn.datastore.customer.MemberDataStore;
 import com.htn.datastore.customer.VIPMemberDataStore;
 import javafx.collections.ListChangeListener;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -53,7 +55,7 @@ public class CustomerController {
                 .collect(Collectors.toList());
     }
 
-    public static Customer getCustomerById(String id) {
+    public static @Nullable Customer getCustomerById(String id) {
         Optional<Customer> cust = getAllCustomers().stream()
                 .filter(customer -> getMember(customer.getId()) == null)
                 .filter(customer -> getVIPMember(customer.getId()) == null)
@@ -65,7 +67,6 @@ public class CustomerController {
             return null;
         }
     }
-
     public static Customer getAllByName(String name) {
         Customer customer= getCustomersOnlyPure().stream().filter(cust -> {
             return String.valueOf(cust.getId()).equalsIgnoreCase(name);
@@ -85,10 +86,7 @@ public class CustomerController {
                 .findFirst()
                 .orElse(null);
     }
-
-
-
-    public static ArrayList<String> getAllMemberName() {
+    public static @NotNull ArrayList<String> getAllMemberName() {
         ArrayList<String> arr = new ArrayList<String>();
         getAllMembers().forEach(e-> {
             arr.add(e.getName());
@@ -143,7 +141,10 @@ public class CustomerController {
                 .filter(vipMember -> !vipMember.isActivated())
                 .collect(Collectors.toCollection(ArrayList::new));
     }
-    public static void create(Customer customer, String name, String phoneNumber, @NotNull String status) {
+    public static boolean create(Customer customer, String name, @NotNull String phoneNumber, @NotNull String status) {
+        if (!phoneNumber.matches("^\\+?[\\d\\s-]{9,}$") || name.equalsIgnoreCase("")) {
+            return false;
+        }
         if (status.equalsIgnoreCase("member")) {
             Member newMember = new Member(customer.getId(), name, phoneNumber, 0.0);
             MemberDataStore.getInstance().create(newMember);
@@ -151,11 +152,16 @@ public class CustomerController {
             VIPMember newVIPMember = new VIPMember(customer.getId(), name, phoneNumber, 0.0);
             VIPMemberDataStore.getInstance().create(newVIPMember);
         }
+        return true;
     }
-    public static void update(@NotNull Member member, String name, String phoneNumber, String status) {
+    public static boolean update(@NotNull Member member, String name, String phoneNumber, String status) {
+        if (phoneNumber != null && !phoneNumber.matches("^\\+?[\\d\\s-]{9,}$")) {
+            return false;
+        }
         getMemberDataStore(member).updateBuilder().member(member).name(name).phoneNumber(phoneNumber).build();
         if (member instanceof VIPMember && status.equalsIgnoreCase("member")) toMember((VIPMember) member);
         else if (!(member instanceof VIPMember) && status.equalsIgnoreCase("VIP")) toVIPMember(member);
+        return true;
     }
     public static void update(@NotNull Member member, Double point) {
         if (member.isActivated()) {

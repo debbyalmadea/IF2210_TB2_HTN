@@ -26,9 +26,7 @@ public class PieChart implements Plugin, View, CustomerDataStoreExtension {
     private List<Customer> customerData = new ArrayList<>();
     private List<VIPMember> vipMemberData = new ArrayList<>();
     private ObservableList<javafx.scene.chart.PieChart.Data> pieChartData = FXCollections.observableArrayList();
-
     public PieChart() {
-        System.out.println("INIT CHART");
         view = new BorderPane();
         pieChart = new javafx.scene.chart.PieChart(pieChartData);
         view.setCenter(pieChart);
@@ -48,7 +46,6 @@ public class PieChart implements Plugin, View, CustomerDataStoreExtension {
         return new SimpleStringProperty("Analytics Pie");
     }
     public void onMemberDataStoreChange(@NotNull DataStore<Member> memberDataStore) {
-        System.out.println("MEMBER DATA STORE! PIE");
         pieChart.getData().clear();
         memberData = memberDataStore.getData();
         graphData();
@@ -59,14 +56,11 @@ public class PieChart implements Plugin, View, CustomerDataStoreExtension {
         graphData();
     }
     public void onVIPMemberDataStoreChange(@NotNull DataStore<VIPMember> vipMemberDataStore) {
-        System.out.println("PLUGIN!");
-//        vipMemberData = vipMemberDataStore.getData();
         pieChart.getData().clear();
         vipMemberData = vipMemberDataStore.getData();
         graphData();
     }
     private void graphData() {
-        System.out.println("graphing...");
         pieChartData.add(new javafx.scene.chart.PieChart.Data("Customer only", customerData.size() - memberData.size() - vipMemberData.size()));
         pieChartData.add(new javafx.scene.chart.PieChart.Data("Member only", memberData.size()));
         pieChartData.add(new javafx.scene.chart.PieChart.Data("VIP Member", vipMemberData.size()));

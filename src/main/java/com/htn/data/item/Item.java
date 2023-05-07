@@ -1,7 +1,4 @@
 package com.htn.data.item;
-
-import com.htn.api.datastore.IItem;
-import javafx.scene.image.Image;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +10,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @AllArgsConstructor
-public class Item implements Serializable, IItem {
+public class Item implements Serializable {
     // static int numOfItem;
     // final int id = ++numOfItem;
     final String id;

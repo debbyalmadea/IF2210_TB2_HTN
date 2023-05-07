@@ -1,6 +1,4 @@
 package com.htn.view.product;
-
-import com.htn.api.view.Card;
 import com.htn.api.view.ProductViewExtension;
 import com.htn.application.PluginManager;
 import com.htn.data.item.Item;
@@ -8,16 +6,12 @@ import com.htn.api.view.View;
 import com.htn.view.bill.BillProductView;
 import lombok.AllArgsConstructor;
 import com.htn.view.CardBuilder;
-import javafx.scene.Node;
 import javafx.scene.layout.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-
 
 @AllArgsConstructor
 public class ProductCard {

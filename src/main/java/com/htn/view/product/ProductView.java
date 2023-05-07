@@ -35,7 +35,8 @@ public class ProductView implements View {
         this.parent = parent;
         content = new VBox();
         init();
-        content.getStylesheets().add("customer.css");
+        view.getStylesheets().add("customer.css");
+        content.setStyle("-fx-background-color: #F1F5F9;");
         view.setContent(content);
         ProductController.bindProductData(this);
     }

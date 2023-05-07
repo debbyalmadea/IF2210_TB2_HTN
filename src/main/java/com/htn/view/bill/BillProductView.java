@@ -60,7 +60,7 @@ public class BillProductView implements View {
         CustomerController.bindMemberData(this);
     }
 
-    public BillProductView(Tab parent, Bill bill){
+    public BillProductView(Tab parent, @NotNull Bill bill){
         quantity = bill.getCart();
         if (quantity == null) {
             quantity = new HashMap<String, Integer>();
@@ -298,7 +298,7 @@ public class BillProductView implements View {
         return listView;
     }
 
-    private @NotNull Pane getArrListView(List<Item> products) {
+    private @NotNull Pane getArrListView(@NotNull List<Item> products) {
         FlowPane listView = new FlowPane();
         if (products.size() == 0) {
             Label noItems = new Label("No products");

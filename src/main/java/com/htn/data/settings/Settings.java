@@ -76,6 +76,7 @@ public class Settings implements Serializable {
         // remove a plugin from plugins with name equal name
         for (int i = 0; i < plugins.size(); i++) {
             if (plugins.get(i).get(0).equals(name)) {
+                PluginManager.removePluginsWithJar(plugins.get(i).get(0));
                 plugins.remove(i);
                 break;
             }

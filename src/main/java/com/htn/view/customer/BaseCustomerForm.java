@@ -3,6 +3,7 @@ package com.htn.view.customer;
 import com.htn.api.view.View;
 import com.htn.data.customer.Customer;
 import com.htn.view.FieldBuilder;
+import com.htn.view.NumberField;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -50,7 +51,7 @@ public abstract class BaseCustomerForm<T extends Customer> implements View {
                 .field(nameField)
                 .label("Name")
                 .required(true).build();
-        phoneField = new TextField();
+        phoneField = new NumberField();
         VBox phone = FieldBuilder.builder()
                 .field(phoneField)
                 .label("Phone number")
