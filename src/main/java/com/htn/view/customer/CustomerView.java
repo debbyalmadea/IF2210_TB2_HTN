@@ -1,9 +1,9 @@
 package com.htn.view.customer;
 
+import com.htn.api.view.View;
 import com.htn.controller.CustomerController;
 import com.htn.data.customer.Customer;
 import com.htn.data.customer.Member;
-import com.htn.view.View;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;

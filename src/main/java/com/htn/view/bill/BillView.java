@@ -5,7 +5,7 @@ import com.htn.controller.CustomerController;
 import com.htn.controller.ProductController;
 import com.htn.data.bill.Bill;
 import com.htn.data.bill.FixedBill;
-import com.htn.data.customer.Customer;
+import com.htn.api.view.View;
 import com.htn.data.item.Item;
 import com.htn.datastore.BillDataStore;
 import com.htn.view.View;

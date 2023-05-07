@@ -1,13 +1,11 @@
 package com.htn.view.product;
 
 import com.htn.data.item.Item;
-import com.htn.view.View;
+import com.htn.api.view.View;
 import com.htn.view.bill.BillProductView;
-import javafx.scene.image.Image;
 import lombok.AllArgsConstructor;
 import com.htn.view.CardBuilder;
 import javafx.scene.Node;
-import java.net.URL;
 import javafx.scene.layout.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
