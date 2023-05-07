@@ -64,7 +64,7 @@ public class PluginManager {
                             classes.add(pluginClass);
                             ((Plugin)pluginClass.newInstance()).load();
                         }
-                    } catch (Exception e) {
+                    } catch (NoClassDefFoundError | InstantiationException | IllegalAccessException e) {
                         System.out.println(e.getMessage());
                     }
                 }
