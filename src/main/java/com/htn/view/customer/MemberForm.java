@@ -19,6 +19,8 @@ public class MemberForm extends BaseCustomerForm<Member> {
     }
     public void save() {
         CustomerController.update(customer, nameField.getText(), phoneField.getText(), statusField.getValue());
-        parent.setContent(ViewFactory.get("customer", parent).getView());
+        ViewFactory.getViews().keySet().forEach(System.out::println);
+
+        parent.setContent(ViewFactory.get("Customer", parent).getView());
     }
 }
