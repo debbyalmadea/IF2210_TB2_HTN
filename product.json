@@ -78,5 +78,15 @@
     "purchasingPrice": 70.0,
     "stock": 199,
     "category": "food"
+  },
+  {
+    "id": "1683445369460",
+    "name": "cat",
+    "description": "cute",
+    "image": "/download.jpg",
+    "sellingPrice": 17.0,
+    "purchasingPrice": 12.0,
+    "stock": 0,
+    "category": "pet"
   }
 ]

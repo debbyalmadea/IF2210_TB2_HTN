@@ -1,0 +1,22 @@
+[
+  {
+    "id": "2023-05-07 14:43:04.244",
+    "customerId": "1",
+    "pricePaid": 17.0,
+    "priceProfit": 5.0,
+    "breakdown": " SubTotal: 17.00\n Total: 17.00",
+    "date": "May 7, 2023, 2:43:04 PM",
+    "items": [
+      {
+        "id": "1683445369460",
+        "name": "cat",
+        "description": "cute",
+        "image": "/download.jpg",
+        "sellingPrice": 17.0,
+        "purchasingPrice": 12.0,
+        "stock": 1,
+        "category": "pet"
+      }
+    ]
+  }
+]

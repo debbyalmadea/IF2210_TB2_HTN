@@ -109,7 +109,7 @@ public class ProductView implements View {
 
     public void delete(Item item) {
         ProductController.deleteProduct(item);
-        parent.setContent(ViewFactory.get("product", parent).getView());
+        parent.setContent(new ProductView(parent).getView());
     }
 
 }
