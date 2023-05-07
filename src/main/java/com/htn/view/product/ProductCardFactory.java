@@ -1,7 +1,7 @@
 package com.htn.view.product;
 
 import com.htn.data.item.Item;
-import com.htn.view.View;
+import com.htn.api.view.View;
 import javafx.scene.layout.Pane;
 import org.jetbrains.annotations.NotNull;
 

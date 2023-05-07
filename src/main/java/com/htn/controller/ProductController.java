@@ -1,8 +1,8 @@
 package com.htn.controller;
 
+import com.htn.api.view.View;
 import com.htn.data.item.Item;
 import com.htn.datastore.ProductDataStore;
-import com.htn.view.View;
 import javafx.collections.ListChangeListener;
 
 import java.util.ArrayList;

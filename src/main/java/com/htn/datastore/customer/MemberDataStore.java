@@ -7,7 +7,6 @@ import com.htn.data.customer.VIPMember;
 import com.htn.datastore.utils.IDataWriter;
 import com.htn.datastore.utils.IFileReader;
 import com.htn.datastore.utils.OBJUtil;
-import com.htn.datastore.utils.XMLUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.Getter;
@@ -20,7 +19,7 @@ import java.util.ArrayList;
 
 public class MemberDataStore extends AMemberDataStore {
     @Getter
-    private ObservableList<Member> members;
+    private ObservableList<Member> data;
     private static MemberDataStore instance = null;
     private MemberDataStore() {
         super("member.obj");
@@ -36,9 +35,9 @@ public class MemberDataStore extends AMemberDataStore {
         IFileReader reader = new OBJUtil(type);
         try {
             Object result = reader.readFile(file);
-            members = FXCollections.observableList((ArrayList<Member>) result);
+            data = FXCollections.observableList((ArrayList<Member>) result);
         } catch (IOException e) {
-            members = FXCollections.observableList(new ArrayList<>());
+            data = FXCollections.observableList(new ArrayList<>());
             System.out.println("NO FILE READ MEMBER");
         }
     }
@@ -46,33 +45,33 @@ public class MemberDataStore extends AMemberDataStore {
         Type type = new TypeToken<ObservableList<Member>>() {}.getType();
         IDataWriter writer = new OBJUtil(type);
         try {
-            writer.writeData(file, new ArrayList<>(members));
+            writer.writeData(file, new ArrayList<>(data));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }
     public void create(@NotNull Customer customer, String name, String phoneNumber, Double point) {
         // TODO! Calculate the point ourselves (or is it in controller?)
-        members.add(new Member(customer.getId(), name, phoneNumber, point));
+        data.add(new Member(customer.getId(), name, phoneNumber, point));
         write();
     }
     public void create(@NotNull VIPMember vipmember) {
-        if (!members.contains(vipmember)) {
+        if (!data.contains(vipmember)) {
             // TODO! Calculate the point ourselves (or is it in controller?)
-            VIPMember member = new VIPMember(vipmember.getId(), vipmember.getName(), vipmember.getPhoneNumber(), vipmember.getPoint());
+            Member member = new Member(vipmember.getId(), vipmember.getName(), vipmember.getPhoneNumber(), vipmember.getPoint());
             member.setActivated(member.isActivated());
-            members.add(member);
+            data.add(member);
             write();
         }
     }
     public void create(Member member) {
-        if (!members.contains(member)) {
-            members.add(member);
+        if (!data.contains(member)) {
+            data.add(member);
             write();
         }
     }
     public void delete(Member member) {
-        members.remove(member);
+        data.remove(member);
         write();
     }
     @Override

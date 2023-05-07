@@ -1,4 +1,4 @@
-package com.htn.view;
+package com.htn.api.view;
 
 import javafx.beans.property.StringProperty;
 import javafx.scene.Node;

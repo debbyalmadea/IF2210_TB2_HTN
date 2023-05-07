@@ -1,5 +1,6 @@
 package com.htn.view;
 
+import com.htn.api.view.View;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;
@@ -21,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
-public class SettingsView implements View{
+public class SettingsView implements View {
     @Getter private final ScrollPane view;
     @Getter private final StringProperty title = new SimpleStringProperty("Settings");
     private VBox content;
