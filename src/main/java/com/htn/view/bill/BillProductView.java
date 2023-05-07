@@ -373,7 +373,7 @@ public class BillProductView implements View {
         return listView;
     }
 
-    public void add(Item product){
+    public void add(@NotNull Item product){
         if (this.quantity.containsKey(product.getId())) {
             Integer quantity = this.quantity.get(product.getId());
             if (product.getStock() == quantity) {

@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class CustomerDataStore implements DataStore {
     @Getter private ObservableList<Customer> data;
     private static CustomerDataStore instance = null;
-    private final String file = "customer.json";
+    private final String file = "customer";
     private CustomerDataStore() {
         read();
     }
