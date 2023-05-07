@@ -45,6 +45,8 @@ public class BillController {
     public static void deleteProduct(Item item) {
         ProductDataStore.getInstance().delete(item);
     }
+    public static FixedBill getFixedBillWithId(String id){return getAllFixedBill().stream().filter(fixedBill -> fixedBill.getId().equals(id))
+            .findFirst().orElse(null);}
 
 
 }

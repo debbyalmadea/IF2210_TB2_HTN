@@ -89,6 +89,8 @@ public class ProductDataStore {
             item.setStock(stock);
         }
         write();
+        delete(item);
+        addNewProduct(item);
     }
 
 }

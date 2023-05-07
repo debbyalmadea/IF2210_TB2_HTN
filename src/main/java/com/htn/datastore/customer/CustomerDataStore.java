@@ -5,7 +5,7 @@ import com.htn.data.customer.Customer;
 import com.htn.datastore.utils.IDataWriter;
 import com.htn.datastore.utils.IFileReader;
 import com.google.gson.reflect.TypeToken;
-import com.htn.datastore.utils.OBJUtil;
+import com.htn.datastore.utils.JSONUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.Getter;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class CustomerDataStore implements DataStore {
     @Getter private ObservableList<Customer> data;
     private static CustomerDataStore instance = null;
-    private final String file = "customer.obj";
+    private final String file = "customer.json";
     private CustomerDataStore() {
         read();
     }
@@ -28,18 +28,19 @@ public class CustomerDataStore implements DataStore {
     }
     public  void read() {
         Type type = new TypeToken<ArrayList<Customer>>() {}.getType();
-        IFileReader reader = new OBJUtil(type);
+        IFileReader reader = new JSONUtil(type);
         System.out.println("READ");
         try {
             Object result = reader.readFile(file);
             data = FXCollections.observableList((ArrayList<Customer>) result);
+            Customer.setNumOfCustomer(data.size());
         } catch (IOException e) {
             data = FXCollections.observableList(new ArrayList<>());
         }
     }
     public void write() {
         Type type = new TypeToken<ArrayList<Customer>>() {}.getType();
-        IDataWriter writer = new OBJUtil(type);
+        IDataWriter writer = new JSONUtil(type);
         try {
             writer.writeData(file, new ArrayList<>(data));
         } catch (IOException e) {
@@ -51,6 +52,13 @@ public class CustomerDataStore implements DataStore {
         data.add(baru);
         write();
         return baru;
+    }
+
+    public void update(Customer cust, boolean purchased) {
+        data.remove(cust);
+        cust.setPurchased(true);
+        data.add(cust);
+        write();
     }
     private void seed() {
         int i;

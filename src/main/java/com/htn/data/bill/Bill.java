@@ -10,6 +10,7 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 
 @Getter
 @AllArgsConstructor
@@ -20,9 +21,13 @@ public class Bill implements Serializable {
     private final String customerId;
     private Date date;
     private ArrayList<String> itemIds;
+    private Map<String, Integer> cart;
 
     public String getName() {
         Member member = CustomerController.getMember(Integer.parseInt(customerId));
+        if (member == null) {
+            CustomerController.getVIPMember(Integer.parseInt(customerId));
+        }
         if (member != null) {
             return member.getName();
         } else {

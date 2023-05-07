@@ -20,6 +20,13 @@ public class ProductController {
         return ProductDataStore.getInstance().getProducts();
     }
 
+    public static List<Item> getAllProductsNonZero() {
+        return ProductDataStore.getInstance().getProducts().stream().filter(e-> {
+            return e.getStock() > 0;
+        }).collect(Collectors.toList());
+    }
+
+
     public static List<Item> getProductWithCategoryLike(String category) {
         return getAllProducts().stream().filter(product -> product.getCategory().contains(category))
                 .collect(Collectors.toList());

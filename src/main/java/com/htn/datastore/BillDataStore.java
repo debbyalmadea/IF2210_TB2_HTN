@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 
 public class BillDataStore {
     @Getter
@@ -53,8 +54,8 @@ public class BillDataStore {
         }
     }
 
-    public void addNew(String id, String name, String customerId, double price, Date date, ArrayList<String> itemIds) {
-        bills.add(new Bill(id, price, customerId, date, itemIds));
+    public void addNew(String id, String name, String customerId, double price, Date date, ArrayList<String> itemIds, Map<String, Integer> quant) {
+        bills.add(new Bill(id, price, customerId, date, itemIds, quant));
         write();
     }
 

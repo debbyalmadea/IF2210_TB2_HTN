@@ -12,10 +12,10 @@ import java.io.Serializable;
 public class Member extends Customer implements Serializable {
     @NonNull String name;
     @NonNull String phoneNumber;
-    @NonNull Integer point;
+    @Setter @NonNull Double point = 0.0;
     private final static double discount = 0.0;
     boolean activated = true;
-    public Member(Integer id, @NonNull String name, @NonNull String phoneNumber, @NonNull Integer point) {
+    public Member(Integer id, @NonNull String name, @NonNull String phoneNumber, @NonNull Double point) {
         super(id);
         this.name = name;
         this.phoneNumber = phoneNumber;
@@ -23,5 +23,9 @@ public class Member extends Customer implements Serializable {
     }
     public double getDiscount() {
         return Member.discount;
+    }
+
+    public void givePoints(Double value) {
+        point += value * 0.01;
     }
 }

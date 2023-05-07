@@ -42,7 +42,21 @@ public class CustomerController {
         return getAllCustomers().stream()
                 .filter(customer -> getMember(customer.getId()) == null)
                 .filter(customer -> getVIPMember(customer.getId()) == null)
+                .filter(customer -> customer.isPurchased())
                 .collect(Collectors.toList());
+    }
+
+    public static Customer getCustomerById(String id) {
+        Optional<Customer> cust = getAllCustomers().stream()
+                .filter(customer -> getMember(customer.getId()) == null)
+                .filter(customer -> getVIPMember(customer.getId()) == null)
+                .filter(customer -> String.valueOf(customer.getId()).equalsIgnoreCase(id))
+                .findFirst();
+        if (cust.isPresent()) {
+            return cust.get();
+        } else {
+            return null;
+        }
     }
     public static @NotNull List<Member> getAllMembers() {
         return MemberDataStore.getInstance().getData();
@@ -119,10 +133,10 @@ public class CustomerController {
     }
     public static void create(Customer customer, String name, String phoneNumber, @NotNull String status) {
         if (status.equalsIgnoreCase("member")) {
-            Member newMember = new Member(customer.getId(), name, phoneNumber, 20);
+            Member newMember = new Member(customer.getId(), name, phoneNumber, 0.0);
             MemberDataStore.getInstance().create(newMember);
         } else if (status.equalsIgnoreCase("vip")) {
-            VIPMember newVIPMember = new VIPMember(customer.getId(), name, phoneNumber, 20);
+            VIPMember newVIPMember = new VIPMember(customer.getId(), name, phoneNumber, 0.0);
             VIPMemberDataStore.getInstance().create(newVIPMember);
         }
     }
@@ -131,7 +145,7 @@ public class CustomerController {
         if (member instanceof VIPMember && status.equalsIgnoreCase("member")) toMember((VIPMember) member);
         else if (!(member instanceof VIPMember) && status.equalsIgnoreCase("VIP")) toVIPMember(member);
     }
-    public static void update(@NotNull Member member, Integer point) {
+    public static void update(@NotNull Member member, Double point) {
         getMemberDataStore(member).updateBuilder().member(member).point(point).build();
     }
     private static void toVIPMember(@NotNull Member member) {
@@ -154,7 +168,11 @@ public class CustomerController {
                 .activated(true).build();
     }
 
+    public static void setPurchased(Customer cust, boolean purchased) {
+        CustomerDataStore.getInstance().update(cust, purchased);
+    }
     public static Customer create() {
         return CustomerDataStore.getInstance().create();
     }
+
 }

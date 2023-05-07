@@ -38,7 +38,7 @@ public class MemberDataStore extends AMemberDataStore {
             data = FXCollections.observableList((ArrayList<Member>) result);
         } catch (IOException e) {
             data = FXCollections.observableList(new ArrayList<>());
-            System.out.println("NO FILE");
+            System.out.println("NO FILE READ MEMBER");
         }
     }
     public void write() {
@@ -50,7 +50,7 @@ public class MemberDataStore extends AMemberDataStore {
             System.out.println(e.getMessage());
         }
     }
-    public void create(@NotNull Customer customer, String name, String phoneNumber, int point) {
+    public void create(@NotNull Customer customer, String name, String phoneNumber, Double point) {
         // TODO! Calculate the point ourselves (or is it in controller?)
         data.add(new Member(customer.getId(), name, phoneNumber, point));
         write();
@@ -75,7 +75,7 @@ public class MemberDataStore extends AMemberDataStore {
         write();
     }
     @Override
-    public void update(@NonNull Member member, String name, String phoneNumber, Integer point, Boolean activated) {
+    public void update(@NonNull Member member, String name, String phoneNumber, Double point, Boolean activated) {
         super.update(member, name, phoneNumber, point, activated);
         delete(member);
         create(member);
