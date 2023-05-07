@@ -33,7 +33,6 @@ public class ProductForm implements View {
     private final Stage primaryStage;
     private Item itemToChange;
 
-
     public ProductForm(Tab parent, Stage primaryStage, Item itemToChange) {
         view = new ScrollPane();
         this.parent = parent;
@@ -43,8 +42,8 @@ public class ProductForm implements View {
         view.getStylesheets().add("customer.css");
         view.setContent(content);
         view.setFitToWidth(true);
-//        view.setAlignment(Pos.CENTER);
-//        view.getChildren().add(content);
+        // view.setAlignment(Pos.CENTER);
+        // view.getChildren().add(content);
     }
 
     public void init() {
@@ -74,7 +73,8 @@ public class ProductForm implements View {
 
         VBox productPhoto = new VBox();
         TextField fileField = new TextField("/sample_product.png");
-//        VBox productPhoto = FieldBuilder.builder().field(fileField).label("Product Image").required(true).build();
+        // VBox productPhoto = FieldBuilder.builder().field(fileField).label("Product
+        // Image").required(true).build();
         productPhoto.getChildren().addAll(openButton);
 
         openButton.setOnAction(e -> {
@@ -88,7 +88,7 @@ public class ProductForm implements View {
             File selectedFile = photoChooser.showOpenDialog(primaryStage);
             if (selectedFile != null) {
                 String fileName = moveFile(selectedFile.getAbsoluteFile().toString());
-                fileField.setText("/"+fileName);
+                fileField.setText("/" + fileName);
                 System.out.println(fileName);
             }
         });
@@ -98,16 +98,35 @@ public class ProductForm implements View {
         save.setPrefWidth(Double.MAX_VALUE);
         save.setOnAction(e -> {
             String id = Long.toString(System.currentTimeMillis()); /// USING NOW TIME
-            String nameString = nameField.getText();
-            int stockInt = Integer.parseInt(stockField.getText());
-            double sellingPriceDouble = Double.parseDouble(sellingPriceField.getText());
-            double purchasingPriceDouble = Double.parseDouble(purchasingPriceField.getText());
-            String imageString = fileField.getText();
-            String descriptionString = descriptionField.getText();
-            String categoryString = categoryField.getText();
-            Item newItem = new Item(id, nameString, descriptionString, imageString, sellingPriceDouble,
-                    purchasingPriceDouble, stockInt, categoryString);
-            this.save(newItem, itemToChange);
+            String nameString;
+            int stockInt;
+            double sellingPriceDouble, purchasingPriceDouble;
+            String imageString, descriptionString, categoryString;
+
+            try {
+                nameString = nameField.getText();
+                stockInt = Integer.parseInt(stockField.getText());
+                sellingPriceDouble = Double.parseDouble(sellingPriceField.getText());
+                purchasingPriceDouble = Double.parseDouble(purchasingPriceField.getText());
+                imageString = fileField.getText();
+                descriptionString = descriptionField.getText();
+                categoryString = categoryField.getText();
+                if (nameString.equals("") || descriptionString.equals("") || categoryString.equals("") || stockInt < 0
+                        || sellingPriceDouble < 0 || purchasingPriceDouble < 0) {
+                    throw new Exception();
+                }
+
+                Item newItem = new Item(id, nameString, descriptionString, imageString, sellingPriceDouble,
+                        purchasingPriceDouble, stockInt, categoryString);
+                this.save(newItem, itemToChange);
+            } catch (Exception er) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Invalid input!");
+                alert.setContentText(
+                        "You should input stock, selling price, and purchasing price in number format, don't leave other field empty, except image!");
+                alert.showAndWait();
+            }
+
         });
         content.getChildren().addAll(new Label("New Product"), productName, stock, sellingPrice, purchasingPrice,
                 category, description, openButton, productPhoto, save);
@@ -151,10 +170,11 @@ public class ProductForm implements View {
             ProductController.addNewProduct(newItem);
         } else {
             ProductController.editProduct(itemToChange, newItem.getName(), newItem.getDescription(),
-                    newItem.getSellingPrice(), newItem.getPurchasingPrice(), newItem.getCategory(), newItem.getImage(), newItem.getStock());
+                    newItem.getSellingPrice(), newItem.getPurchasingPrice(), newItem.getCategory(), newItem.getImage(),
+                    newItem.getStock());
         }
+        parent.setContent(new ProductView(parent).getView());
 
-        parent.setContent(ViewFactory.get("product", parent).getView());
     }
 
 }
