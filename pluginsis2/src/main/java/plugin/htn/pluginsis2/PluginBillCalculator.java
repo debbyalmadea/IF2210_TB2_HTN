@@ -1,21 +1,21 @@
-package com.htn.view.bill;
+package plugin.htn.pluginsis2;
 
-import com.htn.api.IBillCalculator;
-import com.htn.controller.ProductController;
+import com.htn.api.Plugin;
 import com.htn.data.customer.Customer;
 import com.htn.data.customer.Member;
 import com.htn.data.customer.VIPMember;
+
+import com.htn.api.IBillCalculator;
+import com.htn.controller.ProductController;
 import com.htn.data.item.Item;
+import com.htn.view.bill.BillProductView;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
 
-import java.util.HashMap;
 import java.util.Map;
 
-public class BillCalculator implements IBillCalculator {
+public class PluginBillCalculator implements IBillCalculator, Plugin {
+
     private Map<String, Integer> quantity;
     private Double price=0.0;
     private Double profit=0.0;
@@ -27,13 +27,21 @@ public class BillCalculator implements IBillCalculator {
 
     private VBox summary;
 
-    BillCalculator() {
+    // TODO: SET FROM SETTINGS
+    private Double tax = 0.10;
+
+    private Double serviceCharge = 0.1;
+
+    private Double discount = 0.1;
+
+    public void load() {
+        System.out.println("LOADED");
+        BillProductView.setBillCalculator(new PluginBillCalculator());
+    }
+    public PluginBillCalculator() {
+
     }
 
-    public void setQuantity(Map<String, Integer> args) {
-        this.quantity = args;
-        init();
-    }
     public void init() {
         summary = new VBox();
         summary.setSpacing(20);
@@ -86,11 +94,35 @@ public class BillCalculator implements IBillCalculator {
         }
     }
 
+    private void useTax() {
+        Double _tax = tax * subTotal;
+        price += _tax;
+        profit += _tax;
+        breakdown += String.format(" Tax: %.2f\n", _tax);
+        summary.getChildren().add(new Label("Tax: " + String.format("%.2f", _tax)));
+    }
+
+    public void useServiceCharge() {
+        Double _tax = serviceCharge * subTotal;
+        price += _tax;
+        profit += _tax;
+        breakdown += String.format(" Serv. Charge: %.2f\n", _tax);
+        summary.getChildren().add(new Label("Serv. Charge: " + String.format("%.2f", _tax)));
+    }
+
+    public void useCustomDiscount() {
+        Double _tax = discount * subTotal;
+        price -= _tax;
+        profit -= _tax;
+        breakdown += String.format(" Plg. Disc.: %.2f\n", _tax);
+        summary.getChildren().add(new Label("Plg. Disc.: " + String.format("%.2f", _tax)));
+    }
+
     public void calculate(Customer cust, boolean isPoint) {
         init();
-        if (cust == null) {
-            return;
-        }
+        useTax();
+        useServiceCharge();
+        useCustomDiscount();
         if (cust instanceof Member) {
             Member member = (Member) cust;
             if (member.isActivated()) {
@@ -100,8 +132,6 @@ public class BillCalculator implements IBillCalculator {
                     usePoint(member);
                 }
             }
-        } else {
-            // Do Nothing
         }
     }
 
@@ -114,8 +144,12 @@ public class BillCalculator implements IBillCalculator {
     public Double getUsedPoints() {
         return usedPoints;
     };
-    public String getBreakdown() {
-        return breakdown;
-    };
+
+    @Override
+    public void setQuantity(Map<String, Integer> quantity) {
+        this.quantity = quantity;
+        calculate(null, false);
+    }
+
 
 }

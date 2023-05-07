@@ -46,6 +46,13 @@ public class CustomerController {
                 .collect(Collectors.toList());
     }
 
+    public static List<Customer> getCustomersOnlyPure() {
+        return getAllCustomers().stream()
+                .filter(customer -> getMember(customer.getId()) == null)
+                .filter(customer -> getVIPMember(customer.getId()) == null)
+                .collect(Collectors.toList());
+    }
+
     public static Customer getCustomerById(String id) {
         Optional<Customer> cust = getAllCustomers().stream()
                 .filter(customer -> getMember(customer.getId()) == null)
@@ -58,6 +65,17 @@ public class CustomerController {
             return null;
         }
     }
+
+    public static Customer getAllByName(String name) {
+        Customer customer= getCustomersOnlyPure().stream().filter(cust -> {
+            return String.valueOf(cust.getId()).equalsIgnoreCase(name);
+        }).findFirst().orElse(null);
+        if (customer != null) {
+            return customer;
+        }
+        Member member = getMemberByName(name);
+        return member;
+    }
     public static @NotNull List<Member> getAllMembers() {
         return MemberDataStore.getInstance().getData();
     }
@@ -68,12 +86,6 @@ public class CustomerController {
                 .orElse(null);
     }
 
-    public static Member getAll(Integer id) {
-        return getAllMembers().stream()
-                .filter(member -> member.getId().equals(id))
-                .findFirst()
-                .orElse(null);
-    }
 
 
     public static ArrayList<String> getAllMemberName() {
@@ -176,15 +188,4 @@ public class CustomerController {
         return CustomerDataStore.getInstance().create();
     }
 
-    public String getType(String id) {
-        Customer vip = getVIPMember(Integer.parseInt(id));
-        Customer member = getMember(Integer.parseInt(id));
-        if (vip != null) {
-            return "VIP";
-        } else if (member != null) {
-            return "Member";
-        } else {
-            return "Customer";
-        }
-    }
 }

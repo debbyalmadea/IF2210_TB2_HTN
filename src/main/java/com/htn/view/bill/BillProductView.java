@@ -1,5 +1,6 @@
 package com.htn.view.bill;
 
+import com.htn.api.IBillCalculator;
 import com.htn.controller.*;
 import com.htn.data.bill.Bill;
 import com.htn.data.bill.FixedBill;
@@ -39,7 +40,7 @@ public class BillProductView implements View {
 
     private Bill bill = null;
 
-    private BillCalculator billCalculator;
+    private static IBillCalculator billCalculator=null;
     private boolean isPoint = false;
 
     public BillProductView(Tab parent){
@@ -48,7 +49,9 @@ public class BillProductView implements View {
         view.fitToWidthProperty().set(true);
         this.parent = parent;
         content = new VBox();
-        billCalculator = new BillCalculator(quantity);
+        if (billCalculator == null) {
+            billCalculator = new BillCalculator();
+        }
         init();
         content.getStylesheets().add("customer.css");
         view.setContent(content);
@@ -63,7 +66,9 @@ public class BillProductView implements View {
             quantity = new HashMap<String, Integer>();
         }
         this.bill = bill;
-        billCalculator = new BillCalculator(bill.getCart());
+        if (billCalculator == null) {
+            billCalculator = new BillCalculator();
+        }
         view = new ScrollPane();
         view.fitToWidthProperty().set(true);
         this.parent = parent;
@@ -76,9 +81,13 @@ public class BillProductView implements View {
         CustomerController.bindMemberData(this);
     }
 
+    public static void setBillCalculator(IBillCalculator calculator) {
+        billCalculator = calculator;
+    }
+
     public void init(){
         content.getChildren().clear();
-        billCalculator = new BillCalculator(quantity);
+        billCalculator.setQuantity(quantity);
         HBox container = new HBox();
         VBox boxLeft = new VBox();
         VBox boxRight = new VBox();
@@ -129,24 +138,23 @@ public class BillProductView implements View {
         }
         checkValid();
 
-        Member customer = CustomerController.getMemberByName(pelanggan);
+        Customer customer = CustomerController.getAllByName(pelanggan);
         Button usePoint = null;
         if (customer != null) {
-            if (customer.isActivated()) {
+            if (customer instanceof Member && ((Member) customer).isActivated()) {
                 usePoint = new Button("Use Point");
                 usePoint.setOnAction(e-> {
                     isPoint = !isPoint;
                     init();
                 });
             }
-            billCalculator.useMember(customer, isPoint);
+            billCalculator.calculate(customer, isPoint);
         }
 
 
         comboBox.setValue(pelanggan);
         comboBox.setOnAction(e->{
             pelanggan = comboBox.getValue();
-            Member memberr = CustomerController.getMemberByName(pelanggan);
             init();
         });
 
@@ -197,16 +205,14 @@ public class BillProductView implements View {
         if (quantity.isEmpty()) {
             return;
         }
+
         Customer customer;
         if (pelanggan == null) {
             customer =  CustomerController.create();
         } else {
-            customer = CustomerController.getCustomerById(pelanggan);
-            if (customer == null) {
-                customer = CustomerController.getMemberByName(pelanggan);
-                if (customer == null) {
-                    return;
-                }
+            customer = CustomerController.getAllByName(pelanggan);
+            if (customer ==null) {
+                return;
             }
         }
         ArrayList<String> itemIds = new ArrayList<>(quantity.keySet());
@@ -223,14 +229,17 @@ public class BillProductView implements View {
         if (pelanggan == null) {
             customer =  CustomerController.create();
         } else {
-            customer = CustomerController.getMemberByName(pelanggan);
-            if (customer == null) {
-                customer = CustomerController.getCustomerById(pelanggan);
-                if (customer == null) {
-                    return;
-                }
-            } else {
+            customer = CustomerController.getAllByName(pelanggan);
+            if (customer ==null) {
+                System.out.println("NULL");
+                return;
             }
+            System.out.println("ID LG CHECKOUT" + customer.getId());
+        }
+        Double points = 0.0;
+        if (customer instanceof Member) {
+            Member memb = (Member) customer;
+            points = memb.getPoint() + 0.01 * (billCalculator.getPrice() - billCalculator.getUsedPoints());
         }
         ArrayList<String> itemIds = new ArrayList<>(quantity.keySet());
         ArrayList<Item> items = (ArrayList<Item>) ProductController.getListItem(itemIds);
@@ -251,8 +260,7 @@ public class BillProductView implements View {
         ProductController.sellProduct(items.get(0), items.get(0).getStock());
         CustomerController.setPurchased(customer, true);
         if (customer instanceof Member) {
-            Member memb = (Member) customer;
-            CustomerController.update(memb, memb.getPoint() + 0.01 * billCalculator.getPrice());
+            CustomerController.update((Member) customer, points);
         }
         this.pelanggan = null;
         this.quantity = new HashMap<String, Integer>();
