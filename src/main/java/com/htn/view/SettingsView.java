@@ -1,6 +1,8 @@
 package com.htn.view;
 
 import com.htn.api.view.View;
+import com.htn.datastore.SettingsDataStore;
+import com.htn.data.settings.Settings;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;
@@ -17,10 +19,12 @@ import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.scene.image.Image;
 
+
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import javafx.util.Pair;
 
 public class SettingsView implements View {
     @Getter private final ScrollPane view;
@@ -28,6 +32,7 @@ public class SettingsView implements View {
     private VBox content;
     @Getter private final Tab parent;
     private ComboBox<String> extensionbox;
+    private SettingsDataStore settingsDataStore = SettingsDataStore.getInstance();
 
     public SettingsView(Tab parent) {
         view = new ScrollPane();
@@ -51,6 +56,11 @@ public class SettingsView implements View {
         String[] extensionFormats = {".json", ".xml", ".obj"};
         extensionbox = new ComboBox<>();
         extensionbox.getItems().addAll(extensionFormats);
+        extensionbox.setValue(settingsDataStore.getSettings().getFileExtension());
+        extensionbox.valueProperty().addListener((observable, oldValue, newValue) -> {
+            settingsDataStore.getSettings().setFileExtension(newValue);
+            settingsDataStore.write();
+        });
 
         HBox IOHBox = new HBox();
         IOHBox.setSpacing(10);
@@ -92,19 +102,20 @@ public class SettingsView implements View {
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Jar File", "*.jar" ));
         File selectedFile = fileChooser.showOpenDialog(null);
         if (selectedFile != null) {
-            // Perform action with the selected file
+            String pluginName = selectedFile.getName();
+            String pluginPath = selectedFile.getAbsolutePath();
+            settingsDataStore.getSettings().addPlugin(pluginName,pluginPath);
+            settingsDataStore.write();
+            content.getChildren().remove(3);
+            content.getChildren().add(getPlugin());
         }
     }
 
     private @NotNull Pane getPlugin(){
-        String[] plugin1 = {"Chart Plugin 1", "root/java/plugins"};
-        String[] plugin2 = {"Chart Plugin 2", "root/java/plugins"};
-
-        String[][] pluginsData = {plugin1,plugin2};
 
         VBox plugins = new VBox();
 
-        for(String[] element : pluginsData){
+        for(int i = 0; i < settingsDataStore.getSettings().getPlugins().size(); i++){
             String imagePath = "src/main/resources/image/delete-plugin.png";
             File file = new File(imagePath);
             String imageUrl = file.toURI().toString();
@@ -113,9 +124,9 @@ public class SettingsView implements View {
             trashImageView.setFitWidth(20);
             trashImageView.setFitHeight(20);
             // Diganti sesudah punya data dari backend buat plugin
-            Label name = new Label(element[0]);
+            Label name = new Label(settingsDataStore.getSettings().getPlugins().get(i).get(0));
             name.getStyleClass().add("normal-text");
-            Label path = new Label(element[1]);
+            Label path = new Label(settingsDataStore.getSettings().getPlugins().get(i).get(1));
             path.getStyleClass().add("grey-text");
             VBox pluginInfo = new VBox();
             pluginInfo.getChildren().addAll(name, path);
