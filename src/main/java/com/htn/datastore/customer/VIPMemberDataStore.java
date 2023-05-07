@@ -38,7 +38,7 @@ public class VIPMemberDataStore extends AMemberDataStore implements SettingsObse
     public  void read() {
         Type type = new TypeToken<ArrayList<VIPMember>>() {}.getType();
         try {
-            Settings setting = SettingsDataStore.getInstanceWithoutPlugin().getSettings();
+            Settings setting = SettingsDataStore.getInstance().getSettings();
             IFileReader reader = IOUtilFactory.getReader(setting.getFileExtension(), type);
             Object result = reader.readFile(setting.getPathDir() + "\\" + file + setting.getFileExtension());
             data = FXCollections.observableList((ArrayList<VIPMember>) result);

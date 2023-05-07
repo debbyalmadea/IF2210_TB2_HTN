@@ -24,7 +24,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-public class SettingsDataStore implements ISettingsDataStore, SettingsObserver{
+public class SettingsDataStore implements ISettingsDataStore {
     @Getter
     private Settings settings;
     private static SettingsDataStore instance = null;
@@ -33,42 +33,19 @@ public class SettingsDataStore implements ISettingsDataStore, SettingsObserver{
     private SettingsDataStore() {
         read();
     }
-
-    private SettingsDataStore(boolean plugin) {
-        if (plugin == false) {
-           readWithoutPlugin();
-        }
-    }
-
-    @Getter String dirPath = "";
     public static SettingsDataStore getInstance() {
         if (instance == null) {
             instance = new SettingsDataStore();
         }
         return instance;
     }
-
-    public static SettingsDataStore getInstanceWithoutPlugin() {
-        return new SettingsDataStore(false);
-    }
     public void read() {
         Type type = new TypeToken<Settings>() {}.getType();
         try {
-            IFileReader reader = IOUtilFactory.getReader(".json", type);
-            Object result = reader.readFile( file + ".json");
+            IFileReader reader = IOUtilFactory.getReader(Settings.getInstance().getFileExtension(), type);
+            Object result = reader.readFile(file + Settings.getInstance().getFileExtension());
             settings = (Settings) result;
             settings.getPlugins().forEach(plugin -> PluginManager.load(plugin.get(1)));
-        } catch (IOException e) {
-            settings = Settings.getInstance();
-        }
-    }
-
-    public void readWithoutPlugin() {
-        Type type = new TypeToken<Settings>() {}.getType();
-        try {
-            IFileReader reader = IOUtilFactory.getReader(".json", type);
-            Object result = reader.readFile( file + ".json");
-            settings = (Settings) result;
         } catch (IOException e) {
             settings = Settings.getInstance();
         }
@@ -76,17 +53,10 @@ public class SettingsDataStore implements ISettingsDataStore, SettingsObserver{
     public void write() {
         Type type = new TypeToken<Settings>() {}.getType();
         try {
-            IDataWriter writer = IOUtilFactory.getWriter(".json", type);
-            if (writer != null) writer.writeData(  file + ".json", settings);
+            IDataWriter writer = IOUtilFactory.getWriter(Settings.getInstance().getFileExtension(), type);
+            if (writer != null) writer.writeData(file + Settings.getInstance().getFileExtension(), settings);
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-    }
-
-    @Override
-    public void update(ISettingsDataStore settings) {
-        this.settings = settings.getSettings();
-        write();
-        read();
     }
 }

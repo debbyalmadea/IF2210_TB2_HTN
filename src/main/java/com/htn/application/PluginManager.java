@@ -20,7 +20,7 @@ public class PluginManager {
     public static List<Object> getPluginsWithClass(@NotNull Class<?> cls) {
         List<Class<?>> pluginsClass = new ArrayList<>();
         plugins.keySet().forEach(key -> {
-                    pluginsClass.addAll(plugins.get(key)
+            pluginsClass.addAll(plugins.get(key)
                     .stream().filter(cls::isAssignableFrom).collect(Collectors.toList()));
         });
         return pluginsClass.stream().map(plugin -> {
@@ -62,15 +62,14 @@ public class PluginManager {
                         Class<?> pluginClass = classLoader.loadClass(className);
                         if (Plugin.class.isAssignableFrom(pluginClass) && Modifier.isPublic(pluginClass.getModifiers())) {
                             classes.add(pluginClass);
-                            ((Plugin)pluginClass.newInstance()).load();
                         }
-                    } catch (Exception e) {
+                    } catch (NoClassDefFoundError e) {
                         System.out.println(e.getMessage());
                     }
                 }
             }
             plugins.put(file.getName(), classes);
-        } catch (Exception e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }

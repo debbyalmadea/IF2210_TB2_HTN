@@ -34,7 +34,7 @@ public class PieChart implements Plugin, View, CustomerDataStoreExtension {
         BasePlugin.bindCustomerDataStore(this);
     }
     public void load() {
-        BasePlugin.addPage("Analytics Pie", this.getClass());
+        BasePlugin.addPage("analytics pie", this.getClass());
     }
     public Node getView() {
         return this.view;

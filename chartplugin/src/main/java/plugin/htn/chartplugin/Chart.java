@@ -29,7 +29,7 @@ public class Chart implements Plugin, View, CustomerDataStoreExtension {
         BasePlugin.bindCustomerDataStore(this);
     }
     public void load() {
-        BasePlugin.addPage("Analytics", this.getClass());
+        BasePlugin.addPage("analytics", this.getClass());
     }
     public Node getView() {
         return this.view;
