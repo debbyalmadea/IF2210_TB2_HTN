@@ -1,9 +1,4 @@
 {
   "fileExtension": ".xml",
-  "plugins": [
-    [
-      "IF2210_TB2_HTN.jar",
-      "C:\\Users\\alilo\\OneDrive\\Documents\\KULIAH\\Tingkat 2\\OOP\\IF2210_TB2_HTN\\out\\artifacts\\app_jar\\IF2210_TB2_HTN.jar"
-    ]
-  ]
+  "plugins": []
 }

@@ -72,8 +72,8 @@ public class SettingsView implements View {
         String imagePath = "src/main/resources/image/add-plugin.png";
         File file = new File(imagePath);
         String imageUrl = file.toURI().toString();
-        Image trashImage = new Image(imageUrl);
-        ImageView addPluginView = new ImageView(trashImage);
+        Image addImage = new Image(imageUrl);
+        ImageView addPluginView = new ImageView(addImage);
         addPluginView.setFitWidth(20);
         addPluginView.setFitHeight(20);
         addPluginView.setOnMouseClicked(e ->{
@@ -116,6 +116,7 @@ public class SettingsView implements View {
         VBox plugins = new VBox();
 
         for(int i = 0; i < settingsDataStore.getSettings().getPlugins().size(); i++){
+            final int currentIndex = i;
             String imagePath = "src/main/resources/image/delete-plugin.png";
             File file = new File(imagePath);
             String imageUrl = file.toURI().toString();
@@ -123,6 +124,12 @@ public class SettingsView implements View {
             ImageView trashImageView = new ImageView(trashImage);
             trashImageView.setFitWidth(20);
             trashImageView.setFitHeight(20);
+            trashImageView.setOnMouseClicked(e ->{
+                settingsDataStore.getSettings().removePlugin(settingsDataStore.getSettings().getPlugins().get(currentIndex).get(0));
+                settingsDataStore.write();
+                content.getChildren().remove(3);
+                content.getChildren().add(getPlugin());
+            });
             // Diganti sesudah punya data dari backend buat plugin
             Label name = new Label(settingsDataStore.getSettings().getPlugins().get(i).get(0));
             name.getStyleClass().add("normal-text");
