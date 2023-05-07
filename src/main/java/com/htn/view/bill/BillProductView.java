@@ -5,6 +5,7 @@ import com.htn.data.bill.Bill;
 import com.htn.data.bill.FixedBill;
 import com.htn.data.customer.Customer;
 import com.htn.data.customer.Member;
+import com.htn.data.customer.VIPMember;
 import com.htn.data.item.Item;
 import com.htn.datastore.customer.CustomerDataStore;
 import com.htn.view.View;
@@ -37,12 +38,10 @@ public class BillProductView implements View {
 
     private String pelanggan = null;
 
-    private Double price = null;
-    private Double profit = null;
-
     private Bill bill = null;
 
     private BillCalculator billCalculator;
+    private boolean isPoint = false;
 
     public BillProductView(Tab parent){
         quantity = new HashMap<String, Integer>();
@@ -55,6 +54,8 @@ public class BillProductView implements View {
         content.getStylesheets().add("customer.css");
         view.setContent(content);
         ProductController.bindProductData(this);
+        CustomerController.bindVIPMemberData(this);
+        CustomerController.bindMemberData(this);
     }
 
     public BillProductView(Tab parent, Bill bill){
@@ -71,6 +72,9 @@ public class BillProductView implements View {
         init();
         content.getStylesheets().add("customer.css");
         view.setContent(content);
+        ProductController.bindProductData(this);
+        CustomerController.bindVIPMemberData(this);
+        CustomerController.bindMemberData(this);
     }
 
     public void init(){
@@ -92,20 +96,7 @@ public class BillProductView implements View {
 
         // Search button
         Button searchButton = new Button("Search");
-        searchButton.setOnAction(e -> {
-            System.out.println(search.getText());
-            Dialog<Void> dialog =  new Dialog<>();
-            dialog.setTitle("Mock Products");
-            dialog.setHeaderText("List of mock product that matched");
 
-            VBox dialogContent = new VBox();
-            ListView<String> listView = new ListView<>();
-            listView.getItems().addAll("Product 1", "Product 2", "Product 3");
-            dialogContent.getChildren().add(listView);
-
-            dialog.showAndWait();
-
-        });
         //Searching elements holder
         HBox searchBox = new HBox();
         HBox.setHgrow(search, Priority.ALWAYS); // This line sets the search field to use all available space
@@ -127,17 +118,37 @@ public class BillProductView implements View {
         footer.setSpacing(20);
         Label titleLabel = new Label("Bill");
 
+
+
         SearchableComboBox<String> comboBox = new SearchableComboBox<String>();
         if (bill != null) {
             this.pelanggan = bill.getName();
             comboBox.getItems().addAll(pelanggan);
+            comboBox.setDisable(true);
         } else {
             comboBox.getItems().addAll(CustomerController.getAllMemberName());
         }
         checkValid();
+
+        Member customer = CustomerController.getMemberByName(pelanggan);
+        Button usePoint = null;
+        if (customer != null) {
+            if (customer.isActivated()) {
+                usePoint = new Button("Use Point");
+                usePoint.setOnAction(e-> {
+                    isPoint = !isPoint;
+                    init();
+                });
+            }
+            billCalculator.useMember(customer, isPoint);
+        }
+
+
         comboBox.setValue(pelanggan);
         comboBox.setOnAction(e->{
             pelanggan = comboBox.getValue();
+            Member memberr = CustomerController.getMemberByName(pelanggan);
+            init();
         });
 
         Button simpanButton = new Button("Simpan");
@@ -145,6 +156,7 @@ public class BillProductView implements View {
         simpanButton.setOnAction(e-> {
             this.handleSimpan();
         });
+
 
         checkoutButton.setOnAction(e->{
             this.handleCheckOutButton();
@@ -159,13 +171,22 @@ public class BillProductView implements View {
 
         // Set the vertical grow priority of the footer to ALWAYS
         VBox.setVgrow(footer, Priority.ALWAYS);
-        summary.getChildren().addAll(new Label("Breakdown: "), billCalculator.getSummary(),footer);
+        summary.getChildren().addAll(new Label("Breakdown: "), billCalculator.getSummary(), new Label("Total: " + billCalculator.getPrice()), footer);
 
         boxLeft.getChildren().addAll(
                 searchBox, ProductBox, getListView("product")
         );
+        searchButton.setOnAction(e -> {
+            String textToSearch = search.getText();
+            boxLeft.getChildren().set(2, getArrListView(ProductController.getSearchedProducts(textToSearch)));
+        });
+
+
         // Add the components to the boxRight VBox
         boxRight.getChildren().addAll(titleLabel, comboBox, createBillListView(), summary);
+        if (usePoint != null) {
+            boxRight.getChildren().add(usePoint);
+        }
 
         container.getChildren().addAll(boxLeft, boxRight);
 
@@ -189,7 +210,6 @@ public class BillProductView implements View {
                 }
             }
         }
-        billCalculator = new BillCalculator(quantity);
         ArrayList<String> itemIds = new ArrayList<>(quantity.keySet());
         BillController.addNewBill((new Bill(new Date().toLocaleString(), billCalculator.getPrice(), String.valueOf(customer.getId()), new Date(), itemIds, quantity)));
         this.pelanggan = null;
@@ -213,23 +233,27 @@ public class BillProductView implements View {
             } else {
             }
         }
-        billCalculator = new BillCalculator(quantity);
         ArrayList<String> itemIds = new ArrayList<>(quantity.keySet());
         ArrayList<Item> items = (ArrayList<Item>) ProductController.getListItem(itemIds);
+        ArrayList<Item> persistentItems = new ArrayList<>();
         items.forEach(item->{
-            ProductController.sellProduct(item, quantity.get(item.getId()));
+            Item dup = new Item(item);
+            dup.setStock(quantity.get(item.getId()));
+            persistentItems.add(dup);
         });
-        BillController.addNewFixedBill(new FixedBill(String.valueOf(new Timestamp(new Date().getTime())), String.valueOf(customer.getId()), this.billCalculator.getPrice(), this.billCalculator.getProfit(),this.billCalculator.getBreakDown(), new Date(), items));
-        CustomerController.setPurchased(customer, true);
-        System.out.println("REACHED");
-        if (customer instanceof Member) {
-            Member memb = (Member) customer;
-            CustomerController.update(memb, memb.getPoint() + 0.01 * billCalculator.getPrice());
-            System.out.println("Gave points");
-        }
+        BillController.addNewFixedBill(new FixedBill(String.valueOf(new Timestamp(new Date().getTime())), String.valueOf(customer.getId()), this.billCalculator.getPrice(), this.billCalculator.getProfit(),this.billCalculator.getBreakDown() + String.format(" Total: %.2f", billCalculator.getPrice()), new Date(), persistentItems));
         if (bill != null) {
             BillController.deleteBill(bill);
             bill = null;
+        }
+        items.forEach(item->{
+            item.setStock(item.getStock() - quantity.get(item.getId()));
+        });
+        ProductController.sellProduct(items.get(0), items.get(0).getStock());
+        CustomerController.setPurchased(customer, true);
+        if (customer instanceof Member) {
+            Member memb = (Member) customer;
+            CustomerController.update(memb, memb.getPoint() + 0.01 * billCalculator.getPrice());
         }
         this.pelanggan = null;
         this.quantity = new HashMap<String, Integer>();
@@ -264,6 +288,25 @@ public class BillProductView implements View {
         items.forEach(e-> {
             listView.getChildren().add(ProductCardFactory.getCard(e, this));
         });
+        return listView;
+    }
+
+    private @NotNull Pane getArrListView(List<Item> products) {
+        FlowPane listView = new FlowPane();
+        if (products.size() == 0) {
+            Label noItems = new Label("No products");
+            noItems.getStylesheets().add("application.css");
+            noItems.getStyleClass().add("body");
+            listView.getChildren().add(noItems);
+        } else {
+            listView.setMaxWidth(Double.MAX_VALUE);
+            listView.setHgap(20);
+            listView.setVgap(20);
+            for (Item i : products) {
+                listView.getChildren().add(ProductCardFactory.getCard(i, this));
+            }
+        }
+
         return listView;
     }
 

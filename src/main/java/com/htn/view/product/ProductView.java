@@ -76,7 +76,6 @@ public class ProductView implements View {
             String textToSearch = search.getText();
             AllProductLabel.setText("Hasil pencarian: " + textToSearch);
             content.getChildren().set(2, getListView(ProductController.getSearchedProducts(textToSearch)));
-
         });
     }
 

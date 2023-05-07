@@ -2,6 +2,7 @@ package com.htn.view.bill;
 
 import com.htn.controller.BillController;
 import com.htn.controller.CustomerController;
+import com.htn.controller.ProductController;
 import com.htn.data.bill.Bill;
 import com.htn.data.bill.FixedBill;
 import com.htn.data.customer.Customer;
@@ -9,6 +10,7 @@ import com.htn.data.item.Item;
 import com.htn.datastore.BillDataStore;
 import com.htn.view.View;
 
+import com.htn.view.product.ProductCardFactory;
 import javafx.application.Platform;
 import javafx.beans.Observable;
 import com.itextpdf.text.DocumentException;
@@ -126,6 +128,15 @@ public class BillView implements View {
         content.getChildren().addAll(
                 searchBox, BillLabel, getListView("bill"),
                 fixedBillBox, getListView("fixedbill"));
+        searchButton.setOnAction(e -> {
+            String textToSearch = searchField.getText();
+            if (textToSearch != null || !textToSearch.equalsIgnoreCase("")) {
+                content.getChildren().set(2, getArrListView(BillController.getSearchedBill(textToSearch)));
+                content.getChildren().set(4, getArrListView(BillController.getSearchedFixedBill(textToSearch)));
+            } else {
+                init();
+            }
+      });
     }
 
     private @NotNull Pane getListView(String request) {
@@ -145,6 +156,25 @@ public class BillView implements View {
                 listView.getChildren().add(BillCardFactory.getCard(this, e));
             });
 
+        }
+
+        return listView;
+    }
+
+    private @NotNull Pane getArrListView(List<Object> bills) {
+        FlowPane listView = new FlowPane();
+        if (bills.size() == 0) {
+            Label noItems = new Label("No Bills");
+            noItems.getStylesheets().add("application.css");
+            noItems.getStyleClass().add("body");
+            listView.getChildren().add(noItems);
+        } else {
+            listView.setMaxWidth(Double.MAX_VALUE);
+            listView.setHgap(20);
+            listView.setVgap(20);
+            for (Object i : bills) {
+                listView.getChildren().add(BillCardFactory.getCard(this,i ));
+            }
         }
 
         return listView;

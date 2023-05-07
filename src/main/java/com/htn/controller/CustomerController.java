@@ -148,7 +148,9 @@ public class CustomerController {
         else if (!(member instanceof VIPMember) && status.equalsIgnoreCase("VIP")) toVIPMember(member);
     }
     public static void update(@NotNull Member member, Double point) {
-        getMemberDataStore(member).updateBuilder().member(member).point(point).build();
+        if (member.isActivated()) {
+            getMemberDataStore(member).updateBuilder().member(member).point(point).build();
+        }
     }
     private static void toVIPMember(@NotNull Member member) {
         MemberDataStore.getInstance().delete(member);
@@ -162,7 +164,6 @@ public class CustomerController {
         getMemberDataStore(member).updateBuilder()
                 .member(member)
                 .activated(false).build();
-        getAllVIPMembers().forEach(System.out::println);
     }
     public static void activate(@NotNull Member member) {
         getMemberDataStore(member).updateBuilder()
@@ -177,4 +178,15 @@ public class CustomerController {
         return CustomerDataStore.getInstance().create();
     }
 
+    public String getType(String id) {
+        Customer vip = getVIPMember(Integer.parseInt(id));
+        Customer member = getMember(Integer.parseInt(id));
+        if (vip != null) {
+            return "VIP";
+        } else if (member != null) {
+            return "Member";
+        } else {
+            return "Customer";
+        }
+    }
 }

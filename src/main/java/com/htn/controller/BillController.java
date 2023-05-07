@@ -10,6 +10,8 @@ import com.htn.view.View;
 import javafx.collections.ListChangeListener;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class BillController {
 
@@ -47,6 +49,14 @@ public class BillController {
     }
     public static FixedBill getFixedBillWithId(String id){return getAllFixedBill().stream().filter(fixedBill -> fixedBill.getId().equals(id))
             .findFirst().orElse(null);}
+
+    public static List<Object> getSearchedBill(String  textToSearch) {
+        return (List) getAllBill().stream().filter(bill->bill.getId().equalsIgnoreCase(textToSearch) || bill.getName().equalsIgnoreCase(textToSearch)).toList();
+    }
+
+    public static List<Object> getSearchedFixedBill(String  textToSearch) {
+        return (List) getAllFixedBill().stream().filter(bill->bill.getId().equalsIgnoreCase(textToSearch) || bill.getName().equalsIgnoreCase(textToSearch)).toList();
+    }
 
 
 }

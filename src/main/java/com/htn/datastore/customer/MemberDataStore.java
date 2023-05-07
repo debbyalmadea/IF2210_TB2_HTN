@@ -59,7 +59,7 @@ public class MemberDataStore extends AMemberDataStore {
     public void create(@NotNull VIPMember vipmember) {
         if (!members.contains(vipmember)) {
             // TODO! Calculate the point ourselves (or is it in controller?)
-            VIPMember member = new VIPMember(vipmember.getId(), vipmember.getName(), vipmember.getPhoneNumber(), vipmember.getPoint());
+            Member member = new Member(vipmember.getId(), vipmember.getName(), vipmember.getPhoneNumber(), vipmember.getPoint());
             member.setActivated(member.isActivated());
             members.add(member);
             write();

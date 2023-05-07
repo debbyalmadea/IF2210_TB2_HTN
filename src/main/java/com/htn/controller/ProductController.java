@@ -7,6 +7,7 @@ import javafx.collections.ListChangeListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -71,7 +72,7 @@ public class ProductController {
     }
 
     public static void sellProduct(Item item, Integer quantity) {
-        ProductDataStore.getInstance().editProduct(item, null, null, null, null, null,null, item.getStock()-quantity);
+        ProductDataStore.getInstance().editProduct(item, null, null, null, null, null,null, quantity);
     }
 
     public static List<Item> getListItem(ArrayList<String> itemIds) {

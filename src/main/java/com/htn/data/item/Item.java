@@ -25,5 +25,14 @@ public class Item implements Serializable {
     @NotNull String category;
 
 
-
+    public Item(Item item) {
+        id = item.id;
+        name = item.name;
+        description = item.description;
+        image = item.image;
+        sellingPrice = item.sellingPrice;
+        purchasingPrice = item.purchasingPrice;
+        stock = item.stock;
+        category = item.category;
+    }
 }

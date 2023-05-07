@@ -39,9 +39,10 @@ public class ItemViewCellFactory implements Callback<ListView<Item>, ListCell<It
                 descLabel.setMaxWidth(200);
 
                 Label priceLabel = new Label("$" + item.getSellingPrice());
+                Label stockLabel = new Label("QTY:" + item.getStock());
                 priceLabel.setFont(Font.font("Arial", 14));
 
-                HBox itemBox = new HBox(imageView, new VBox(nameLabel, descLabel), priceLabel);
+                HBox itemBox = new HBox(imageView, new VBox(nameLabel, descLabel), priceLabel, stockLabel);
                 itemBox.setSpacing(10);
                 itemBox.setAlignment(Pos.CENTER_LEFT);
                 itemBox.setPadding(new Insets(10, 0, 10, 0));
