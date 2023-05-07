@@ -11,6 +11,8 @@ public class CustomerForm extends BaseCustomerForm<Customer> {
     }
     public void save() {
         CustomerController.create(customer, nameField.getText(), phoneField.getText(), statusField.getValue().toString());
-        parent.setContent(ViewFactory.get("customer", parent).getView());
+        ViewFactory.getViews().keySet().forEach(System.out::println);
+
+        parent.setContent(ViewFactory.get("Customer", parent).getView());
     }
 }

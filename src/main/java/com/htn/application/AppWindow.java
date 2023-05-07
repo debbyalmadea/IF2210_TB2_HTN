@@ -37,12 +37,12 @@ public class AppWindow extends Application {
 
         SettingsDataStore.getInstance();
         HashMap<String, Class<? extends View>> views = ViewFactory.getViews();
-        views.put("Main", MainView.class);
-        views.put("New Bill", BillProductView.class);
-        views.put("Bill", BillView.class);
-        views.put("Customer", CustomerView.class);
-        views.put("Product", ProductView.class);
-        views.put("Settings", SettingsView.class);
+        views.put("main", MainView.class);
+        views.put("new bill", BillProductView.class);
+        views.put("bill", BillView.class);
+        views.put("customer", CustomerView.class);
+        views.put("product", ProductView.class);
+        views.put("settings", SettingsView.class);
 
         stage.setTitle("HTN Manager");
         tabPane = new TabPane();
