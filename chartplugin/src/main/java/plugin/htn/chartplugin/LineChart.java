@@ -26,7 +26,6 @@ public class LineChart implements View, CustomerDataStoreExtension {
     private List<VIPMember> vipMemberData = new ArrayList<>();
     private final Node view;
     public LineChart() {
-        System.out.println("INIT LINE CHART");
         view = new BorderPane();
         init();
     }

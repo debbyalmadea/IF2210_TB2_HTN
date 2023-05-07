@@ -54,14 +54,14 @@ public class MainView implements View {
         // Add the banner and clock text to the VBox
         content.getChildren().addAll(imageView, timeText);
         content.setSpacing(20);
-        Text footerText = new Text("Created by John Doe (0123456) and Jane Smith (6543210)");
-
         // Add the footer text to the VBox
-        content.getChildren().add(footerText);
-
-        // Set the alignment of the footer text to center
-//        VBox.setMargin(footerText, new Insets(20, 0, 0, 0));
-//        VBox.setMargin(imageView, new Insets(0, 0, 20, 0));
+        content.getChildren().addAll(
+                new Text("13521075 - Muhammad Rifko Favian"),
+                new Text("13521123 - William Nixon"),
+                new Text("13521128 - Muhammad Abdul Aziz Ghazali"),
+                new Text("13521153 - Made Debby Almadea Putri"),
+                new Text("13521155 - Kandida Edgina Gunawan")
+        );
 
         // Start the clock thread
         clockThread = new Thread(() -> {

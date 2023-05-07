@@ -25,7 +25,7 @@ public class CurrencyPlugin implements Plugin, ProductViewExtension, ProductData
         System.out.println("Loading currency plugin...");
     }
     @Override
-    public void updateCardDisplay(@NotNull Card card, @NotNull IItem item) {
+    public void updateCardDisplay(@NotNull Card card, @NotNull Item item) {
         card.setSubtitle(format(item.getSellingPrice()));
         Label purchasePrice = (Label) card.getBody().getChildren().get(0);
         purchasePrice.setText("Purchasing price: " + format(item.getPurchasingPrice()));

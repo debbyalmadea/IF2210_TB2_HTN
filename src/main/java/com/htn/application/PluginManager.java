@@ -16,23 +16,25 @@ import java.util.jar.JarFile;
 import java.util.stream.Collectors;
 
 public class PluginManager {
-    private static final ArrayList<Class<?>> plugins = new ArrayList<>();
-//    public static void removePlugin(String className) {
-//        List<Class<?>> filteredPlugin = plugins.stream()
-//                .filter(plugin -> plugin.getName().equalsIgnoreCase(className))
-//                .collect(Collectors.toList());
-//        plugins.removeAll(filteredPlugin);
-//    }
+    private static final HashMap<String, ArrayList<Class<?>>> plugins = new HashMap<>();
     public static List<Object> getPluginsWithClass(@NotNull Class<?> cls) {
-        List<Class<?>> pluginsClass = plugins.stream().filter(cls::isAssignableFrom).collect(Collectors.toList());
+        List<Class<?>> pluginsClass = new ArrayList<>();
+        plugins.keySet().forEach(key -> {
+                    pluginsClass.addAll(plugins.get(key)
+                    .stream().filter(cls::isAssignableFrom).collect(Collectors.toList()));
+        });
         return pluginsClass.stream().map(plugin -> {
             try {
-                Object instance = plugin.newInstance();
+                Plugin instance = (Plugin) plugin.newInstance();
+                instance.load();
                 return instance;
             } catch (InstantiationException | IllegalAccessException e) {
                 return null;
             }
         }).filter(Objects::nonNull).collect(Collectors.toList());
+    }
+    public static void removePluginsWithJar(String jarName) {
+        plugins.remove(jarName);
     }
     public static void load(String filepath) {
         File file = new File(filepath);
@@ -47,7 +49,7 @@ public class PluginManager {
                 JarURLConnection jarURLConnection = (JarURLConnection) url.openConnection();
                 jarEntries = jarURLConnection.getJarFile().entries();
             }
-            List<String> classNames = new ArrayList<>();
+            ArrayList<Class<?>> classes = new ArrayList<>();
             while (jarEntries.hasMoreElements()) {
                 JarEntry jarEntry = jarEntries.nextElement();
                 if (jarEntry.isDirectory() || !jarEntry.getName().endsWith(".class")) {
@@ -57,21 +59,16 @@ public class PluginManager {
                 className = className.substring(0, className.length() - ".class".length());
                 if (!className.equalsIgnoreCase("module-info") && !className.equalsIgnoreCase("com.htn.api.Plugin")) {
                     try {
-                        Class<?> clazz = classLoader.loadClass(className);
-                        if (Plugin.class.isAssignableFrom(clazz) && Modifier.isPublic(clazz.getModifiers())) {
-                            classNames.add(clazz.getName());
-                            plugins.add(clazz);
-                            Plugin plugin = (Plugin) clazz.newInstance();
-                            System.out.println("loading " + className);
-                            plugin.load();
+                        Class<?> pluginClass = classLoader.loadClass(className);
+                        if (Plugin.class.isAssignableFrom(pluginClass) && Modifier.isPublic(pluginClass.getModifiers())) {
+                            classes.add(pluginClass);
                         }
-                    } catch (NoClassDefFoundError | InstantiationException | IllegalAccessException e) {
+                    } catch (NoClassDefFoundError e) {
                         System.out.println(e.getMessage());
                     }
                 }
             }
-            System.out.println(classNames);
-            Collections.sort(classNames);
+            plugins.put(file.getName(), classes);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }

@@ -4,6 +4,7 @@ import com.htn.controller.ProductController;
 import com.htn.data.item.Item;
 import com.htn.api.view.View;
 import com.htn.view.FieldBuilder;
+import com.htn.view.NumberField;
 import com.htn.view.ViewFactory;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -28,6 +29,7 @@ public class ProductForm implements View {
     @Getter
     private final StringProperty title = new SimpleStringProperty("Product Form");
     private VBox content;
+    private StackPane layout;
     @Getter
     private final Tab parent;
     private final Stage primaryStage;
@@ -35,15 +37,18 @@ public class ProductForm implements View {
 
     public ProductForm(Tab parent, Stage primaryStage, Item itemToChange) {
         view = new ScrollPane();
+        layout = new StackPane();
         this.parent = parent;
         this.primaryStage = primaryStage;
         this.itemToChange = itemToChange;
         init();
         view.getStylesheets().add("customer.css");
-        view.setContent(content);
+        view.setContent(layout);
         view.setFitToWidth(true);
-        // view.setAlignment(Pos.CENTER);
-        // view.getChildren().add(content);
+        layout.setAlignment(Pos.CENTER);
+        layout.setPadding(new Insets(32, 40, 32, 40));
+        layout.getChildren().add(content);
+        layout.setStyle("-fx-background-color: #F1F5F9;");
     }
 
     public void init() {
@@ -56,9 +61,9 @@ public class ProductForm implements View {
         content.setPadding(new Insets(32, 40, 32, 40));
 
         TextField nameField = new TextField();
-        TextField stockField = new TextField();
-        TextField sellingPriceField = new TextField();
-        TextField purchasingPriceField = new TextField();
+        TextField stockField = new NumberField();
+        TextField sellingPriceField = new NumberField();
+        TextField purchasingPriceField = new NumberField();
         TextField categoryField = new TextField();
 
         VBox productName = FieldBuilder.builder().field(nameField).label("Product name").required(true).build();
@@ -73,8 +78,6 @@ public class ProductForm implements View {
 
         VBox productPhoto = new VBox();
         TextField fileField = new TextField("/sample_product.png");
-        // VBox productPhoto = FieldBuilder.builder().field(fileField).label("Product
-        // Image").required(true).build();
         productPhoto.getChildren().addAll(openButton);
 
         openButton.setOnAction(e -> {
@@ -93,6 +96,7 @@ public class ProductForm implements View {
             }
         });
         TextArea descriptionField = new TextArea();
+        descriptionField.setPrefHeight(300);
         VBox description = FieldBuilder.builder().field(descriptionField).label("Description").required(true).build();
         Button save = new Button("Save");
         save.setPrefWidth(Double.MAX_VALUE);

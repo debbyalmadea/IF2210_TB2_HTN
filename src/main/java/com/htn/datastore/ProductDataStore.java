@@ -2,7 +2,6 @@ package com.htn.datastore;
 
 import com.google.gson.reflect.TypeToken;
 import com.htn.api.datastore.DataStore;
-import com.htn.api.datastore.IItem;
 import com.htn.api.datastore.ISettingsDataStore;
 import com.htn.api.datastore.SettingsObserver;
 import com.htn.data.item.Item;
@@ -10,7 +9,6 @@ import com.htn.data.settings.Settings;
 import com.htn.datastore.utils.IDataWriter;
 import com.htn.datastore.utils.IFileReader;
 import com.htn.datastore.utils.IOUtilFactory;
-import com.htn.datastore.utils.JSONUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.Getter;

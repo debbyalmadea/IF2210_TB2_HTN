@@ -1,5 +1,7 @@
 package com.htn.view;
 
+import com.htn.api.datastore.ISettingsDataStore;
+import com.htn.api.datastore.SettingsObserver;
 import com.htn.api.view.SettingsViewExtension;
 import com.htn.api.view.View;
 import com.htn.application.PluginManager;
@@ -27,8 +29,9 @@ import java.io.File;
 import java.util.List;
 
 import javafx.util.Pair;
+import org.jetbrains.annotations.Nullable;
 
-public class SettingsView implements View {
+public class SettingsView implements View, SettingsObserver {
     @Getter private final ScrollPane view;
     @Getter private final StringProperty title = new SimpleStringProperty("Settings");
     private VBox content;
@@ -41,8 +44,10 @@ public class SettingsView implements View {
         content = new VBox();
         path = SettingsDataStore.getInstance().getSettings().getPathDir();
         init();
-        content.getStylesheets().add("settings.css");
+        view.getStylesheets().add("settings.css");
+        content.setStyle("-fx-background-color: #F1F5F9;");
         view.setContent(content);
+        Settings.getInstance().bind(this);
     }
     public void init() {
         content.getChildren().clear();
@@ -135,7 +140,7 @@ public class SettingsView implements View {
         }
     }
 
-    private String chooseDirectory() {
+    private @Nullable String chooseDirectory() {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Select Directory");
         File selectedDirectory = directoryChooser.showDialog(null);
@@ -146,7 +151,9 @@ public class SettingsView implements View {
         }
         return null;
     }
-
+    public void update(ISettingsDataStore settingsDataStore) {
+        init();
+    }
     private @NotNull Pane getPlugin(){
 
         VBox plugins = new VBox();
@@ -161,10 +168,12 @@ public class SettingsView implements View {
             trashImageView.setFitWidth(20);
             trashImageView.setFitHeight(20);
             trashImageView.setOnMouseClicked(e ->{
-                settingsDataStore.getSettings().removePlugin(settingsDataStore.getSettings().getPlugins().get(currentIndex).get(0));
-                settingsDataStore.write();
-                content.getChildren().remove(3);
-                content.getChildren().add(getPlugin());
+                if (settingsDataStore.getSettings().getNumOfPlugins() > 0) {
+                    settingsDataStore.getSettings().removePlugin(settingsDataStore.getSettings().getPlugins().get(currentIndex).get(0));
+                    settingsDataStore.write();
+                    content.getChildren().remove(3);
+                    content.getChildren().add(getPlugin());
+                }
             });
             // Diganti sesudah punya data dari backend buat plugin
             Label name = new Label(settingsDataStore.getSettings().getPlugins().get(i).get(0));

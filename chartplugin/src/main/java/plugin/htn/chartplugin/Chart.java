@@ -21,7 +21,6 @@ public class Chart implements Plugin, View, CustomerDataStoreExtension {
     private final ScrollPane view;
     private final VBox content;
     public Chart() {
-        System.out.println("INIT CHART");
         view = new ScrollPane();
         view.fitToWidthProperty().set(true);
         content = new VBox();

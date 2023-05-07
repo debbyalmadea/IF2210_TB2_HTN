@@ -82,14 +82,14 @@ public class BillForm implements View {
 
     }
 
-    public void addProduct(Label productQuantity) {
+    public void addProduct(@NotNull Label productQuantity) {
         String quantity = productQuantity.getText();
         int quantityInt = Integer.parseInt(quantity);
         quantityInt++;
         productQuantity.setText(String.valueOf(quantityInt));
     }
 
-    public void decreaseProduct(Label productQuantity) {
+    public void decreaseProduct(@NotNull Label productQuantity) {
         String quantity = productQuantity.getText();
         int quantityInt = Integer.parseInt(quantity);
         if (quantityInt > 1) {
