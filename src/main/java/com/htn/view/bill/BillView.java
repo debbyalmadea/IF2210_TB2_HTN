@@ -2,13 +2,11 @@ package com.htn.view.bill;
 
 import com.htn.controller.BillController;
 import com.htn.controller.CustomerController;
-import com.htn.controller.ProductController;
 import com.htn.data.bill.Bill;
 import com.htn.data.bill.FixedBill;
 import com.htn.api.view.View;
 import com.htn.data.item.Item;
 import com.htn.datastore.BillDataStore;
-import com.htn.view.View;
 
 import com.htn.view.product.ProductCardFactory;
 import javafx.application.Platform;
@@ -130,7 +128,7 @@ public class BillView implements View {
                 fixedBillBox, getListView("fixedbill"));
         searchButton.setOnAction(e -> {
             String textToSearch = searchField.getText();
-            if (textToSearch != null || !textToSearch.equalsIgnoreCase("")) {
+            if (textToSearch != null && !textToSearch.equalsIgnoreCase("")) {
                 content.getChildren().set(2, getArrListView(BillController.getSearchedBill(textToSearch)));
                 content.getChildren().set(4, getArrListView(BillController.getSearchedFixedBill(textToSearch)));
             } else {
