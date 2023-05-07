@@ -20,6 +20,7 @@ public class FixedBillCard {
     private FixedBill fixedBill;
 
     public Pane getCard() {
+        System.out.println(String.valueOf(fixedBill.getPricePaid()));
         return CardBuilder.builder()
                 .title(fixedBill.getName())
                 .subtitle(String.valueOf(fixedBill.getPricePaid()))
@@ -44,8 +45,8 @@ public class FixedBillCard {
         printButton.setPrefWidth(105);
         printButton.setOnAction(e -> {
             try {
-                parent.printBill(fixedBill.getId());
-            } catch (IOException e1) {
+                parent.threadPrintBill(fixedBill.getId());
+            } catch (Exception e1) {
                 // TODO Auto-generated catch block
                 e1.printStackTrace();
             }

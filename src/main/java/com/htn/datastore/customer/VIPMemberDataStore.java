@@ -24,7 +24,7 @@ public class VIPMemberDataStore extends AMemberDataStore {
     private ObservableList<VIPMember> data;
     private static VIPMemberDataStore instance = null;
     private VIPMemberDataStore() {
-        super("vip-member.obj");
+        super("vip-member");
     }
     public static VIPMemberDataStore getInstance() {
         if (instance == null) {

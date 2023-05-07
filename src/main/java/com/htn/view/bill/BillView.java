@@ -84,35 +84,7 @@ public class BillView implements View {
         content.setSpacing(20);
 
         Button printButton = new Button("Print All Fixed Bill");
-        printButton.setOnAction(e -> {
-            String x = "";
-            List<FixedBill> fixedBills = BillController.getAllFixedBill();
-            for (FixedBill f : fixedBills) {
-                x += ("idBill : " + f.getId() + "\n");
-                for (Item i : f.getItems()) {
-                    x += ("id item: " + i.getId() + "\n");
-                    x += ("item name: " + i.getName() + "\n");
-                    x += ("description: " + i.getDescription() + "\n");
-                    x += ("selling price: " + i.getSellingPrice() + "\n");
-                    x += ("purchasing price: " + i.getPurchasingPrice() + "\n");
-                    x += ("category: " + i.getCategory() + "\n");
-                    x += ("stock : " + i.getStock() + "\n");
-                    x += ("image: " + i.getImage() + "\n");
-                    x += "\n";
-                }
-                x += "\n";
-            }
-            Document document = new Document();
-            try {
-                PdfWriter.getInstance(document, new FileOutputStream("outputAll.pdf"));
-                document.open();
-                document.add(new com.itextpdf.text.Paragraph(x));
-                document.close();
-            } catch (DocumentException ex) {
-                ex.printStackTrace();
-            } catch (FileNotFoundException ex) {
-                ex.printStackTrace();
-            }
+        printButton.setOnAction(e -> {threadAllLaporan();
         });
 
         Label BillLabel = new Label("Bill");
@@ -142,7 +114,6 @@ public class BillView implements View {
         listView.setMaxWidth(Double.MAX_VALUE);
         listView.setHgap(20);
         listView.setVgap(20);
-        System.out.println(request);
         if (request.equalsIgnoreCase("bill")) {
             List<Bill> bills = BillController.getAllBill();
             bills.forEach(bill -> {
@@ -157,6 +128,51 @@ public class BillView implements View {
         }
 
         return listView;
+    }
+
+    void threadAllLaporan() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Memprint Laporan..");
+        alert.setHeaderText(null);
+        alert.setContentText("Sedang memprint laporan untuk 10 s.");
+        alert.showAndWait();
+        Thread thread = new Thread(() -> {
+            // Call the function from the new thread
+            printAllLaporan();
+        });
+        // Start the thread
+        thread.start();
+    }
+    void printAllLaporan() {
+        String x = "";
+        List<FixedBill> fixedBills = BillController.getAllFixedBill();
+        for (FixedBill f : fixedBills) {
+            x += ("idBill : " + f.getId() + "\n");
+            for (Item i : f.getItems()) {
+                x += ("id item: " + i.getId() + "\n");
+                x += ("item name: " + i.getName() + "\n");
+                x += ("description: " + i.getDescription() + "\n");
+                x += ("selling price: " + i.getSellingPrice() + "\n");
+                x += ("purchasing price: " + i.getPurchasingPrice() + "\n");
+                x += ("category: " + i.getCategory() + "\n");
+                x += ("stock : " + i.getStock() + "\n");
+                x += ("image: " + i.getImage() + "\n");
+                x += "\n";
+            }
+            x += "\n";
+        }
+        Document document = new Document();
+        try {
+            Thread.sleep(10000);
+            PdfWriter.getInstance(document, new FileOutputStream("outputAll.pdf"));
+            document.open();
+            document.add(new com.itextpdf.text.Paragraph(x));
+            document.close();
+        } catch (DocumentException ex) {
+            ex.printStackTrace();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     private @NotNull Pane getArrListView(List<Object> bills) {
@@ -207,7 +223,22 @@ public class BillView implements View {
         dialog.showAndWait();
     }
 
-    public void printBill(String id) throws IOException {
+    public void threadPrintBill(String id) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Memprint Laporan..");
+        alert.setHeaderText(null);
+        alert.setContentText("Sedang memprint laporan untuk 10 s.");
+        alert.showAndWait();
+        Thread thread = new Thread(() -> {
+            // Call the function from the new thread
+            printBill(id);
+        });
+
+        // Start the thread
+        thread.start();
+    }
+
+    public void printBill(String id) {
         ArrayList<Item> items = BillController.getFixedBillWithId(id).getItems();
         String x = "";
         for (Item i : items) {
@@ -235,8 +266,7 @@ public class BillView implements View {
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

@@ -24,7 +24,7 @@ public class MemberDataStore extends AMemberDataStore {
     private ObservableList<Member> data;
     private static MemberDataStore instance = null;
     private MemberDataStore() {
-        super("member.obj");
+        super("member");
     }
     public static MemberDataStore getInstance() {
         if (instance == null) {
