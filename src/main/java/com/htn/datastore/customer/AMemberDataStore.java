@@ -1,5 +1,6 @@
 package com.htn.datastore.customer;
 
+import com.htn.api.datastore.DataStore;
 import com.htn.data.customer.Member;
 import com.htn.data.customer.VIPMember;
 import lombok.Builder;
@@ -7,7 +8,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
-public abstract class AMemberDataStore {
+public abstract class AMemberDataStore implements DataStore {
     @Getter @Setter
     protected String file;
     protected AMemberDataStore(String file) {

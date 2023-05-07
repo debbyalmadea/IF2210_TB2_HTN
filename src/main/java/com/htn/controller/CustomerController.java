@@ -1,5 +1,6 @@
 package com.htn.controller;
 
+import com.htn.api.view.View;
 import com.htn.data.customer.Customer;
 import com.htn.data.customer.Member;
 import com.htn.data.customer.VIPMember;
@@ -7,11 +8,8 @@ import com.htn.datastore.customer.AMemberDataStore;
 import com.htn.datastore.customer.CustomerDataStore;
 import com.htn.datastore.customer.MemberDataStore;
 import com.htn.datastore.customer.VIPMemberDataStore;
-import com.htn.view.View;
 import javafx.collections.ListChangeListener;
 import org.jetbrains.annotations.NotNull;
-
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,18 +25,18 @@ public class CustomerController {
     }
     public static void bindCustomerData(View view) {
         CustomerDataStore customerData = CustomerDataStore.getInstance();
-        customerData.getCustomers().addListener((ListChangeListener<Customer>) c -> view.init());
+        customerData.getData().addListener((ListChangeListener<Customer>) c -> view.init());
     }
     public static void bindMemberData(View view) {
         MemberDataStore memberData = MemberDataStore.getInstance();
-        memberData.getMembers().addListener((ListChangeListener<Customer>) c -> view.init());
+        memberData.getData().addListener((ListChangeListener<Customer>) c -> view.init());
     }
     public static void bindVIPMemberData(View view) {
         VIPMemberDataStore vipMemberData = VIPMemberDataStore.getInstance();
-        vipMemberData.getVipMembers().addListener((ListChangeListener<Customer>) c -> view.init());
+        vipMemberData.getData().addListener((ListChangeListener<Customer>) c -> view.init());
     }
     public static List<Customer> getAllCustomers() {
-        return CustomerDataStore.getInstance().getCustomers();
+        return CustomerDataStore.getInstance().getData();
     }
     public static List<Customer> getCustomersOnly() {
         return getAllCustomers().stream()
@@ -47,7 +45,7 @@ public class CustomerController {
                 .collect(Collectors.toList());
     }
     public static @NotNull List<Member> getAllMembers() {
-        return MemberDataStore.getInstance().getMembers();
+        return MemberDataStore.getInstance().getData();
     }
     public static Member getMember(Integer id) {
         return getAllMembers().stream()
@@ -89,18 +87,18 @@ public class CustomerController {
     }
 
     public static List<Member> getActiveMembers() {
-        return MemberDataStore.getInstance().getMembers().stream()
+        return MemberDataStore.getInstance().getData().stream()
                 .filter(Member::isActivated)
                 .collect(Collectors.toCollection(ArrayList::new));
     }
     public static List<Member> getDeactivateMembers() {
-        return MemberDataStore.getInstance().getMembers()
+        return MemberDataStore.getInstance().getData()
                 .stream()
                 .filter(member -> !member.isActivated())
                 .collect(Collectors.toCollection(ArrayList::new));
     }
     public static @NotNull List<VIPMember> getAllVIPMembers() {
-        return VIPMemberDataStore.getInstance().getVipMembers();
+        return VIPMemberDataStore.getInstance().getData();
     }
     public static VIPMember getVIPMember(Integer id) {
         return getAllVIPMembers().stream()
@@ -109,12 +107,12 @@ public class CustomerController {
                 .orElse(null);
     }
     public static List<VIPMember> getActiveVIPMembers() {
-        return VIPMemberDataStore.getInstance().getVipMembers().stream()
+        return VIPMemberDataStore.getInstance().getData().stream()
                 .filter(VIPMember::isActivated)
                 .collect(Collectors.toCollection(ArrayList::new));
     }
     public static List<VIPMember> getDeactivateVIPMembers() {
-        return VIPMemberDataStore.getInstance().getVipMembers()
+        return VIPMemberDataStore.getInstance().getData()
                 .stream()
                 .filter(vipMember -> !vipMember.isActivated())
                 .collect(Collectors.toCollection(ArrayList::new));

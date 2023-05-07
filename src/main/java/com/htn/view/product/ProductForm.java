@@ -2,7 +2,7 @@ package com.htn.view.product;
 
 import com.htn.controller.ProductController;
 import com.htn.data.item.Item;
-import com.htn.view.View;
+import com.htn.api.view.View;
 import com.htn.view.FieldBuilder;
 import com.htn.view.ViewFactory;
 import javafx.beans.property.SimpleStringProperty;

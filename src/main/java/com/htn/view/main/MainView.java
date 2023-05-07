@@ -1,28 +1,22 @@
 package com.htn.view.main;
-import com.htn.view.View;
+import com.htn.api.view.View;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import lombok.Getter;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class MainView implements View {
-
     @Getter
     private final BorderPane view;
     @Getter

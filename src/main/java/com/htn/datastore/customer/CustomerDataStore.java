@@ -1,11 +1,11 @@
 package com.htn.datastore.customer;
 
+import com.htn.api.datastore.DataStore;
 import com.htn.data.customer.Customer;
 import com.htn.datastore.utils.IDataWriter;
 import com.htn.datastore.utils.IFileReader;
 import com.google.gson.reflect.TypeToken;
 import com.htn.datastore.utils.OBJUtil;
-import com.htn.datastore.utils.XMLUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.Getter;
@@ -13,8 +13,8 @@ import lombok.Getter;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-public class CustomerDataStore {
-    @Getter private ObservableList<Customer> customers;
+public class CustomerDataStore implements DataStore {
+    @Getter private ObservableList<Customer> data;
     private static CustomerDataStore instance = null;
     private final String file = "customer.obj";
     private CustomerDataStore() {
@@ -32,30 +32,30 @@ public class CustomerDataStore {
         System.out.println("READ");
         try {
             Object result = reader.readFile(file);
-            customers = FXCollections.observableList((ArrayList<Customer>) result);
+            data = FXCollections.observableList((ArrayList<Customer>) result);
         } catch (IOException e) {
-            customers = FXCollections.observableList(new ArrayList<>());
+            data = FXCollections.observableList(new ArrayList<>());
         }
     }
     public void write() {
         Type type = new TypeToken<ArrayList<Customer>>() {}.getType();
         IDataWriter writer = new OBJUtil(type);
         try {
-            writer.writeData(file, new ArrayList<>(customers));
+            writer.writeData(file, new ArrayList<>(data));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }
     public Customer create() {
         Customer baru = new Customer();
-        customers.add(baru);
+        data.add(baru);
         write();
         return baru;
     }
     private void seed() {
         int i;
         for (i = 0; i < 10; i++) {
-            customers.add(new Customer());
+            data.add(new Customer());
         }
         write();
     }

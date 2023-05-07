@@ -5,7 +5,7 @@ import com.htn.data.bill.Bill;
 import com.htn.data.bill.FixedBill;
 import com.htn.data.customer.Customer;
 import com.htn.data.item.Item;
-import com.htn.view.View;
+import com.htn.api.view.View;
 import com.htn.view.product.ProductCardFactory;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
