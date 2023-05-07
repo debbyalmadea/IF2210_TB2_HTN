@@ -37,7 +37,7 @@ public class CardBuilder implements Card {
         if (styleSheets != null) this.styleSheets = styleSheets;
 
         titleProperty = new SimpleStringProperty(title);
-        subtitleProperty = new SimpleStringProperty(title);
+        subtitleProperty = new SimpleStringProperty(subtitle);
 
         card = new VBox();
         this.styleSheets = new ArrayList<>();
