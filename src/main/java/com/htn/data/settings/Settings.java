@@ -15,6 +15,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @AllArgsConstructor
@@ -65,18 +67,23 @@ public class Settings implements Serializable {
         });
     }
     public void addPlugin(String name, String path) {
-        ArrayList<String> plugin = new ArrayList<String>();
-        plugin.add(name);
-        plugin.add(path);
-        plugins.add(plugin);
-        PluginManager.load(plugin.get(1));
-        changed.set(!changed.get());
+        List<ArrayList<String>> filtered = plugins.stream()
+                .filter(plugin -> plugin.get(0).equalsIgnoreCase(name))
+                .collect(Collectors.toList());
+        if (filtered.size() == 0) {
+            ArrayList<String> plugin = new ArrayList<String>();
+            plugin.add(name);
+            plugin.add(path);
+            plugins.add(plugin);
+            PluginManager.load(plugin.get(1));
+            changed.set(!changed.get());
+        }
     }
     public void removePlugin(String name) {
         // remove a plugin from plugins with name equal name
         for (int i = 0; i < plugins.size(); i++) {
             if (plugins.get(i).get(0).equals(name)) {
-//                PluginManager.removePluginsWithJar(plugins.get(i).get(0));
+                PluginManager.removePluginsWithJar(plugins.get(i).get(0));
                 plugins.remove(i);
                 break;
             }

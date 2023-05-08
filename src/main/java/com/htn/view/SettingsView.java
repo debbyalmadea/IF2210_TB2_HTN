@@ -135,8 +135,6 @@ public class SettingsView implements View, SettingsObserver {
             String pluginPath = selectedFile.getAbsolutePath();
             settingsDataStore.getSettings().addPlugin(pluginName,pluginPath);
             settingsDataStore.write();
-            content.getChildren().remove(3);
-            content.getChildren().add(getPlugin());
         }
     }
 
@@ -171,8 +169,6 @@ public class SettingsView implements View, SettingsObserver {
                 if (settingsDataStore.getSettings().getNumOfPlugins() > 0) {
                     settingsDataStore.getSettings().removePlugin(settingsDataStore.getSettings().getPlugins().get(currentIndex).get(0));
                     settingsDataStore.write();
-                    content.getChildren().remove(3);
-                    content.getChildren().add(getPlugin());
                 }
             });
             // Diganti sesudah punya data dari backend buat plugin

@@ -43,7 +43,7 @@
             <artifactId>api</artifactId>
             <version>1.0</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/../out/artifacts/api_jar/api.jar</systemPath>
+            <systemPath>${project.basedir}/../out/artifacts/app_jar/app.jar</systemPath>
         </dependency>
     </dependencies>
 

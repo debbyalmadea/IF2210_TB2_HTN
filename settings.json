@@ -1,0 +1,18 @@
+{
+  "fileExtension": ".json",
+  "pathDir": "",
+  "plugins": [
+    [
+      "currencyplugin.jar",
+      "/Users/almadeaputri/Documents/IF2210_TB2_HTN/out/artifacts/currencyplugin_jar/currencyplugin.jar"
+    ],
+    [
+      "pluginsis2.jar",
+      "/Users/almadeaputri/Documents/IF2210_TB2_HTN/out/artifacts/pluginsis2_jar/pluginsis2.jar"
+    ],
+    [
+      "chartplugin.jar",
+      "/Users/almadeaputri/Documents/IF2210_TB2_HTN/out/artifacts/chartplugin_jar/chartplugin.jar"
+    ]
+  ]
+}
