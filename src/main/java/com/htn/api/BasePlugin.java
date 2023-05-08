@@ -18,7 +18,7 @@ import javafx.collections.ListChangeListener;
 import org.jetbrains.annotations.NotNull;
 
 public class BasePlugin {
-    public static void addPage(String title, Class<? extends View> view) {
+    public static void addPage(@NotNull String title, Class<? extends View> view) {
         System.out.println("add " + title);
         ViewFactory.getViews().putIfAbsent(title.toLowerCase(), view);
         if (ViewFactory.getViews().get(title.toLowerCase()) != null && !ViewFactory.getViews().get(title.toLowerCase()).equals(view)) {

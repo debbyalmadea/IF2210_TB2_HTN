@@ -33,6 +33,14 @@ public class PluginManager {
             }
         }).filter(Objects::nonNull).collect(Collectors.toList());
     }
+    public static boolean isClassExisted(@NotNull Class<?> cls) {
+        List<Class<?>> pluginsClass = new ArrayList<>();
+        plugins.keySet().forEach(key -> {
+            pluginsClass.addAll(plugins.get(key)
+                    .stream().filter(cls::isAssignableFrom).collect(Collectors.toList()));
+        });
+        return pluginsClass.size() > 0;
+    }
     public static void removePluginsWithJar(String jarName) {
         plugins.remove(jarName);
     }
@@ -60,7 +68,9 @@ public class PluginManager {
                 if (!className.equalsIgnoreCase("module-info") && !className.equalsIgnoreCase("com.htn.api.Plugin")) {
                     try {
                         Class<?> pluginClass = classLoader.loadClass(className);
-                        if (Plugin.class.isAssignableFrom(pluginClass) && Modifier.isPublic(pluginClass.getModifiers())) {
+                        if (Plugin.class.isAssignableFrom(pluginClass)
+                                && Modifier.isPublic(pluginClass.getModifiers())
+                                && !isClassExisted(pluginClass)) {
                             classes.add(pluginClass);
                             ((Plugin)pluginClass.newInstance()).load();
                         }
@@ -69,7 +79,8 @@ public class PluginManager {
                     }
                 }
             }
-            plugins.put(file.getName(), classes);
+            System.out.println(file.getName());
+            plugins.putIfAbsent(file.getName(), classes);
         } catch (Exception e) {
             e.printStackTrace();
         }
