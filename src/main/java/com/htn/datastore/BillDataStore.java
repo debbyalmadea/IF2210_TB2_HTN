@@ -42,7 +42,7 @@ public class BillDataStore implements DataStore<Bill>, SettingsObserver {
         try {
             Settings setting = SettingsDataStore.getInstance().getSettings();
             IFileReader reader = IOUtilFactory.getReader(setting.getFileExtension(), type);
-            Object result = reader.readFile(setting.getPathDir() + "\\" + file + setting.getFileExtension());
+            Object result = reader.readFile(setting.getPathDir() + "/" + file + setting.getFileExtension());
             data = FXCollections.observableList((ArrayList<Bill>) result);
         } catch (IOException e) {
             data = FXCollections.observableList((new ArrayList<>()));
@@ -54,7 +54,7 @@ public class BillDataStore implements DataStore<Bill>, SettingsObserver {
         try {
             Settings setting = SettingsDataStore.getInstance().getSettings();
             IDataWriter writer = IOUtilFactory.getWriter(setting.getFileExtension(), type);
-            if (writer != null) writer.writeData(setting.getPathDir()+ "\\" + file + setting.getFileExtension(), new ArrayList<>(data));
+            if (writer != null) writer.writeData(setting.getPathDir()+ "/" + file + setting.getFileExtension(), new ArrayList<>(data));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
