@@ -36,7 +36,7 @@ public class CustomerDataStore implements DataStore, SettingsObserver {
         try {
             Settings setting = SettingsDataStore.getInstanceWithoutPlugin().getSettings();
             IFileReader reader = IOUtilFactory.getReader(setting.getFileExtension(), type);
-            Object result = reader.readFile(setting.getPathDir() + "\\" + file + setting.getFileExtension());
+            Object result = reader.readFile(setting.getPathDir() + "/" + file + setting.getFileExtension());
             data = FXCollections.observableList((ArrayList<Customer>) result);
             Customer.setNumOfCustomer(data.size());
         } catch (IOException e) {
@@ -48,7 +48,7 @@ public class CustomerDataStore implements DataStore, SettingsObserver {
         try {
             Settings setting = SettingsDataStore.getInstance().getSettings();
             IDataWriter writer = IOUtilFactory.getWriter(setting.getFileExtension(), type);
-            if (writer != null) writer.writeData(setting.getPathDir() + "\\" + file + setting.getFileExtension(), new ArrayList<>(data));
+            if (writer != null) writer.writeData(setting.getPathDir() + "/" + file + setting.getFileExtension(), new ArrayList<>(data));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }

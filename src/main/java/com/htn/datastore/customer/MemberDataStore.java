@@ -38,7 +38,7 @@ public class MemberDataStore extends AMemberDataStore {
         try {
             Settings setting = SettingsDataStore.getInstanceWithoutPlugin().getSettings();
             IFileReader reader = IOUtilFactory.getReader(setting.getFileExtension(), type);
-            Object result = reader.readFile(setting.getPathDir() + "\\" + file + setting.getFileExtension());
+            Object result = reader.readFile(setting.getPathDir() + "/" + file + setting.getFileExtension());
             data = FXCollections.observableList((ArrayList<Member>) result);
             Customer.setNumOfCustomer(data.size());
         } catch (IOException e) {
@@ -50,7 +50,7 @@ public class MemberDataStore extends AMemberDataStore {
         try {
             Settings setting = SettingsDataStore.getInstance().getSettings();
             IDataWriter writer = IOUtilFactory.getWriter(setting.getFileExtension(), type);
-            writer.writeData(setting.getPathDir() + "\\" + file + setting.getFileExtension(), new ArrayList<>(data));
+            writer.writeData(setting.getPathDir() + "/" + file + setting.getFileExtension(), new ArrayList<>(data));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }

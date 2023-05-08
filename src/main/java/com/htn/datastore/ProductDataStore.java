@@ -46,8 +46,8 @@ public class ProductDataStore implements DataStore<Item>, SettingsObserver {
         System.out.println(setting.getFileExtension());
         try {
             IFileReader reader = IOUtilFactory.getReader(setting.getFileExtension(),type);
-            Object result = reader.readFile(setting.getPathDir()+ "\\" + file + setting.getFileExtension());
-            System.out.println(setting.getPathDir()+ "\\" + file + setting.getFileExtension());
+            Object result = reader.readFile(setting.getPathDir()+ "/" + file + setting.getFileExtension());
+            System.out.println(setting.getPathDir()+ "/" + file + setting.getFileExtension());
             data = FXCollections.observableList((ArrayList<Item>) result);
         } catch (IOException e) {
             data = FXCollections.observableList(new ArrayList<>());
@@ -60,7 +60,7 @@ public class ProductDataStore implements DataStore<Item>, SettingsObserver {
         Settings setting = SettingsDataStore.getInstance().getSettings();
         try {
             IDataWriter writer = IOUtilFactory.getWriter(setting.getFileExtension(), type);
-            if (writer != null) writer.writeData(setting.getPathDir()+"\\" + file+ setting.getFileExtension(), new ArrayList<>(data));
+            if (writer != null) writer.writeData(setting.getPathDir()+"/" + file+ setting.getFileExtension(), new ArrayList<>(data));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
